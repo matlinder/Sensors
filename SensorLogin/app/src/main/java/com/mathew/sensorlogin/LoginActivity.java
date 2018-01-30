@@ -102,17 +102,15 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     // JSON Object
                     JSONObject obj = new JSONObject(response);
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                    // When the JSON response has status boolean value assigned with true
-                    //obj.get()
-//                        Toast.makeText(getApplicationContext(), "auth token " + obj.getString("xsd"), Toast.LENGTH_LONG).show();
-//                        // Navigate to Home screen
-//                        navigatetoHomeActivity();
-                                        // Else display error message
-//                    else {
-//                        errorMsg.setText(obj.getString("error_msg"));
-//                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
-//                    }
+                    //grab the result and pass to a string
+                    String authToken = obj.getString("Result");
+                    //testing purposes, view the authorization token
+                    TextView textDisplay = (TextView)findViewById(R.id.textDisplay);
+                    textDisplay.setText(authToken);
+
+                    // call the logon method
+                    validateLogon(authToken);
+
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
@@ -149,6 +147,48 @@ public class LoginActivity extends AppCompatActivity {
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
         //homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
+    }
+
+    /**
+     * Method to validate logon
+     * @param authToken the authorize token from monnit
+     */
+    public void validateLogon(String authToken)
+    {
+        prgDialog.show();
+        // Make RESTful webservice call using AsyncHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("https://www.imonnit.com/json/Logon/" + authToken, new AsyncHttpResponseHandler() {
+            // When the response returned by REST has Http response code '200'
+            @Override
+            public void onSuccess(String response) {
+                // Hide Progress Dialog
+                prgDialog.hide();
+
+                navigatetoHomeActivity();
+            }
+
+            // When the response returned by REST has Http response code other than '200'
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+                // Hide Progress Dialog
+                prgDialog.hide();
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 }
 
