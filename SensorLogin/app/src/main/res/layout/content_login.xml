@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:padding="10dip" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dip">
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:layout_marginTop="25dip"
-            android:text="@string/title_activity_login"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="186dp"
+        android:layout_marginBottom="50dip"
+        android:layout_marginTop="50dip"
+        android:src="@drawable/ccmetlogo" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:layout_marginTop="25dip"
+        android:text="@string/title_activity_login"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/loginEmail"
@@ -23,36 +31,36 @@
         android:hint="Enter your ID"
         android:inputType="textEmailAddress" />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dip"
-            android:text="@string/pwd" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:text="@string/pwd" />
 
-        <EditText
-            android:id="@+id/loginPassword"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Password"
-            android:inputType="textPassword" />
+    <EditText
+        android:id="@+id/loginPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Password"
+        android:inputType="textPassword" />
 
-        <TextView
-            android:id="@+id/login_error"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dip"
-            android:textColor="#e30000"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/login_error"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        android:textColor="#e30000"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="#ff6347"
-            android:onClick="loginUser"
-            android:text="Login"
-            android:textColor="#fff" />
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:background="#ff6347"
+        android:onClick="loginUser"
+        android:text="Login"
+        android:textColor="#fff" />
 
 </LinearLayout>
 
