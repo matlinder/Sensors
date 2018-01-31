@@ -155,8 +155,29 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(String response) {
                 // Hide Progress Dialog
                 prgDialog.hide();
-                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                navigatetoHomeActivity(authToken);
+                try {
+                    // JSON Object
+                    JSONObject obj = new JSONObject(response);
+                    String result = obj.getString("Result");
+                    if(result.equals("Success"))
+                    {
+                        Toast.makeText(getApplicationContext(), "my result is " + result, Toast.LENGTH_LONG).show();
+                        navigatetoHomeActivity(authToken);
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Login failed, please try again", Toast.LENGTH_LONG).show();
+                    }
+
+
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+
             }
 
             // When the response returned by REST has Http response code other than '200'
