@@ -29,11 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".AccountActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-
+        <activity
+            android:name=".AccountActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".SensorActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

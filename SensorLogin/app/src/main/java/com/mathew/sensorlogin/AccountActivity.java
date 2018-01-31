@@ -1,30 +1,29 @@
 package com.mathew.sensorlogin;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class HomeActivity extends AppCompatActivity {
-
+public class AccountActivity extends AppCompatActivity {
     String authToken;
     String userName;
     String userID;
+    TextView accountDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home); //displays the home screen
+        setContentView(R.layout.activity_account);
 
-
-
+        accountDetails = findViewById(R.id.AccountDetails);
 
         //grab the token from the previous intent
         Bundle extras = this.getIntent().getExtras();
@@ -32,37 +31,21 @@ public class HomeActivity extends AppCompatActivity {
         {
             authToken = extras.getString("token");
             userName = extras.getString("userName");
+            userID = extras.getString("userID");
+            Toast.makeText(getApplicationContext(), "user id = " + userID, Toast.LENGTH_LONG).show();
         }
-        grabUserID();
-
-
-    }
-
-    /**
-     * starts the AccountActivity details activity
-     * passes the token via extra
-     */
-    public void displayAccountDetails(View view)
-    {
-        Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
-        intent.putExtra("token", authToken);
-        intent.putExtra("userName", userName);
-        intent.putExtra("userID", userID);
-        startActivity(intent);
-    }
-    public void displaySensorData(View view) {
-        Intent intent = new Intent(getApplicationContext(), SensorActivity.class);
-        intent.putExtra("token", authToken);
-        intent.putExtra("userID", userID);
-        startActivity(intent);
+        displayData();
     }
     /**
-     * method to grab the user ID as it is used to identify what sensors/gateways the user can see
+     * method to display the user data after a successful login
      */
-    public void grabUserID()
+    public void displayData()
     {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://www.imonnit.com/json/AccountUserList/" +authToken, new AsyncHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        params.put("userID", userID);
+
+        client.get("https://www.imonnit.com/json/AccountUserGet/" + authToken, params, new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
 
             public void onSuccess(String response) {
@@ -70,19 +53,21 @@ public class HomeActivity extends AppCompatActivity {
                 try {
                     // JSON Object
                     JSONObject obj = new JSONObject(response);
-                    // Get the array of users
-                    JSONArray users = obj.getJSONArray("Result");
-                    // loop through the array for the specific user and save their details
-                    for(int i = 0; i < users.length(); i++)
-                    {
-                        // grab each object and store in a temp variable
-                        JSONObject temp = users.getJSONObject(i);
-                        // check if the object in the array matches the username entered to login
-                        if(temp.getString("UserName").equals(userName))
-                        {
-                            userID = temp.getString("UserID");
-                        }
-                    }
+                    // Get the data of the user
+                    accountDetails.setText(obj.getString("Result"));
+//                    JSONArray users = obj.getJSONArray("Result");
+//                    // loop through the array for the specific user and save their details
+//                    for(int i = 0; i < users.length(); i++)
+//                    {
+//                        // grab each object and store in a temp variable
+//                        JSONObject temp = users.getJSONObject(i);
+//                        // check if the object in the array matches the username entered to login
+//                        if(temp.getString("UserName").equals(userName))
+//                        {
+//                            // set the details for viewing purpose to see if the correct user was selected
+//                            accountDetails.setText(temp.toString());
+//                        }
+//                    }
 
 
 
@@ -116,6 +101,4 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
