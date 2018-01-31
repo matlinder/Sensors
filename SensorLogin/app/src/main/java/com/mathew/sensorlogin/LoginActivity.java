@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     String authToken = obj.getString("Result");
                     validateLogon(authToken);
 
-                    //Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -143,9 +143,10 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param authToken the authorization token to be used for all json calls
      */
-    public void validateLogon(String authToken) {
+    public void validateLogon(final String authToken) {
         // Show Progress Dialog
         prgDialog.show();
+        Toast.makeText(getApplicationContext(), "validating token", Toast.LENGTH_LONG).show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("https://www.imonnit.com/json/Logon/" + authToken, new AsyncHttpResponseHandler() {
@@ -154,7 +155,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(String response) {
                 // Hide Progress Dialog
                 prgDialog.hide();
-                navigatetoHomeActivity();
+                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                navigatetoHomeActivity(authToken);
             }
 
             // When the response returned by REST has Http response code other than '200'
@@ -181,9 +183,11 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Method which navigates from Login Activity to Home Activity
      */
-    public void navigatetoHomeActivity(){
+    public void navigatetoHomeActivity(String token){
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
         //homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeIntent.putExtra("token", token);
+        homeIntent.putExtra("userName", emailET.getText().toString());
         startActivity(homeIntent);
     }
 }

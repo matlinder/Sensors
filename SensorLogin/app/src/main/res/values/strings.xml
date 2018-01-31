@@ -11,4 +11,8 @@
     <string name="pwd">Password</string>
     <string name="btnRegister">Register</string>
     <string name="success">Welcome, you are now logged in</string>
+
+    <string name="title_activity_account_details">AccountDetailsActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
