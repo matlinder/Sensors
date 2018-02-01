@@ -12,8 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="186dp"
         android:layout_marginBottom="50dip"
-        android:layout_marginTop="50dip"
-        android:src="@drawable/ccmetlogo" />
+
+
+        android:background="@color/colorAccent"
+        android:src="@drawable/ccmet_logo" />
 
     <TextView
         android:layout_width="fill_parent"

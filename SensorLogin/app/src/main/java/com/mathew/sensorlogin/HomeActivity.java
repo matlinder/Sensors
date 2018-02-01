@@ -23,9 +23,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home); //displays the home screen
 
-
-
-
         //grab the token from the previous intent
         Bundle extras = this.getIntent().getExtras();
         if(extras != null)
@@ -83,11 +80,6 @@ public class HomeActivity extends AppCompatActivity {
                             userID = temp.getString("UserID");
                         }
                     }
-
-
-
-
-
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "Error Occured could not display data!", Toast.LENGTH_LONG).show();

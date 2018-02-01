@@ -14,10 +14,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AccountActivity extends AppCompatActivity {
-    String authToken;
-    String userName;
-    String userID;
-    TextView accountDetails;
+
+    String authToken; //authorization token from json
+    String userName; //the users username for json calls
+    String userID; //the user id linked to the username, for json calls
+    TextView accountDetails; //temp placeholder to display the account json data
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +42,13 @@ public class AccountActivity extends AppCompatActivity {
      */
     public void displayData()
     {
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
+        AsyncHttpClient client = new AsyncHttpClient(); //create the client
+        RequestParams params = new RequestParams(); //create a place to store the json params
         params.put("userID", userID);
 
+        //json request
         client.get("https://www.imonnit.com/json/AccountUserGet/" + authToken, params, new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
-
             public void onSuccess(String response) {
 
                 try {
