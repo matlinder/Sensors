@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Sensor Login</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Metro Testing Sensors</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="register_title">Register</string>
-    <string name="login_title">Login</string>
+    <string name="login_title">Login to your account</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="pwd">Password</string>
