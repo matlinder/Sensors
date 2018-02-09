@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
     public void validateLogon(final String authToken) {
         // Show Progress Dialog
         prgDialog.show();
-        Toast.makeText(getApplicationContext(), "validating token", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "validating token", Toast.LENGTH_LONG).show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("https://www.imonnit.com/json/Logon/" + authToken, new AsyncHttpResponseHandler() {
@@ -161,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                     String result = obj.getString("Result");
                     if(result.equals("Success"))
                     {
-                        Toast.makeText(getApplicationContext(), "my result is " + result, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "my result is " + result, Toast.LENGTH_LONG).show();
                         navigatetoHomeActivity(authToken);
                     }
                     else

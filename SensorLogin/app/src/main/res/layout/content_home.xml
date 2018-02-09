@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.mathew.sensorlogin.HomeActivity"
     tools:showIn="@layout/activity_home">
@@ -17,6 +18,7 @@
         android:onClick="displayAccountDetails"
         android:text="Account Details"
         android:textAlignment="viewStart"
+        android:textColor="@color/buttonColor"
         android:textSize="24sp"
         android:theme="@style/PrimaryFlatButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +34,7 @@
         android:onClick="displaySensorData"
         android:text="Sensor"
         android:textAlignment="viewStart"
+        android:textColor="@color/buttonColor"
         android:textSize="24sp"
         android:theme="@style/PrimaryFlatButton"
         app:layout_constraintEnd_toEndOf="parent"

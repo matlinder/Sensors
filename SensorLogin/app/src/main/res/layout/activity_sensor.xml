@@ -4,63 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:theme="@style/AppTheme.NoActionBar"
     tools:context="com.mathew.sensorlogin.SensorActivity">
 
-<!-- Commented out for Moji/Roger release-->
+    <!-- Commented out for Moji/Roger release-->
     <!--<Spinner-->
-        <!--android:id="@+id/GatewayData"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="41dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="44dp"-->
-        <!--android:spinnerMode="dialog"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/scrollView2"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/NetworkData"-->
-        <!--app:layout_constraintVertical_bias="0.0"-->
-        <!--/>-->
+    <!--android:id="@+id/GatewayData"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="41dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:layout_marginEnd="8dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="44dp"-->
+    <!--android:spinnerMode="dialog"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/scrollView2"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/NetworkData"-->
+    <!--app:layout_constraintVertical_bias="0.0"-->
+    <!--/>-->
 
 
-    <!--<Spinner-->
-        <!--android:id="@+id/NetworkData"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="47dp"-->
-        <!--android:layout_marginBottom="110dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="6dp"-->
-        <!--android:popupBackground="@android:color/background_light"-->
-        <!--android:spinnerMode="dialog"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/scrollView2"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
+    <Spinner
+        android:id="@+id/networkData"
+        android:layout_width="0dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginStart="53dp"
+        android:background="@color/buttonColor"
+        android:popupBackground="@color/buttonColor"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@android:color/white"
+        android:fillViewport="false"
         android:scrollbars="none"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/refreshBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/networkData">
         <!--app:layout_constraintTop_toBottomOf="@+id/NetworkData">-->
 
         <TableLayout
             android:id="@+id/main_table"
-            android:layout_width="wrap_content"
-            android:layout_height="504dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
             android:isScrollContainer="true"
-            android:stretchColumns="*">
-        </TableLayout>
+            android:stretchColumns="*"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="1dp"></TableLayout>
+
     </ScrollView>
+
+    <Button
+        android:id="@+id/refreshBtn"
+        android:layout_width="136dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/buttonColor"
+        android:onClick="refreshSensors"
+        android:text="Refresh"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 </android.support.constraint.ConstraintLayout>
