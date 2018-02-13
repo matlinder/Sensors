@@ -15,4 +15,8 @@
     <string name="title_activity_account_details">AccountDetailsActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="network_prompt">Select A Network Above!</string>
+    <string name="sensor_ID_field">Sensor ID: </string>
+    <string name="name_field">Name: </string>
+
 </resources>

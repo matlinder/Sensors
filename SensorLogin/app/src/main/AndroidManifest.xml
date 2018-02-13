@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,12 +17,11 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" /><!--android:label="@string/title_activity_home"-->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- android:label="@string/title_activity_home" -->
 
         <activity
             android:name=".LoginActivity"
-
-            android:theme="@style/AppTheme.NoActionBar"><!--android:label="@string/title_activity_login"-->
+            android:theme="@style/AppTheme.NoActionBar"> <!-- android:label="@string/title_activity_login" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,10 +30,14 @@
         </activity>
         <activity
             android:name=".AccountActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SensorActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SensorActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <activity
+            android:name=".SensorDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>

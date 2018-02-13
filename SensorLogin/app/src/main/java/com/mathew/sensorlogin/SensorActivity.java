@@ -4,6 +4,7 @@ package com.mathew.sensorlogin;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -35,7 +36,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,6 +54,8 @@ public class SensorActivity extends AppCompatActivity {
     private ProgressDialog prgDialog;
     private String sensorFileName = "sensor_file";
     private String gatewayMapFileName = "gateway_file";
+    private int currentMinutes;
+    private TextView networkPrompt;
 
 
     private String sensorFileContents, gatewayFileContents;
@@ -82,6 +84,7 @@ public class SensorActivity extends AppCompatActivity {
         networkNames.add("Select a Network");
 
         //grab the components from the view
+        networkPrompt = findViewById(R.id.networkPrompt);
         mainTable = findViewById(R.id.main_table);
         networkSpinner = findViewById(R.id.networkData);
         networkSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -92,8 +95,10 @@ public class SensorActivity extends AppCompatActivity {
                 if(!networkName.equals("Select a Network"))
                 {
                     networkID = networkPair.get(networkName);
+                    networkPrompt.setVisibility(View.INVISIBLE);
                     mainTable.removeAllViews();
                     createTable();
+
                     displayNetworkSensors(networkID);
                 }
 
@@ -464,6 +469,13 @@ public class SensorActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         today = df.format(todaysDate.getTime());
 
+        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+        String hours = sdf.format(todaysDate.getTime());
+        sdf = new SimpleDateFormat("mm");
+        String minutes = sdf.format(todaysDate.getTime());
+        currentMinutes = (Integer.parseInt(hours) * 60) + Integer.parseInt(minutes);
+
+
         Calendar yesterdayDate = Calendar.getInstance();
         yesterdayDate.add(Calendar.DATE, -1);
         yesterday = df.format(yesterdayDate.getTime());
@@ -562,7 +574,7 @@ public class SensorActivity extends AppCompatActivity {
         //params
         RequestParams params = new RequestParams();
         params.put("networkID", _networkID);
-        client.get(base_url + "SensorList/" + authToken, params, new AsyncHttpResponseHandler() {
+        client.get(base_url + "SensorListExtended/" + authToken, params, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
                 try {
@@ -581,11 +593,20 @@ public class SensorActivity extends AppCompatActivity {
                             String batteryLevel = result.getString("BatteryLevel");
                             String signalStrength = result.getString("SignalStrength");
                             String lastCommunicationDate = result.getString("LastCommunicationDate");
+                            String inactivityAlert = result.getString("InactivityAlert");
+
                             long time = Long.parseLong(lastCommunicationDate.substring(6, lastCommunicationDate.length() - 2));
                             Date date = new Date(time);
                             String myDate = new SimpleDateFormat("yyyy/MM/dd").format(date);
-
-                            createSensorRow(sensorID, name, myDate, signalStrength, batteryLevel, currentReading);
+                            String shours = new SimpleDateFormat("HH").format(date);
+                            String sMinutes = new SimpleDateFormat("mm").format(date);
+                            int sensorTotalMinutes = (Integer.parseInt(shours) * 60) + Integer.parseInt(sMinutes);
+                            boolean alert = false;
+                            if((currentMinutes - sensorTotalMinutes) >= Integer.parseInt(inactivityAlert))
+                            {
+                                alert = true;
+                            }
+                            createSensorRow(sensorID, name, myDate, signalStrength, batteryLevel, currentReading, alert);
                         }
                     }
 
@@ -628,7 +649,7 @@ public class SensorActivity extends AppCompatActivity {
         //params
         RequestParams params = new RequestParams();
         params.put("sensorID", _sensorID);
-        client.get(base_url + "SensorGet/" + authToken, params, new AsyncHttpResponseHandler() {
+        client.get(base_url + "SensorGetExtended/" + authToken, params, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
                 try {
@@ -644,13 +665,16 @@ public class SensorActivity extends AppCompatActivity {
                     long time = Long.parseLong(lastCommunicationDate.substring(6, lastCommunicationDate.length() - 2));
                     Date date = new Date(time);
                     String myDate = new SimpleDateFormat("yyyy/MM/dd").format(date);
-//                    sensorData.setText("Sensor ID: " + _sensorID
-//                                        + "\nName: " + name
-//                                        + "\nLast Communication Date: " + myDate
-//                                        + "\nSignal Strength: " + signalStrength
-//                                        + "\nBattery Level: " + batteryLevel
-//                                        + "\nCurrent Reading: " + currentReading);
-                    createSensorRow(_sensorID, name, myDate, signalStrength, batteryLevel, currentReading);
+                    String inactivityAlert = result.getString("InactivityAlert");
+                    String shours = new SimpleDateFormat("HH").format(date);
+                    String sMinutes = new SimpleDateFormat("mm").format(date);
+                    int sensorTotalMinutes = (Integer.parseInt(shours) * 60) + Integer.parseInt(sMinutes);
+                    boolean alert = false;
+                    if((currentMinutes - sensorTotalMinutes) >= Integer.parseInt(inactivityAlert))
+                    {
+                        alert = true;
+                    }
+                    createSensorRow(_sensorID, name, myDate, signalStrength, batteryLevel, currentReading, alert);
 
 
                     // testing sensors
@@ -765,8 +789,8 @@ public class SensorActivity extends AppCompatActivity {
      * @param _data
      */
     @SuppressLint("ResourceType")
-    public void createSensorRow(String _sensorID, String _name, String _date, String _signal,
-                                String _battery, String _data) {
+    public void createSensorRow(final String _sensorID, String _name, String _date, String _signal,
+                                String _battery, String _data, boolean _alert) {
         final TableRow tr_head = new TableRow(this);
         tr_head.setId(10);
         //tr_head.setBackgroundColor(getResources().getColor(R.color.tableBackGround));
@@ -785,16 +809,21 @@ public class SensorActivity extends AppCompatActivity {
                 TextView sample = (TextView) tablerow.getChildAt(0);
                 String result = sample.getText().toString();
                 if (!tr_head.isSelected()) {
-                    tr_head.setBackgroundColor(Color.CYAN);
-                    tr_head.setSelected(true);
-                } else {
-                    //tr_head.setBackgroundColor(getResources().getColor(R.color.tableBackGround));
-                    tr_head.setBackgroundColor(Color.WHITE);
-                    tr_head.setSelected(false);
+
+                    Intent intent = new Intent(getApplicationContext(), SensorDetailActivity.class);
+                    intent.putExtra("token", authToken);
+                    intent.putExtra("sensorID", _sensorID);
+
+                    startActivity(intent);
+//                    tr_head.setSelected(true);
+//                } else {
+//                    //tr_head.setBackgroundColor(getResources().getColor(R.color.tableBackGround));
+//                    tr_head.setBackgroundColor(Color.WHITE);
+//                    tr_head.setSelected(false);
                 }
 
-                Toast toast = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
-                toast.show();
+                //Toast toast = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
+                //toast.show();
 
             }
         });
@@ -849,7 +878,11 @@ public class SensorActivity extends AppCompatActivity {
 
         int strength = Integer.parseInt(_signal);
         Drawable drawable;
-        if (strength <= 100 && strength >= 80) {
+        if(_alert)
+        {
+            drawable = getResources().getDrawable(R.drawable.question_small);
+        }
+        else if (strength <= 100 && strength >= 80) {
             drawable = getResources().getDrawable(R.drawable.signal_5_small);
         } else if (strength < 80 && strength >= 60) {
             drawable = getResources().getDrawable(R.drawable.signal_4_small);
@@ -915,6 +948,7 @@ public class SensorActivity extends AppCompatActivity {
 
         mainTable.removeAllViews();
         createTable();
+        createDates();
         if(networkID != null) {
             displayNetworkSensors(networkID);
         }

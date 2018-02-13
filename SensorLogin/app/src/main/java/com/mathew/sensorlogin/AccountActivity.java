@@ -18,13 +18,14 @@ public class AccountActivity extends AppCompatActivity {
     String authToken; //authorization token from json
     String userName; //the users username for json calls
     String userID; //the user id linked to the username, for json calls
-    TextView accountDetails; //temp placeholder to display the account json data
+    TextView name; //temp placeholder to display the account json data
+    private final String base_url = "https://www.imonnit.com/json/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        accountDetails = findViewById(R.id.AccountDetails);
+        name = findViewById(R.id.name);
 
         //grab the token from the previous intent
         Bundle extras = this.getIntent().getExtras();
@@ -47,7 +48,7 @@ public class AccountActivity extends AppCompatActivity {
         params.put("userID", userID);
 
         //json request
-        client.get("https://www.imonnit.com/json/AccountUserGet/" + authToken, params, new AsyncHttpResponseHandler() {
+        client.get(base_url + "AccountUserGet/" + authToken, params, new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
             public void onSuccess(String response) {
 
@@ -55,7 +56,9 @@ public class AccountActivity extends AppCompatActivity {
                     // JSON Object
                     JSONObject obj = new JSONObject(response);
                     // Get the data of the user
-                    accountDetails.setText(obj.getString("Result"));
+                   JSONObject result = obj.getJSONObject("Result");
+
+                   name.setText(result.getString("FirstName") + " " + result.getString("LastName") );
 //                    JSONArray users = obj.getJSONArray("Result");
 //                    // loop through the array for the specific user and save their details
 //                    for(int i = 0; i < users.length(); i++)

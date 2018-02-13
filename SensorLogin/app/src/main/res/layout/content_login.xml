@@ -14,7 +14,6 @@
         android:layout_height="211dp"
         android:layout_marginBottom="50dip"
         android:adjustViewBounds="true"
-
         android:scaleType="fitCenter"
         android:src="@drawable/ccmetlogosmall"></ImageView>
 
@@ -25,6 +24,7 @@
         android:layout_marginTop="25dip"
         android:text="@string/login_title"
         android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
         android:textSize="25sp"
         android:textStyle="bold" />
 
@@ -33,7 +33,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Enter your ID"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -46,7 +47,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/login_error"
@@ -61,12 +63,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
-        android:background="@color/buttonColor"
         android:onClick="loginUser"
         android:text="Login"
+        android:padding="10dp"
+        android:background="@drawable/mybutton"
         android:textColor="#fff"
         android:textSize="24sp"
         android:textStyle="bold" />
-
+    <!--android:background="@color/buttonColor"-->
 </LinearLayout>
 
