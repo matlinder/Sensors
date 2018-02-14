@@ -1,6 +1,7 @@
 package com.mathew.sensorlogin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,12 +16,19 @@ import org.json.JSONObject;
 
 public class HomeActivity extends AppCompatActivity {
 
-    String authToken;
-    String userName;
-    String userID;
+    private static final String PREF_NAME = "prefs";
+    private static final String KEY_REMEMBER = "remember";
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_PASS = "password";
+    private static final String KEY_TOKEN = "token";
+
+    private String authToken;
+    private String userName;
+    private String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("CMMET HOME");
         setContentView(R.layout.activity_home); //displays the home screen
 
         //grab the token from the previous intent
@@ -110,4 +118,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void logout(View view) {
+
+
+        SharedPreferences preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(KEY_REMEMBER, false);
+        editor.putString(KEY_USERNAME, "");
+        editor.putString(KEY_PASS, "");
+        editor.putString(KEY_TOKEN, "");
+        editor.apply();
+
+        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+
+        startActivity(intent);
+
+    }
 }

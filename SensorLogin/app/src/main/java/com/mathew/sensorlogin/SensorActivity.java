@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -44,6 +46,8 @@ import java.util.HashMap;
 
 
 public class SensorActivity extends AppCompatActivity {
+    private long mLastClickTime = 0;
+
     private String authToken, networkID, userID, today, yesterday;
     private Spinner networkSpinner, gatewaySpinner, sensorData; //views to display the various data
     private TableLayout mainTable;
@@ -56,6 +60,7 @@ public class SensorActivity extends AppCompatActivity {
     private String gatewayMapFileName = "gateway_file";
     private int currentMinutes;
     private TextView networkPrompt;
+    private Button refresh;
 
 
     private String sensorFileContents, gatewayFileContents;
@@ -75,6 +80,9 @@ public class SensorActivity extends AppCompatActivity {
             authToken = extras.getString("token");
             userID = extras.getString("userID");
         }
+
+        refresh = findViewById(R.id.refreshBtn);
+
         // Instantiate Progress Dialog object
         prgDialog = new ProgressDialog(this);
         // Set Progress Dialog Text
@@ -946,6 +954,13 @@ public class SensorActivity extends AppCompatActivity {
      */
     public void refreshSensors(View view) {
 
+        // mis-clicking prevention, using threshold of 1000 ms
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 750){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+
         mainTable.removeAllViews();
         createTable();
         createDates();
@@ -953,6 +968,7 @@ public class SensorActivity extends AppCompatActivity {
             displayNetworkSensors(networkID);
         }
 
+        //refresh.setEnabled(true);
     }
 }
 

@@ -3,6 +3,7 @@ package com.mathew.sensorlogin;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,12 +26,21 @@ import org.json.JSONObject;
 import javax.xml.transform.Result;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String PREF_NAME = "prefs";
+    private static final String KEY_REMEMBER = "remember";
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_PASS = "password";
+    private static final String KEY_TOKEN = "token";
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     // Progress Dialog Object
     ProgressDialog prgDialog;
-    // Error Msg TextView Object
-    TextView errorMsg;
-    // Email Edit View Object
-    EditText emailET;
+    // checkbox for saving login details
+    CheckBox check;
+    // Username Edit View Object
+    EditText userNameET;
     // Password Edit View Object
     EditText pwdET;
 
@@ -38,13 +49,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setTitle("CMMET LOGIN");
         setContentView(R.layout.activity_login);
 
 
-        // Find Error Msg Text View control by ID
-        errorMsg = findViewById(R.id.login_error);
+
         // Find Email Edit View control by ID
-        emailET =  findViewById(R.id.loginEmail);
+        userNameET =  findViewById(R.id.loginEmail);
         // Find Password Edit View control by ID
         pwdET =  findViewById(R.id.loginPassword);
         // Instantiate Progress Dialog object
@@ -53,6 +64,24 @@ public class LoginActivity extends AppCompatActivity {
         prgDialog.setMessage("Please wait...");
         // Set Cancelable as False
         prgDialog.setCancelable(false);
+        // find the checkbox
+        check = findViewById(R.id.checkBox);
+
+        preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        if(preferences.getBoolean(KEY_REMEMBER, false))
+        {
+            check.setChecked(true);
+            RequestParams params = new RequestParams();
+            // Put Http parameter username with value of Email Edit View control
+            params.put("username", preferences.getString(KEY_USERNAME, ""));
+            // Put Http parameter password with value of Password Edit Value control
+            params.put("password", preferences.getString(KEY_PASS, ""));
+            userNameET.setText(preferences.getString(KEY_USERNAME,""));
+            pwdET.setText(preferences.getString(KEY_PASS,""));
+            // Invoke RESTful Web Service with Http parameters
+            invokeWS(params);
+        }
 
     }
 
@@ -63,17 +92,17 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void loginUser(View view) {
         // Get Email Edit View Value
-        String email = emailET.getText().toString();
+        String userName = userNameET.getText().toString();
         // Get Password Edit View Value
         String password = pwdET.getText().toString();
         // Instantiate Http Request Param Object
         RequestParams params = new RequestParams();
         // When Email Edit View and Password Edit View have values other than Null
-        if (Utility.isNotNull(email) && Utility.isNotNull(password)) {
+        if (Utility.isNotNull(userName) && Utility.isNotNull(password)) {
             // When Email entered is Valid
 
                 // Put Http parameter username with value of Email Edit View control
-                params.put("username", email);
+                params.put("username", userName);
                 // Put Http parameter password with value of Password Edit Value control
                 params.put("password", password);
                 // Invoke RESTful Web Service with Http parameters
@@ -161,7 +190,24 @@ public class LoginActivity extends AppCompatActivity {
                     String result = obj.getString("Result");
                     if(result.equals("Success"))
                     {
-                        //Toast.makeText(getApplicationContext(), "my result is " + result, Toast.LENGTH_LONG).show();
+                        //save the user data
+                        if(check.isChecked() && !preferences.getBoolean(KEY_REMEMBER, false))
+                        {
+                            preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                            // Get Email Edit View Value
+                            String userName = userNameET.getText().toString();
+                            // Get Password Edit View Value
+                            String password = pwdET.getText().toString();
+
+                            editor = preferences.edit();
+                            editor.putBoolean(KEY_REMEMBER, true);
+                            editor.putString(KEY_USERNAME, userName);
+                            editor.putString(KEY_PASS, password);
+                            editor.putString(KEY_TOKEN, authToken);
+                            editor.apply();
+
+                        }
+
                         navigatetoHomeActivity(authToken);
                     }
                     else
@@ -208,7 +254,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
         //homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.putExtra("token", token);
-        homeIntent.putExtra("userName", emailET.getText().toString());
+        homeIntent.putExtra("userName", userNameET.getText().toString());
         startActivity(homeIntent);
     }
 }

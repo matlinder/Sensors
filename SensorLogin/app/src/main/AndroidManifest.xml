@@ -17,11 +17,11 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" /> <!-- android:label="@string/title_activity_home" -->
+            android:theme="@style/AppTheme" /> <!-- android:label="@string/title_activity_home" -->
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"> <!-- android:label="@string/title_activity_login" -->
+            android:theme="@style/AppTheme"> <!-- android:label="@string/title_activity_login" -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
