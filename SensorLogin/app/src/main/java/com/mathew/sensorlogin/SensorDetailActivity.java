@@ -1,8 +1,15 @@
 package com.mathew.sensorlogin;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SensorDetailActivity extends AppCompatActivity {
@@ -27,6 +35,7 @@ public class SensorDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_sensor_detail);
 
         sensorIDText = findViewById(R.id.sensorID);
@@ -37,12 +46,25 @@ public class SensorDetailActivity extends AppCompatActivity {
         if (extras != null) {
             authToken = extras.getString("token");
             sensorID = extras.getString("sensorID");
+            getSupportActionBar().setTitle("SENSOR " + sensorID);
         }
-
 
         displayThisSensor(sensorID);
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
     /**
      * method to display a single sensor
@@ -111,5 +133,21 @@ public class SensorDetailActivity extends AppCompatActivity {
     }
 
 
+    public void startHistoryActivity(View view) {
 
+        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("sensorID", sensorID);
+
+        startActivity(intent);
+
+    }
+
+    public void startGraphActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("sensorID", sensorID);
+
+        startActivity(intent);
+    }
 }

@@ -2,6 +2,7 @@ package com.mathew.sensorlogin;
 
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -72,6 +75,9 @@ public class SensorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("SENSOR DATA");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.activity_sensor);
 
         //grab the tokens from the previous intent
@@ -115,23 +121,7 @@ public class SensorActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-//        gatewaySpinner = findViewById(R.id.GatewayData);
-
-
-
-
-
         createDates();
-        //call methods to display the data
-        //certain values will be hardcode for testing purposes, remove later
-        //displayNetworkData();
-        //networkData.setText("using the network 33466");
-
-        //display networks with this network id
-        //displayGatewayData();
-        //gatewaySpinner.setText("using the gateway 200329");
-
-
         pullAllSensorIDs();
         readSensorFile();
         gatewaySensorPairing();
@@ -139,12 +129,21 @@ public class SensorActivity extends AppCompatActivity {
         displayNetworkData();
 
 
-        //Toast.makeText(getApplicationContext(), "testest ", Toast.LENGTH_LONG).show();
-        //readGatewayMapFile();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
 
-
+        return super.onOptionsItemSelected(item);
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
@@ -463,11 +462,7 @@ public class SensorActivity extends AppCompatActivity {
 
     }
 
-    public void getCurrentTime()
-    {
-        Calendar currentDate = Calendar.getInstance();
 
-    }
 
     /**
      * Method to create todays and yesterdays date in a format that can be used as params

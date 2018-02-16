@@ -29,6 +29,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("CMMET HOME");
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         setContentView(R.layout.activity_home); //displays the home screen
 
         //grab the token from the previous intent
