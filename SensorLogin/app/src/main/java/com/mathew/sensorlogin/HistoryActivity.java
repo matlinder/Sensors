@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
@@ -71,7 +72,7 @@ public class HistoryActivity extends AppCompatActivity {
         });
 
         // Instantiate Progress Dialog object
-        prgDialog = new ProgressDialog(this);
+        prgDialog = new ProgressDialog(this,R.style.MyAlertDialogStyle );
         // Set Progress Dialog Text
         prgDialog.setMessage("Please wait...");
         // Set Cancelable as False
@@ -205,11 +206,6 @@ public class HistoryActivity extends AppCompatActivity {
                             long time = Long.parseLong(messageDate.substring(6, messageDate.length() - 2));
                             Date date = new Date(time);
 
-//                            String myDate = new SimpleDateFormat("yyyy/MM/dd").format(date);
-//                            String shours = new SimpleDateFormat("HH").format(date);
-//                            String sMinutes = new SimpleDateFormat("mm").format(date);
-//                            int sensorTotalMinutes = (Integer.parseInt(shours) * 60) + Integer.parseInt(sMinutes);
-//                            boolean alert = false;
 
                             createSensorRow(date, signalStrength, batteryLevel, currentReading);
                         }
@@ -257,7 +253,7 @@ public class HistoryActivity extends AppCompatActivity {
         endParam = df.format(todaysDate.getTime());
 
         yesterdayDate = Calendar.getInstance();
-        yesterdayDate.add(Calendar.DATE, -1);
+        yesterdayDate.add(Calendar.DATE, -2);
         startYear = yesterdayDate.get(Calendar.YEAR);
         startMonth = yesterdayDate.get(Calendar.MONTH);
         startDay = yesterdayDate.get(Calendar.DAY_OF_MONTH);
@@ -399,6 +395,7 @@ public class HistoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                prgDialog.dismiss();
                 finish();
                 return true;
         }
@@ -408,5 +405,18 @@ public class HistoryActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
+    }
+    public void onDestroy() {
+
+        super.onDestroy();
+        prgDialog.dismiss();
+        finish();
+    }
+
+    public void onPause()
+    {
+        super.onPause();
+        prgDialog.dismiss();
+        finish();
     }
 }

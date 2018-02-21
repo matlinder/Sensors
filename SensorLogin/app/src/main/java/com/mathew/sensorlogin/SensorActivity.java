@@ -45,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 
@@ -130,30 +131,21 @@ public class SensorActivity extends AppCompatActivity {
 
 
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
+
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
      */
     public void displayNetworkData() {
+        prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(base_url + "NetworkList/" + authToken, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
                 try {
+                    prgDialog.hide();
                     JSONObject obj = new JSONObject(response);
                     JSONArray objArray = obj.getJSONArray("Result");
 
@@ -178,7 +170,7 @@ public class SensorActivity extends AppCompatActivity {
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {
-
+                prgDialog.hide();
                 // When Http response code is '404'
                 if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
@@ -598,14 +590,27 @@ public class SensorActivity extends AppCompatActivity {
                             String lastCommunicationDate = result.getString("LastCommunicationDate");
                             String inactivityAlert = result.getString("InactivityAlert");
 
+                            Calendar tempStart = Calendar.getInstance();
+                            Date currentDate = tempStart.getTime();
+
                             long time = Long.parseLong(lastCommunicationDate.substring(6, lastCommunicationDate.length() - 2));
-                            Date date = new Date(time);
-                            String myDate = new SimpleDateFormat("yyyy/MM/dd").format(date);
-                            String shours = new SimpleDateFormat("HH").format(date);
-                            String sMinutes = new SimpleDateFormat("mm").format(date);
+                            Date lastCommDate = new Date(time);
+                            Calendar lastDate = Calendar.getInstance();
+                            lastDate.setTime(lastCommDate);
+                            String myDate = new SimpleDateFormat("yyyy/MM/dd").format(lastCommDate);
+                            String shours = new SimpleDateFormat("HH").format(lastCommDate);
+                            String sMinutes = new SimpleDateFormat("mm").format(lastCommDate);
                             int sensorTotalMinutes = (Integer.parseInt(shours) * 60) + Integer.parseInt(sMinutes);
                             boolean alert = false;
-                            if((currentMinutes - sensorTotalMinutes) >= Integer.parseInt(inactivityAlert))
+
+                            boolean year = tempStart.get(Calendar.YEAR) == lastDate.get(Calendar.YEAR);
+                            boolean day = tempStart.get(Calendar.DAY_OF_MONTH) == lastDate.get(Calendar.DAY_OF_MONTH);
+                            boolean month = tempStart.get(Calendar.MONTH) == lastDate.get(Calendar.MONTH);
+
+                            if((day && year && month) && ((currentMinutes - sensorTotalMinutes) >= Integer.parseInt(inactivityAlert))) {
+                                alert = true;
+                            }
+                            else if((!day && year && month) || (!day && !month && year) || (!day && !month && !year))
                             {
                                 alert = true;
                             }
@@ -793,7 +798,7 @@ public class SensorActivity extends AppCompatActivity {
      */
     @SuppressLint("ResourceType")
     public void createSensorRow(final String _sensorID, String _name, String _date, String _signal,
-                                String _battery, String _data, boolean _alert) {
+                                String _battery, String _data, final boolean _alert) {
         final TableRow tr_head = new TableRow(this);
         tr_head.setId(10);
         //tr_head.setBackgroundColor(getResources().getColor(R.color.tableBackGround));
@@ -816,6 +821,7 @@ public class SensorActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), SensorDetailActivity.class);
                     intent.putExtra("token", authToken);
                     intent.putExtra("sensorID", _sensorID);
+                    intent.putExtra("alert", _alert);
 
                     startActivity(intent);
 //                    tr_head.setSelected(true);
@@ -858,7 +864,15 @@ public class SensorActivity extends AppCompatActivity {
 
         label_Name.setId(21);// define id that must be unique
         label_Name.setText(_name + "\n" + _data); // set the text for the header
-        label_Name.setTextColor(Color.BLACK); // set the color
+        if(_alert)
+        {
+            label_Name.setTextColor(Color.GRAY); // set the color
+        }else
+        {
+            label_Name.setTextColor(Color.BLACK); // set the color
+
+        }
+
         label_Name.setPadding(50, 5, 5, 5); // set the padding (if required)
         tr_head.addView(label_Name); // add the column to the table row here
 
@@ -964,6 +978,41 @@ public class SensorActivity extends AppCompatActivity {
         }
 
         //refresh.setEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                prgDialog.dismiss();
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+    public void onDestroy() {
+
+        super.onDestroy();
+        prgDialog.dismiss();
+        finish();
+    }
+
+    public void onPause()
+    {
+        super.onPause();
+        prgDialog.dismiss();
+
+    }
+
+    public void onResume()
+    {
+        super.onResume();
+        refreshSensors(this.mainTable);
     }
 }
 

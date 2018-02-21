@@ -1,7 +1,10 @@
 package com.mathew.sensorlogin;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
@@ -26,10 +29,12 @@ import java.util.Date;
 
 public class SensorDetailActivity extends AppCompatActivity {
 
-    private TextView sensorIDText, nameText, tempText;
+    private TextView sensorIDText, nameText, tempText, errorText;
     private String authToken, sensorID;
     private int currentMinutes;
     private final String base_url = "https://www.imonnit.com/json/";
+    boolean alert = false;
+    private ProgressDialog prgDialog;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -37,34 +42,55 @@ public class SensorDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_sensor_detail);
-
+        // Instantiate Progress Dialog object
+        prgDialog = new ProgressDialog(this);
+        // Set Progress Dialog Text
+        prgDialog.setMessage("Please wait...");
+        // Set Cancelable as False
+        prgDialog.setCancelable(false);
         sensorIDText = findViewById(R.id.sensorID);
         nameText = findViewById(R.id.sensorName);
         tempText = findViewById(R.id.tempField);
+        errorText = findViewById(R.id.error);
         //grab the tokens from the previous intent
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             authToken = extras.getString("token");
             sensorID = extras.getString("sensorID");
+            alert = extras.getBoolean("alert");
             getSupportActionBar().setTitle("SENSOR " + sensorID);
         }
 
         displayThisSensor(sensorID);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+
+    public void onResume()
+    {
+        super.onResume();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        setContentView(R.layout.activity_sensor_detail);
+        // Instantiate Progress Dialog object
+        prgDialog = new ProgressDialog(this);
+        // Set Progress Dialog Text
+        prgDialog.setMessage("Please wait...");
+        // Set Cancelable as False
+        prgDialog.setCancelable(false);
+        sensorIDText = findViewById(R.id.sensorID);
+        nameText = findViewById(R.id.sensorName);
+        tempText = findViewById(R.id.tempField);
+        errorText = findViewById(R.id.error);
+        //grab the tokens from the previous intent
+        Bundle extras = this.getIntent().getExtras();
+        if (extras != null) {
+            authToken = extras.getString("token");
+            sensorID = extras.getString("sensorID");
+            alert = extras.getBoolean("alert");
+            getSupportActionBar().setTitle("SENSOR " + sensorID);
         }
 
-        return super.onOptionsItemSelected(item);
+        displayThisSensor(sensorID);
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
 
     /**
      * method to display a single sensor
@@ -72,6 +98,7 @@ public class SensorDetailActivity extends AppCompatActivity {
      * @param _sensorID
      */
     public void displayThisSensor(final String _sensorID) {
+        prgDialog.show();
         //client
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -82,30 +109,50 @@ public class SensorDetailActivity extends AppCompatActivity {
 
             public void onSuccess(String response) {
                 try {
+                    prgDialog.hide();
                     //grab the JSON object from the response
                     JSONObject obj = new JSONObject(response);
                     //grab the result array
                     JSONObject result = obj.getJSONObject("Result");
                     String currentReading = result.getString("CurrentReading");
                     String name = result.getString("SensorName");
-                    String batteryLevel = result.getString("BatteryLevel");
-                    String signalStrength = result.getString("SignalStrength");
                     String lastCommunicationDate = result.getString("LastCommunicationDate");
                     long time = Long.parseLong(lastCommunicationDate.substring(6, lastCommunicationDate.length() - 2));
                     Date date = new Date(time);
-                    String myDate = new SimpleDateFormat("yyyy/MM/dd").format(date);
-                    String inactivityAlert = result.getString("InactivityAlert");
+                    String myDate = new SimpleDateFormat("yyyy/MM/dd  HH:mm").format(date);
                     String shours = new SimpleDateFormat("HH").format(date);
                     String sMinutes = new SimpleDateFormat("mm").format(date);
-                    int sensorTotalMinutes = (Integer.parseInt(shours) * 60) + Integer.parseInt(sMinutes);
-                    boolean alert = false;
-                    if((currentMinutes - sensorTotalMinutes) >= Integer.parseInt(inactivityAlert))
+
+
+
+                    if(alert) {
+                        sensorIDText.setText( sensorID);
+                        nameText.setText( name);
+                        tempText.setText(currentReading);
+                        tempText.setTextColor(Color.GRAY);
+                        sensorIDText.setTextColor(Color.GRAY);
+                        nameText.setTextColor(Color.GRAY);
+                        int color = Color.parseColor("#C4A69F");
+                        tempText.setBackgroundColor(color);
+                        nameText.setBackgroundColor(color);
+                        sensorIDText.setBackgroundColor(color);
+                        errorText.setText("No communication\nLast communication: " + myDate);
+                        errorText.setTextColor(Color.RED);
+                        errorText.setVisibility(TextView.VISIBLE);
+                    }else
                     {
-                        alert = true;
+                        nameText.setText( name);
+                        tempText.setText(currentReading);
+                        sensorIDText.setText( sensorID);
+                        sensorIDText.setTextColor(Color.BLACK);
+                        sensorIDText.setBackgroundColor(Color.WHITE);
+                        nameText.setTextColor(Color.BLACK);
+                        nameText.setBackgroundColor(Color.WHITE);
+                        tempText.setTextColor(Color.BLACK);
+                        tempText.setBackgroundColor(Color.WHITE);
+                        errorText.setVisibility(TextView.INVISIBLE);
                     }
-                    sensorIDText.setText( sensorID);
-                    nameText.setText( name);
-                    tempText.setText(currentReading);
+
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -115,7 +162,7 @@ public class SensorDetailActivity extends AppCompatActivity {
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {
-
+                prgDialog.hide();
                 // When Http response code is '404'
                 if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
@@ -130,6 +177,7 @@ public class SensorDetailActivity extends AppCompatActivity {
                 }
             }
         });
+        prgDialog.hide();
     }
 
 
@@ -138,7 +186,7 @@ public class SensorDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("sensorID", sensorID);
-
+        prgDialog.dismiss();
         startActivity(intent);
 
     }
@@ -147,7 +195,45 @@ public class SensorDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("sensorID", sensorID);
-
+        prgDialog.cancel();
         startActivity(intent);
+    }
+
+    public void startEditActivity(View view) {
+
+        Intent intent = new Intent(getApplicationContext(), EditSensorActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("sensorID", sensorID);
+        prgDialog.dismiss();
+        //finish();
+        startActivity(intent);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                prgDialog.cancel();
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+    public void onDestroy() {
+
+        super.onDestroy();
+        prgDialog.dismiss();
+        finish();
+    }
+
+    public void onPause()
+    {
+        super.onPause();
+        prgDialog.dismiss();
+
     }
 }

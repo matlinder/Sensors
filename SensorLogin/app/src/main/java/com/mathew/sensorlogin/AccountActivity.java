@@ -38,7 +38,7 @@ public class AccountActivity extends AppCompatActivity {
             authToken = extras.getString("token");
             userName = extras.getString("userName");
             userID = extras.getString("userID");
-            Toast.makeText(getApplicationContext(), "user id = " + userID, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "user id = " + userID, Toast.LENGTH_LONG).show();
         }
         displayData();
     }
