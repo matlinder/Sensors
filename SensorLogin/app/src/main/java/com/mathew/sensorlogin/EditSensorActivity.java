@@ -1,16 +1,14 @@
 package com.mathew.sensorlogin;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -20,18 +18,21 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class EditSensorActivity extends AppCompatActivity {
 
-    private String authToken;
-    private String sensorID;
-    private boolean textChanged = false;
-    private ProgressDialog prgDialog;
-    EditText sensorName;
-    private final String base_url = "https://www.imonnit.com/json/";
+    private String authToken;   // the user authorization token, passed on through activity
+    private String sensorID;    // the sensor ID that we want to edit
+    private boolean textChanged = false;    // flag - true makes a json call
+    private int changeCount = 0;    // count so we can set the text box to display current data,
+                                    // but not count as on changed
+    private ProgressDialog prgDialog; // progress box when json takes too long
+    EditText sensorName; // field for the new sensor name
+    private final String base_url = "https://www.imonnit.com/json/";    // url for json calls
 
+    /**
+     * Create the Edit activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,10 @@ public class EditSensorActivity extends AppCompatActivity {
 
     }
 
+    /*
+     * Text change listener
+     * Only change value if the text has been changed, otherwise finish the activity
+     */
     private TextWatcher filterTextWatcher = new TextWatcher() {
 
         @Override
@@ -75,10 +80,18 @@ public class EditSensorActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            textChanged = true;
+            // setting the text causes it to be a text change
+            // setting the flag only happens after the initial text change
+            if(changeCount > 0)
+            {
+                textChanged = true;
+            }
+            changeCount++;
         }
     };
-
+    /*
+     * Fill in the current data so the user can see what they are going to change
+     */
     private void fillInData() {
 
         //client
@@ -96,7 +109,9 @@ public class EditSensorActivity extends AppCompatActivity {
                     //grab the result array
                     JSONObject result = obj.getJSONObject("Result");
                     String name = result.getString("SensorName");
-                    sensorName.setHint(name);
+                    // set the text to the current name so the user has an easy
+                    // time to adjust it, rather than writing it completely
+                    sensorName.setText(name);
 
 
                 } catch (JSONException e) {
@@ -125,6 +140,10 @@ public class EditSensorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Set the new name of the sensor and finish the activity
+     * @param view
+     */
     public void updateSensor(View view) {
 
         //client
@@ -166,10 +185,19 @@ public class EditSensorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Finish the activity when the user selects the cancel button
+     * @param view
+     */
     public void cancelEdit(View view) {
         super.finish();
     }
 
+    /**
+     * Item listener for the menu on the title bar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -182,9 +210,19 @@ public class EditSensorActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Standard method for the back button
+     * @param menu
+     * @return
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
+    /**
+     * finish the activity and close the dialog
+     * needed this because of leaked activity
+     */
     public void onDestroy() {
 
         super.onDestroy();
@@ -192,6 +230,9 @@ public class EditSensorActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * dismiss the dialog so that we do not have a leaked activity
+     */
     public void onPause()
     {
         super.onPause();

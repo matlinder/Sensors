@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.angmarch.views.NiceSpinner;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,10 +51,15 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 
-public class SensorActivity extends AppCompatActivity {
-    private long mLastClickTime = 0;
 
-    private String authToken, networkID, userID, today, yesterday;
+public class SensorActivity extends AppCompatActivity {
+    // used to store the time of the click, so you cannot spam clicks
+    private long mLastClickTime = 0;
+    //
+    private String authToken;
+    private String networkID;
+    private String today;
+    private String yesterday;
     private Spinner networkSpinner, gatewaySpinner, sensorData; //views to display the various data
     private TableLayout mainTable;
     private final String base_url = "https://www.imonnit.com/json/";
@@ -64,7 +71,10 @@ public class SensorActivity extends AppCompatActivity {
     private String gatewayMapFileName = "gateway_file";
     private int currentMinutes;
     private TextView networkPrompt;
-    private Button refresh;
+    private boolean spinnerFlag = false;
+    ArrayAdapter<String> dataAdapter;
+
+    NiceSpinner spinner;
 
 
     private String sensorFileContents, gatewayFileContents;
@@ -72,6 +82,10 @@ public class SensorActivity extends AppCompatActivity {
     private String[] listOfPairs;
 
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +99,9 @@ public class SensorActivity extends AppCompatActivity {
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             authToken = extras.getString("token");
-            userID = extras.getString("userID");
         }
 
-        refresh = findViewById(R.id.refreshBtn);
+
 
         // Instantiate Progress Dialog object
         prgDialog = new ProgressDialog(this);
@@ -96,32 +109,47 @@ public class SensorActivity extends AppCompatActivity {
         prgDialog.setMessage("Please wait...");
         // Set Cancelable as False
         prgDialog.setCancelable(false);
-        networkNames.add("Select a Network");
 
         //grab the components from the view
         networkPrompt = findViewById(R.id.networkPrompt);
         mainTable = findViewById(R.id.main_table);
-        networkSpinner = findViewById(R.id.networkData);
-        networkSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+
+        spinner = findViewById(R.id.spinner);
+
+        networkNames.add("Select a Network");
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                String networkName = parent.getSelectedItem().toString();
-                if(!networkName.equals("Select a Network"))
+                if(!spinnerFlag)
                 {
-                    networkID = networkPair.get(networkName);
-                    networkPrompt.setVisibility(View.INVISIBLE);
+                    networkNames.remove("Select a Network");
+                    networkNames.add(0, "Clear All");
+                    spinnerFlag = true;
+                }
+                if(position != 0)
+                {
+                    position--;
+                    String networkName = parent.getItemAtPosition(position).toString();
+                    if(!networkName.equals("Select a Network")) {
+                        networkID = networkPair.get(networkName);
+                        networkPrompt.setVisibility(View.INVISIBLE);
+                        mainTable.removeAllViews();
+                        createTable();
+
+                        displayNetworkSensors(networkID);
+                    }
+                }else
+                {
                     mainTable.removeAllViews();
                     createTable();
-
-                    displayNetworkSensors(networkID);
                 }
-
-
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+
         createDates();
         pullAllSensorIDs();
         readSensorFile();
@@ -158,9 +186,11 @@ public class SensorActivity extends AppCompatActivity {
                         networkNames.add(name);
 
                     }
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item,networkNames);
+                    dataAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item,networkNames){};
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    networkSpinner.setAdapter(dataAdapter);
+                    //networkSpinner.setAdapter(dataAdapter);
+
+                    spinner.setAdapter(dataAdapter);
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -299,73 +329,11 @@ public class SensorActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * displays the sensors with the associated gateway
-     *
-     * @param _gatewayID
-     */
-    private void displayGateway(String _gatewayID) {
-
-        //sensorData.setText("Size of the sensor map " + sensorMap.size());
-        //Iterator it = sensorMap.entrySet().iterator();
-        //loop through all the sensors
-
-
-//        while(it.hasNext()) {
-//            prgDialog.show();
-//            //extract each the key value pair
-//            Map.Entry pair = (Map.Entry) it.next();
-//            // check if the pair matches our gateway
-//            if((pair != null) && pair.getValue().toString().equals(_gatewayID)) {
-//                // grab the sensor from the pair
-//                String sensorID = pair.getKey().toString();
-//                // create params
-//                RequestParams params = new RequestParams();
-//                params.put("sensorID", sensorID);
-//
-//                // json stuff
-//                AsyncHttpClient client = new AsyncHttpClient();
-//                client.get(base_url + "SensorGet/" + authToken, params, new AsyncHttpResponseHandler() {
-//
-//                    public void onSuccess(String response) {
-//                        try {
-//                            JSONObject obj = new JSONObject(response);
-//                            sensorData.setText(obj.toString());
-//
-//                        } catch (JSONException e) {
-//                            // TODO Auto-generated catch block
-//                            Toast.makeText(getApplicationContext(), "Error Occurred could not sensor data!", Toast.LENGTH_LONG).show();
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    public void onFailure(int statusCode, Throwable error, String content) {
-//
-//                        // When Http response code is '404'
-//                        if (statusCode == 404) {
-//                            Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-//                        }
-//                        // When Http response code is '500'
-//                        else if (statusCode == 500) {
-//                            Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-//                        }
-//                        // When Http response code other than 404, 500
-//                        else {
-//                            Toast.makeText(getApplicationContext(), "Unexpected Error occcureed! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                });
-//                prgDialog.hide();
-//                Toast.makeText(getApplicationContext(), "nothing more sensors to display", Toast.LENGTH_LONG).show();
-//            }
-//        }
-    }
-
-    /**
+    /*
      * loop sesnsors and request data messages
      * pull the gateway ID and write it to a file with the sensor
      */
-    public void gatewaySensorPairing() {
+    private void gatewaySensorPairing() {
         //loop through the list of sensors
         if(listOfSensors != null) {
             for (int i = 0; i < listOfSensors.length; i++) {
@@ -456,10 +424,10 @@ public class SensorActivity extends AppCompatActivity {
 
 
 
-    /**
+    /*
      * Method to create todays and yesterdays date in a format that can be used as params
      */
-    public void createDates() {
+    private void createDates() {
         Calendar todaysDate = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         today = df.format(todaysDate.getTime());
@@ -476,12 +444,12 @@ public class SensorActivity extends AppCompatActivity {
         yesterday = df.format(yesterdayDate.getTime());
     }
 
-    /**
+    /*
      * Read the sensor file stream and put its contents into a String builder
      * The contents will have a newline character after each item
      * call split method to split on newline character
      */
-    public void readSensorFile() {
+    private void readSensorFile() {
         try {
             //open a filestream to read the file
             FileInputStream sensorRead = openFileInput(sensorFileName);
@@ -504,19 +472,19 @@ public class SensorActivity extends AppCompatActivity {
         }
     }
 
-    /**
+    /*
      * Split the sensor file at the newline character, and store into an array
      */
-    public void splitSensors() {
+    private void splitSensors() {
         listOfSensors = sensorFileContents.split("\\n");
     }
 
-    /**
+    /*
      * method to read the gateway file and put the file contents in a String array
      * String array will be in the format of "sensorID-gatewayID"
      * need to split it up and store into hashmap
      */
-    public void readGatewayMapFile() {
+    private void readGatewayMapFile() {
         try {
             FileInputStream gatewayRead = openFileInput(gatewayMapFileName);
             InputStreamReader isr = new InputStreamReader(gatewayRead);
@@ -538,12 +506,12 @@ public class SensorActivity extends AppCompatActivity {
         }
     }
 
-    /**
+    /*
      * Gateways are currently in a String format of "sensorID-gatewayID"
      * split the two pieces of information, storing them in a key/value pair
      * using a hashmap
      */
-    public void splitGateways() {
+    private void splitGateways() {
         if (listOfPairs != null) {
             for (int i = 0; i < listOfPairs.length; i++) {
 
@@ -684,26 +652,6 @@ public class SensorActivity extends AppCompatActivity {
                     }
                     createSensorRow(_sensorID, name, myDate, signalStrength, batteryLevel, currentReading, alert);
 
-
-                    // testing sensors
-//                    createSensorRow("75%", name, myDate, "75", "75", currentReading);
-//                    createSensorRow("55%", name, myDate, "55", "55", currentReading);
-//                    createSensorRow("30%", name, myDate, "30", "30", currentReading);
-//                    createSensorRow("5%", name, myDate, "5", "12", currentReading);
-//                    createSensorRow("no signal", name, myDate, "0", "0", currentReading);
-//                    createSensorRow(_sensorID, name, myDate, "100", batteryLevel, currentReading);
-//                    createSensorRow("75%", name, myDate, "75", "75", currentReading);
-//                    createSensorRow("55%", name, myDate, "55", "55", currentReading);
-//                    createSensorRow("30%", name, myDate, "30", "30", currentReading);
-//                    createSensorRow("5%", name, myDate, "5", "12", currentReading);
-//                    createSensorRow("no signal", name, myDate, "0", "0", currentReading);
-//                    createSensorRow(_sensorID, name, myDate, "100", batteryLevel, currentReading);
-//                    createSensorRow("75%", name, myDate, "75", "75", currentReading);
-//                    createSensorRow("55%", name, myDate, "55", "55", currentReading);
-//                    createSensorRow("30%", name, myDate, "30", "30", currentReading);
-//                    createSensorRow("5%", name, myDate, "5", "12", currentReading);
-//                    createSensorRow("no signal", name, myDate, "0", "0", currentReading);
-
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "message: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -788,16 +736,11 @@ public class SensorActivity extends AppCompatActivity {
                 TableLayout.LayoutParams.WRAP_CONTENT));
     }
 
-    /**
-     * @param _sensorID
-     * @param _name
-     * @param _date
-     * @param _signal
-     * @param _battery
-     * @param _data
+    /*
+     * Private method to display the sensor in a row in the table
      */
     @SuppressLint("ResourceType")
-    public void createSensorRow(final String _sensorID, String _name, String _date, String _signal,
+    private void createSensorRow(final String _sensorID, String _name, String _date, String _signal,
                                 String _battery, String _data, final boolean _alert) {
         final TableRow tr_head = new TableRow(this);
         tr_head.setId(10);
@@ -810,6 +753,7 @@ public class SensorActivity extends AppCompatActivity {
 
         tr_head.setClickable(true);
         tr_head.setSelected(false);
+        // on click listener to display the sensor in more details when clicked from the table
         tr_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -824,16 +768,7 @@ public class SensorActivity extends AppCompatActivity {
                     intent.putExtra("alert", _alert);
 
                     startActivity(intent);
-//                    tr_head.setSelected(true);
-//                } else {
-//                    //tr_head.setBackgroundColor(getResources().getColor(R.color.tableBackGround));
-//                    tr_head.setBackgroundColor(Color.WHITE);
-//                    tr_head.setSelected(false);
                 }
-
-                //Toast toast = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG);
-                //toast.show();
-
             }
         });
 
@@ -852,6 +787,8 @@ public class SensorActivity extends AppCompatActivity {
         display.getSize(size);
         int width = size.x;
 
+        // quick fix to fix some formatting for screen size.
+        // will need to implement multiple screen sizes in the full release
         if(width < 1100)
         {
             label_Name.setWidth(375);
@@ -859,11 +796,11 @@ public class SensorActivity extends AppCompatActivity {
         {
             label_Name.setWidth(500);
         }
-        //Toast.makeText(getApplicationContext(), "x size is: " + size.x, Toast.LENGTH_LONG).show();
-
 
         label_Name.setId(21);// define id that must be unique
         label_Name.setText(_name + "\n" + _data); // set the text for the header
+
+        // alert flag if the sensor is not communicating
         if(_alert)
         {
             label_Name.setTextColor(Color.GRAY); // set the color
@@ -876,25 +813,13 @@ public class SensorActivity extends AppCompatActivity {
         label_Name.setPadding(50, 5, 5, 5); // set the padding (if required)
         tr_head.addView(label_Name); // add the column to the table row here
 
-//        TextView label_data = new TextView(this);
-//        label_data.setId(21);// define id that must be unique
-//        label_data.setText(_data); // set the text for the header
-//        label_data.setTextColor(Color.WHITE); // set the color
-//        label_data.setPadding(50, 5, 5, 5); // set the padding (if required)
-//        tr_head.addView(label_data); // add the column to the table row here
-
-//        TextView last_com_date = new TextView(this);
-//        last_com_date.setId(21);// define id that must be unique
-//        last_com_date.setText(_date); // set the text for the header
-//        last_com_date.setTextColor(Color.WHITE); // set the color
-//        last_com_date.setPadding(50, 5, 5, 5); // set the padding (if required)
-//        tr_head.addView(last_com_date); // add the column to the table row here
-
         ImageView image_signal = new ImageView(this);
         image_signal.setId(21);
 
         int strength = Integer.parseInt(_signal);
         Drawable drawable;
+
+        // signal icons
         if(_alert)
         {
             drawable = getResources().getDrawable(R.drawable.question_small);
@@ -921,6 +846,8 @@ public class SensorActivity extends AppCompatActivity {
 
         int battery = Integer.parseInt(_battery);
         Drawable drawable_battery;
+
+        // battery icons
         if (battery <= 100 && battery >= 75) {
             drawable_battery = getResources().getDrawable(R.drawable.batt_4);
         } else if (battery < 75 && battery >= 50) {
@@ -935,20 +862,8 @@ public class SensorActivity extends AppCompatActivity {
         image_battery.setImageDrawable(drawable_battery);
         image_battery.setPadding(0, 0, 0, 0);
         tr_head.addView(image_battery);
-//        TextView label_signal = new TextView(this);
-//        label_signal.setId(21);// define id that must be unique
-//        label_signal.setText(_signal); // set the text for the header
-//        label_signal.setTextColor(Color.WHITE); // set the color
-//        label_signal.setPadding(150, 5, 5, 5); // set the padding (if required)
-//        tr_head.addView(label_signal); // add the column to the table row here
 
-//        TextView label_battery = new TextView(this);
-//        label_battery.setId(21);// define id that must be unique
-//        label_battery.setText(_battery); // set the text for the header
-//        label_battery.setTextColor(Color.WHITE); // set the color
-//        label_battery.setPadding(50, 5, 5, 5); // set the padding (if required)
-//        tr_head.addView(label_battery); // add the column to the table row here
-
+        // add the row to the table
         mainTable.addView(tr_head, new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.FILL_PARENT,
                 TableLayout.LayoutParams.WRAP_CONTENT));
@@ -976,10 +891,13 @@ public class SensorActivity extends AppCompatActivity {
         if(networkID != null) {
             displayNetworkSensors(networkID);
         }
-
-        //refresh.setEnabled(true);
     }
 
+    /**
+     * Clicking the back button on the title bar returns to the previous activity on the stack
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -992,6 +910,9 @@ public class SensorActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     *
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }

@@ -1,19 +1,14 @@
 package com.mathew.sensorlogin;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -22,8 +17,6 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import javax.xml.transform.Result;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String PREF_NAME = "prefs";
@@ -67,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         // find the checkbox
         check = findViewById(R.id.checkBox);
 
+        // Shared preferences to see if the user saved their login information
         preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
         if(preferences.getBoolean(KEY_REMEMBER, false))
         {
             check.setChecked(true);

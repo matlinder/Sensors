@@ -22,6 +22,11 @@ public class AccountActivity extends AppCompatActivity {
     String userID; //the user id linked to the username, for json calls
     TextView name; //temp placeholder to display the account json data
     private final String base_url = "https://www.imonnit.com/json/";
+
+    /**
+     * Create the account acitivity to display the user account details
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,11 @@ public class AccountActivity extends AppCompatActivity {
         displayData();
     }
 
+    /**
+     * menu options back button
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -54,9 +64,15 @@ public class AccountActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * menu options buttons
+     * @param menu
+     * @return
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
     /**
      * method to display the user data after a successful login
      */
@@ -75,26 +91,10 @@ public class AccountActivity extends AppCompatActivity {
                     // JSON Object
                     JSONObject obj = new JSONObject(response);
                     // Get the data of the user
-                   JSONObject result = obj.getJSONObject("Result");
-
-                   name.setText(result.getString("FirstName") + " " + result.getString("LastName") );
-//                    JSONArray users = obj.getJSONArray("Result");
-//                    // loop through the array for the specific user and save their details
-//                    for(int i = 0; i < users.length(); i++)
-//                    {
-//                        // grab each object and store in a temp variable
-//                        JSONObject temp = users.getJSONObject(i);
-//                        // check if the object in the array matches the username entered to login
-//                        if(temp.getString("UserName").equals(userName))
-//                        {
-//                            // set the details for viewing purpose to see if the correct user was selected
-//                            accountDetails.setText(temp.toString());
-//                        }
-//                    }
-
-
-
-
+                    JSONObject result = obj.getJSONObject("Result");
+                    // assign the data to the fields so that it is displayed
+                    name.setText(String.format("%s %s", result.getString("FirstName"), result.getString("LastName")));
+                    // add more here of what should be displayed
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -105,7 +105,6 @@ public class AccountActivity extends AppCompatActivity {
             }
 
             // When the response returned by REST has Http response code other than '200'
-
             public void onFailure(int statusCode, Throwable error,
                                   String content) {
 

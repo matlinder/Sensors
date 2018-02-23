@@ -12,13 +12,6 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.jjoe64.graphview.DefaultLabelFormatter;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.DataPointInterface;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.OnDataPointTapListener;
-import com.jjoe64.graphview.series.Series;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -38,29 +31,34 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 
 
 public class GraphActivity extends AppCompatActivity {
 
-    private String authToken, sensorID;
-    private Calendar todaysDate;
-    private Calendar yesterdayDate;
-    private String endParam;
-    private String startParam;
+    private String authToken, sensorID;     // strings to hold values passed from previous activity
+    private Calendar todaysDate;    // the current date
+    private Calendar yesterdayDate;     // the current date -1, yesterday
+    private String endParam;    // String to hold the end date param
+    private String startParam;  // String to hold the start date param
+
+    // url that doesn't change, just add methods after
     private final String base_url = "https://www.imonnit.com/json/";
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:ss");
+    private final String GRAPH_FILE = "graphPlots"; // file name to hold graph entries
+    private String fileContents;    // holds the contents of the file in unformatted form
+    private String[] listOfPairs;   // holds conent of the file in formatted form
 
-    private final String GRAPH_FILE = "graphPlots";
-    private String fileContents;
-    private String[] listOfPairs;
+    LineChart chart;    // chart to display the plot data on
 
-    LineChart chart;
-
+    // Arraylist to hold graph entries
     ArrayList<Entry> entries = new ArrayList<Entry>();
+    // Arraylist to hold the x labels
     ArrayList<String>xVals = new ArrayList<String>();
     private ProgressDialog prgDialog;
 
+    /**
+     * Create the graph activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,10 +79,13 @@ public class GraphActivity extends AppCompatActivity {
 
         createDates();
         populateDataPoints();
-
+        //displayEntryGraph();
 
     }
 
+    /**
+     * After all the data is collected, display the graph
+     */
     private void displayEntryGraph()
     {
         LineDataSet dataSet = new LineDataSet(entries, "Temperature");
@@ -109,8 +110,12 @@ public class GraphActivity extends AppCompatActivity {
 
     }
 
-
-    public boolean populateDataPoints()
+    /**
+     * Grab all the data messages from the chosen sensor
+     * write them to an internal file so that it make be parsed outside of the request
+     * and stored to the lists and then graphed
+     */
+    public void populateDataPoints()
     {
         //client
         AsyncHttpClient client = new AsyncHttpClient();
@@ -136,32 +141,28 @@ public class GraphActivity extends AppCompatActivity {
                             if (result != null) {
                                 String currentReading = result.getString("PlotValues");
                                 if (currentReading.length() == 0) {
-                                    currentReading = "500";
+                                    currentReading = "-100"; // set to a negative number to show an error
                                 }
-
                                 String messageDate = result.getString("MessageDate");
-
-
-                                long time = Long.parseLong(messageDate.substring(6, messageDate.length() - 2));
-
-
+                                // write the temperature value and the date/time to a file
                                 outputStream.write(messageDate.getBytes());
                                 outputStream.write(",".getBytes());
                                 outputStream.write(currentReading.getBytes());
                                 outputStream.write("\n".getBytes());
                             }
                         }
+                        //close the file
                         outputStream.close();
+                        // have to chain these calls
+                        // called out of order otherwise, causing null pointer
                         readGatewayMapFile();
                         displayEntryGraph();
                     }else
                     {
+                        //display a message if there is no data to graph
                         Toast.makeText(getApplicationContext(), "Sensor was not active for the past day, no data to display", Toast.LENGTH_LONG).show();
 
                     }
-
-
-
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "message: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -190,7 +191,7 @@ public class GraphActivity extends AppCompatActivity {
                 }
             }
         });
-        return true;
+
 
     }
     /**
@@ -207,6 +208,9 @@ public class GraphActivity extends AppCompatActivity {
         startParam = df.format(yesterdayDate.getTime());
     }
 
+    /**
+     * Read the file and extract the contents to an arraylist
+     */
     public void readGatewayMapFile() {
         try {
             FileInputStream read = openFileInput(GRAPH_FILE);
@@ -230,7 +234,7 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Method used internally to split the values on "," so we have pairs
      */
     public void splitPlotValues() {
         if (listOfPairs != null) {
@@ -244,7 +248,7 @@ public class GraphActivity extends AppCompatActivity {
                     String messageDate = parts[0];
                     long time = Long.parseLong(messageDate.substring(6, messageDate.length() - 2));
                     Date date = new Date(time);
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:ss");
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                     String dayTime = df.format(date.getTime());
                     if(parts[1].length() != 0) {
                         Entry temp = new Entry(reverseCount, Float.parseFloat(parts[1].toString()));
@@ -270,6 +274,10 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Android methods to close the dialog and activity
+     * prevents leaked windows
+     */
     public void onDestroy() {
 
         super.onDestroy();
@@ -277,6 +285,10 @@ public class GraphActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Android methods to close the dialog and activity
+     * prevents leaked windows
+     */
     public void onPause()
     {
         super.onPause();

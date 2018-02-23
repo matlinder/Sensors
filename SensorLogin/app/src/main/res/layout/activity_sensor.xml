@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#FF5178BD"
     android:theme="@style/AppTheme.NoActionBar"
-    tools:context="com.mathew.sensorlogin.SensorActivity">
+    tools:context="com.mathew.sensorlogin.SensorActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <!-- Commented out for Moji/Roger release-->
     <!--<Spinner-->
@@ -25,31 +26,50 @@
     <!--app:layout_constraintVertical_bias="0.0"-->
     <!--/>-->
 
+    <!--<com.jaredrummler.materialspinner.MaterialSpinner-->
+    <!--android:id="@+id/spinner"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:ms_background_color="@color/buttonColor"-->
+    <!--app:ms_text_color="@android:color/black"-->
+    <!--android:textSize="20dp"-->
+    <!--/>-->
 
-    <Spinner
-        android:id="@+id/networkData"
+    <!--<Spinner-->
+    <!--android:id="@+id/networkData"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="41dp"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:background="@color/buttonColor"-->
+    <!--android:popupBackground="@color/buttonColor"-->
+    <!--android:spinnerMode="dialog"-->
+    <!--android:visibility="invisible"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/scrollView2"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
+    <org.angmarch.views.NiceSpinner
+        android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:layout_marginBottom="5dp"
-        android:background="@color/buttonColor"
-        android:popupBackground="@color/buttonColor"
-        android:spinnerMode="dialog"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="45dp"
+        android:backgroundTint="#FF5178BD"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="514dp"
+        android:layout_marginTop="-5dp"
         android:layout_weight="1"
         android:background="@android:color/white"
         android:fillViewport="false"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@+id/refreshBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/networkData">
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.0">
 
 
         <TableLayout
@@ -64,10 +84,23 @@
 
     </ScrollView>
 
+    <TextView
+        android:id="@+id/networkPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/network_prompt"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/refreshBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="39dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/mybutton"
@@ -78,23 +111,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
-
-    <TextView
-        android:id="@+id/networkPrompt"
-        android:layout_width="wrap_content"
-        android:layout_height="41dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/network_prompt"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrollView2" />
+        app:layout_constraintTop_toBottomOf="@+id/networkPrompt"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

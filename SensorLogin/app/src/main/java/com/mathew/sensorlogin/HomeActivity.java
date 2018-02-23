@@ -16,15 +16,23 @@ import org.json.JSONObject;
 
 public class HomeActivity extends AppCompatActivity {
 
+    // Constants for file names
     private static final String PREF_NAME = "prefs";
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASS = "password";
     private static final String KEY_TOKEN = "token";
 
+    // user information
     private String authToken;
     private String userName;
     private String userID;
+
+    /**
+     * OnCreate method sets up the activity. More buttons will be added later, currently only
+     * two buttons. Grabs the values from the previous activity.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +49,11 @@ public class HomeActivity extends AppCompatActivity {
             userName = extras.getString("userName");
         }
         grabUserID();
-
-
     }
 
     /**
      * starts the AccountActivity details activity
-     * passes the token via extra
+     * passes the token via Bundle
      */
     public void displayAccountDetails(View view)
     {
@@ -57,12 +63,18 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
+    /**
+     * starts the Sensor activity
+     * passes the token via Bundle
+     */
     public void displaySensorData(View view) {
         Intent intent = new Intent(getApplicationContext(), SensorActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
     /**
      * method to grab the user ID as it is used to identify what sensors/gateways the user can see
      */

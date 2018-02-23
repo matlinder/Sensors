@@ -6,14 +6,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TableLayout;
@@ -36,19 +34,24 @@ import java.util.GregorianCalendar;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private String authToken, sensorID;
-    private final String base_url = "https://www.imonnit.com/json/";
-    private TableLayout mainTable;
-    ProgressDialog prgDialog;
-    EditText startDate, endDate;
-    private int startYear, startMonth, startDay, endYear, endMonth, endDay ;
-    static final int DATE_DIALOG_ID_START = 0;
-    static final int DATE_DIALOG_ID_END = 1;
-    private String endParam;
-    private String startParam;
-    private int validDay;
-    private Calendar todaysDate, yesterdayDate;
+    static final int DATE_DIALOG_ID_START = 0; // constant to choose the start date picker
+    static final int DATE_DIALOG_ID_END = 1; // constant to choose the end date picker
 
+    private String authToken, sensorID; // variables to store the data passed from the previous activity
+    private final String base_url = "https://www.imonnit.com/json/"; // base url for json calls
+    private TableLayout mainTable; // table to display all of the sensors history
+    private ProgressDialog prgDialog; // progress dialog for long requests
+    private EditText startDate, endDate; // edittext for the user to see/pick the dates
+    // variables to help with formatting the dates
+    private int startYear, startMonth, startDay, endYear, endMonth, endDay ;
+    private String endParam; // end date param for request
+    private String startParam; // start date param for request
+    private Calendar todaysDate, yesterdayDate; // instances of today and yesterday's dates
+
+    /**
+     * Create the history activity and populate the table with the last day's history of the sensor
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,9 +111,7 @@ public class HistoryActivity extends AppCompatActivity {
                         .append(startDay).append(""));
 
         startParam = startYear + "/" + (startMonth + 1) + "/" + startDay;
-        //.append(mMonth + 1).append("-")
-        //.append(mDay).append("-")
-        //.append(mYear).append(" "));
+
     }
 
     // the call back received when the user "sets" the date in the dialog
@@ -143,9 +144,6 @@ public class HistoryActivity extends AppCompatActivity {
                         .append(endDay).append(""));
 
         endParam = endYear + "/" + (endMonth + 1) + "/" + endDay;
-        //.append(mMonth + 1).append("-")
-        //.append(mDay).append("-")
-        //.append(mYear).append(" "));
     }
 
     // the call back received when the user "sets" the date in the dialog
@@ -168,7 +166,8 @@ public class HistoryActivity extends AppCompatActivity {
                 }
             };
     /**
-     *
+     * Request the data messages of the sensor that came from the previous activity
+     * Create a row for each one and assign it to the table
      */
     public void displayDataHistory()
     {
@@ -192,7 +191,7 @@ public class HistoryActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(response);
                     //grab the result array
                     JSONArray resultArray = obj.getJSONArray("Result");
-
+                    // loop the results
                     for(int i=0; i < resultArray.length(); i++) {
 
                         JSONObject result = resultArray.getJSONObject(i);
@@ -248,7 +247,7 @@ public class HistoryActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         endYear = todaysDate.get(Calendar.YEAR);
         endMonth = todaysDate.get(Calendar.MONTH);
-        validDay = endDay = todaysDate.get(Calendar.DAY_OF_MONTH);
+        endDay = todaysDate.get(Calendar.DAY_OF_MONTH);
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         endParam = df.format(todaysDate.getTime());
 
@@ -259,6 +258,10 @@ public class HistoryActivity extends AppCompatActivity {
         startDay = yesterdayDate.get(Calendar.DAY_OF_MONTH);
         startParam = df.format(yesterdayDate.getTime());
     }
+
+    /**
+     * Create the heading row of the table
+     */
     @SuppressLint("ResourceType")
     public void createTable() {
 
@@ -322,11 +325,11 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param date
-     * @param signalStrength
-     * @param batteryLevel
-     * @param currentReading
+     * Create the row with the specified data for the sensor data message
+     * @param date The date and time the message was sent
+     * @param signalStrength the signal strength at the time of the message
+     * @param batteryLevel the battery strength at the time of the message
+     * @param currentReading the current temp reading at the time of the message
      */
     @SuppressLint("ResourceType")
     public void createSensorRow(Date date, String signalStrength, String batteryLevel, String currentReading) {
@@ -391,6 +394,11 @@ public class HistoryActivity extends AppCompatActivity {
                 TableLayout.LayoutParams.WRAP_CONTENT));
     }
 
+    /**
+     * Menu item method for back button
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -406,13 +414,19 @@ public class HistoryActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
+    /**
+     * Method to close the dialog and activity when you leave the activity
+     */
     public void onDestroy() {
 
         super.onDestroy();
         prgDialog.dismiss();
         finish();
     }
-
+    /**
+     * Method to close the dialog and activity when you leave the activity
+     */
     public void onPause()
     {
         super.onPause();
