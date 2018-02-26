@@ -33,12 +33,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class HistoryActivity extends AppCompatActivity {
-
-    static final int DATE_DIALOG_ID_START = 0; // constant to choose the start date picker
-    static final int DATE_DIALOG_ID_END = 1; // constant to choose the end date picker
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
+    private static final int DATE_DIALOG_ID_START = 0; // constant to choose the start date picker
+    private static final int DATE_DIALOG_ID_END = 1; // constant to choose the end date picker
 
     private String authToken, sensorID; // variables to store the data passed from the previous activity
-    private final String base_url = "https://www.imonnit.com/json/"; // base url for json calls
     private TableLayout mainTable; // table to display all of the sensors history
     private ProgressDialog prgDialog; // progress dialog for long requests
     private EditText startDate, endDate; // edittext for the user to see/pick the dates

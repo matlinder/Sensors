@@ -3,16 +3,12 @@ package com.mathew.sensorlogin;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,16 +20,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class SensorDetailActivity extends AppCompatActivity {
-
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
+    // views from the layoutpage
     private TextView sensorIDText, nameText, tempText, errorText;
+    // info passed from previous intent
     private String authToken, sensorID;
-    private int currentMinutes;
-    private final String base_url = "https://www.imonnit.com/json/";
+    // alert flag if the sensor has stopped communicating
     boolean alert = false;
+    // dialog
     private ProgressDialog prgDialog;
 
     @SuppressLint("SetTextI18n")
@@ -48,6 +46,7 @@ public class SensorDetailActivity extends AppCompatActivity {
         prgDialog.setMessage("Please wait...");
         // Set Cancelable as False
         prgDialog.setCancelable(false);
+        // grab views
         sensorIDText = findViewById(R.id.sensorID);
         nameText = findViewById(R.id.sensorName);
         tempText = findViewById(R.id.tempField);
@@ -64,6 +63,10 @@ public class SensorDetailActivity extends AppCompatActivity {
         displayThisSensor(sensorID);
     }
 
+    /**
+     * When the activity is resumed, refresh the information to see if
+     * any info has changed
+     */
     public void onResume()
     {
         super.onResume();
@@ -180,7 +183,11 @@ public class SensorDetailActivity extends AppCompatActivity {
         prgDialog.hide();
     }
 
-
+    /**
+     * OnClick method for history button
+     * starts the history activity
+     * @param view
+     */
     public void startHistoryActivity(View view) {
 
         Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
@@ -191,6 +198,11 @@ public class SensorDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * OnClick method for the graph button
+     * starts the graph activity
+     * @param view
+     */
     public void startGraphActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), GraphActivity.class);
         intent.putExtra("token", authToken);
@@ -199,6 +211,11 @@ public class SensorDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * OnClick method for the edit button
+     * starts the edit activity
+     * @param view
+     */
     public void startEditActivity(View view) {
 
         Intent intent = new Intent(getApplicationContext(), EditSensorActivity.class);
@@ -208,6 +225,12 @@ public class SensorDetailActivity extends AppCompatActivity {
         //finish();
         startActivity(intent);
     }
+
+    /**
+     * menu back button method
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -223,6 +246,10 @@ public class SensorDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
+    /**
+     * method when the activity is destroyed
+     */
     public void onDestroy() {
 
         super.onDestroy();
@@ -230,6 +257,9 @@ public class SensorDetailActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * method when the activity is paused
+     */
     public void onPause()
     {
         super.onPause();

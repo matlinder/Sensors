@@ -2,17 +2,15 @@ package com.mathew.sensorlogin;
 
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,9 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -47,43 +43,45 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 
 
 public class SensorActivity extends AppCompatActivity {
+    // file name constants
+    private static final String sensorFileName = "sensor_file";
+    private static final String gatewayMapFileName = "gateway_file";
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
+
     // used to store the time of the click, so you cannot spam clicks
     private long mLastClickTime = 0;
-    //
-    private String authToken;
-    private String networkID;
-    private String today;
-    private String yesterday;
-    private Spinner networkSpinner, gatewaySpinner, sensorData; //views to display the various data
+    // Strings to store the information from the previous intent
+    private String authToken, networkID;
+    // store today and yesterday for displaying activity
+    private String today, yesterday;
+    // main table to display the sensors
     private TableLayout mainTable;
-    private final String base_url = "https://www.imonnit.com/json/";
+    // maps to store sensor and network pairs
     private HashMap<String, String> sensorMap = new HashMap<String, String>();
     private HashMap<String, String> networkPair = new HashMap<String, String>();
+    // list to store the names of the network
     private ArrayList<String> networkNames = new ArrayList<String>();
-    private ProgressDialog prgDialog;
-    private String sensorFileName = "sensor_file";
-    private String gatewayMapFileName = "gateway_file";
-    private int currentMinutes;
-    private TextView networkPrompt;
-    private boolean spinnerFlag = false;
-    ArrayAdapter<String> dataAdapter;
+    private ProgressDialog prgDialog; //dialog
+    private int currentMinutes; // the current time in minutes
+    private TextView networkPrompt; // prompt to tell the user to select a network
+    private boolean spinnerFlag = false; // flag to know when spinner is selected
+    ArrayAdapter<String> dataAdapter; // adapter for the spinner
+    NiceSpinner spinner; // the spinner
 
-    NiceSpinner spinner;
-
-
+    // files to store the data from the json request
     private String sensorFileContents, gatewayFileContents;
-    private String[] listOfSensors;
-    private String[] listOfPairs;
+    private String[] listOfSensors; // extrated file contents
+    private String[] listOfPairs; // extracted file contents
 
 
     /**
-     *
+     * Create the sensor activity to display all the sensors from the associated network
      * @param savedInstanceState
      */
     @SuppressLint("ResourceType")
@@ -113,7 +111,6 @@ public class SensorActivity extends AppCompatActivity {
         //grab the components from the view
         networkPrompt = findViewById(R.id.networkPrompt);
         mainTable = findViewById(R.id.main_table);
-
         spinner = findViewById(R.id.spinner);
 
         networkNames.add("Select a Network");
@@ -121,6 +118,8 @@ public class SensorActivity extends AppCompatActivity {
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
+                // enter this if it is the first time selecting a spinner
+                // change the prompt to be Clear All
                 if(!spinnerFlag)
                 {
                     networkNames.remove("Select a Network");
@@ -129,18 +128,20 @@ public class SensorActivity extends AppCompatActivity {
                 }
                 if(position != 0)
                 {
-                    position--;
+                    position--; // snafu to reduce the position because the prompt messed it up
                     String networkName = parent.getItemAtPosition(position).toString();
                     if(!networkName.equals("Select a Network")) {
+                        // display the associated sensors from the network
                         networkID = networkPair.get(networkName);
                         networkPrompt.setVisibility(View.INVISIBLE);
-                        mainTable.removeAllViews();
-                        createTable();
+                        mainTable.removeAllViews(); //clear the table
+                        createTable(); // create the header
 
-                        displayNetworkSensors(networkID);
+                        displayNetworkSensors(networkID); // add the sensors to the rows
                     }
                 }else
                 {
+                    // "Clear all" was selected so just clear the table
                     mainTable.removeAllViews();
                     createTable();
                 }
@@ -149,7 +150,7 @@ public class SensorActivity extends AppCompatActivity {
             }
         });
 
-
+        // gather all the data needed to run this activity from the following methods
         createDates();
         pullAllSensorIDs();
         readSensorFile();
@@ -677,6 +678,9 @@ public class SensorActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Create the initial heading row of the table
+     */
     @SuppressLint("ResourceType")
     public void createTable() {
         TableRow tr_head = new TableRow(this);
@@ -911,11 +915,15 @@ public class SensorActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Method for back button on title bar
      */
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
+    /**
+     * What to do when the acitivty is destroyed
+     */
     public void onDestroy() {
 
         super.onDestroy();
@@ -923,6 +931,9 @@ public class SensorActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * what to do when the activity is paused
+     */
     public void onPause()
     {
         super.onPause();
@@ -930,6 +941,9 @@ public class SensorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * what to do when the activity is resumed
+     */
     public void onResume()
     {
         super.onResume();

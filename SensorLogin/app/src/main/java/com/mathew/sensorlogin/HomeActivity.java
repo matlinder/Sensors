@@ -15,7 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class HomeActivity extends AppCompatActivity {
-
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
     // Constants for file names
     private static final String PREF_NAME = "prefs";
     private static final String KEY_REMEMBER = "remember";
@@ -81,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
     public void grabUserID()
     {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://www.imonnit.com/json/AccountUserList/" +authToken, new AsyncHttpResponseHandler() {
+        client.get(base_url + "AccountUserList/" +authToken, new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
 
             public void onSuccess(String response) {
@@ -131,7 +132,11 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * When the user selects the logout button, clear the saved information and go back
+     * to the login screen
+     * @param view
+     */
     public void logout(View view) {
 
 

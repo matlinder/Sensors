@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EditSensorActivity extends AppCompatActivity {
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
 
     private String authToken;   // the user authorization token, passed on through activity
     private String sensorID;    // the sensor ID that we want to edit
@@ -26,8 +28,7 @@ public class EditSensorActivity extends AppCompatActivity {
     private int changeCount = 0;    // count so we can set the text box to display current data,
                                     // but not count as on changed
     private ProgressDialog prgDialog; // progress box when json takes too long
-    EditText sensorName; // field for the new sensor name
-    private final String base_url = "https://www.imonnit.com/json/";    // url for json calls
+    private EditText sensorName; // field for the new sensor name
 
     /**
      * Create the Edit activity

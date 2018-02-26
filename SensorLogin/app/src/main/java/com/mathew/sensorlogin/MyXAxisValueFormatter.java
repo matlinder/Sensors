@@ -4,9 +4,8 @@ import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 /**
- * Created by mathew on 2018-02-20.
+ * Format the X Axis labels so they can display the date and time
  */
-
 public class MyXAxisValueFormatter implements IAxisValueFormatter {
 
     private String[] mValues;

@@ -16,12 +16,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AccountActivity extends AppCompatActivity {
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
 
-    String authToken; //authorization token from json
-    String userName; //the users username for json calls
-    String userID; //the user id linked to the username, for json calls
-    TextView name; //temp placeholder to display the account json data
-    private final String base_url = "https://www.imonnit.com/json/";
+    private String authToken; //authorization token from json
+    private String userName; //the users username for json calls
+    private String userID; //the user id linked to the username, for json calls
+    private TextView name; //temp placeholder to display the account json data
+
 
     /**
      * Create the account acitivity to display the user account details

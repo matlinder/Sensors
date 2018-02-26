@@ -34,6 +34,8 @@ import java.util.Date;
 
 
 public class GraphActivity extends AppCompatActivity {
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
 
     private String authToken, sensorID;     // strings to hold values passed from previous activity
     private Calendar todaysDate;    // the current date
@@ -41,8 +43,7 @@ public class GraphActivity extends AppCompatActivity {
     private String endParam;    // String to hold the end date param
     private String startParam;  // String to hold the start date param
 
-    // url that doesn't change, just add methods after
-    private final String base_url = "https://www.imonnit.com/json/";
+
     private final String GRAPH_FILE = "graphPlots"; // file name to hold graph entries
     private String fileContents;    // holds the contents of the file in unformatted form
     private String[] listOfPairs;   // holds conent of the file in formatted form

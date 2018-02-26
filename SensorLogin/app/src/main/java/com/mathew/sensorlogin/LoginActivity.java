@@ -19,6 +19,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
+    // shared preferences locations and keywords
     private static final String PREF_NAME = "prefs";
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
@@ -37,7 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     // Password Edit View Object
     EditText pwdET;
 
-
+    /**
+     * Create the login activity screen where the user can type in their
+     * username and password
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://www.imonnit.com/json/GetAuthToken", params, new AsyncHttpResponseHandler() {
+        client.get(base_url + "GetAuthToken", params, new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
 
             public void onSuccess(String response) {
@@ -171,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(), "validating token", Toast.LENGTH_LONG).show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://www.imonnit.com/json/Logon/" + authToken, new AsyncHttpResponseHandler() {
+        client.get(base_url + "Logon/" + authToken, new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
 
             public void onSuccess(String response) {
