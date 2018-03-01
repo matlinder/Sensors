@@ -51,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:backgroundTint="#FF5178BD"
+        android:layout_weight="1"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -58,7 +59,7 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="514dp"
+        android:layout_height="600dp"
         android:layout_marginTop="-5dp"
         android:layout_weight="1"
         android:background="@android:color/white"

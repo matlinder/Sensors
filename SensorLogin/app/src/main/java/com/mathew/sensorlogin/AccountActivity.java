@@ -23,6 +23,7 @@ public class AccountActivity extends AppCompatActivity {
     private String userName; //the users username for json calls
     private String userID; //the user id linked to the username, for json calls
     private TextView name; //temp placeholder to display the account json data
+    private TextView email;
 
 
     /**
@@ -36,7 +37,8 @@ public class AccountActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_account);
 
-        name = findViewById(R.id.name);
+        name = findViewById(R.id.nameTag);
+        email = findViewById(R.id.email);
 
         //grab the token from the previous intent
         Bundle extras = this.getIntent().getExtras();
@@ -95,8 +97,8 @@ public class AccountActivity extends AppCompatActivity {
                     // Get the data of the user
                     JSONObject result = obj.getJSONObject("Result");
                     // assign the data to the fields so that it is displayed
-                    name.setText(String.format("%s %s", result.getString("FirstName"), result.getString("LastName")));
-                    // add more here of what should be displayed
+                    name.setText(String.format("Name: \t\t%s %s", result.getString("FirstName"), result.getString("LastName")));
+                    email.setText(String.format("Email: \t\t%s", result.getString("EmailAddress")));
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

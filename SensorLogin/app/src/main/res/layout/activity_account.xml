@@ -8,25 +8,38 @@
     tools:context="com.mathew.sensorlogin.AccountActivity"
     tools:layout_editor_absoluteY="81dp">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-        app:layout_constraintStart_toEndOf="@+id/textView2" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="199dp">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="68dp"
-        android:text="Name:"
-        android:textColor="@android:color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/nameTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="25dp"
+            android:text="Name:"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="160dp" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="25dp"
+            android:paddingBottom="0dp"
+            android:text="Email:"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="101dp" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

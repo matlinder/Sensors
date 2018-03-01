@@ -87,7 +87,8 @@
         android:layout_marginStart="8dp"
         android:textAlignment="textStart"
         android:textColor="@android:color/black"
-        android:textSize="20sp"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -110,29 +111,36 @@
         <Button
             android:id="@+id/historyBtn"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="20dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/mybutton"
             android:onClick="startHistoryActivity"
-            android:text="History" />
+            android:text="History"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/graphBtn"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/mybutton"
             android:onClick="startGraphActivity"
-            android:text="GRAPH" />
+            android:text="GRAPH"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/editBtn"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/mybutton"
             android:onClick="startEditActivity"
-            android:text="EDIT SENSOR" />
+            android:text="EDIT SENSOR"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <TextView

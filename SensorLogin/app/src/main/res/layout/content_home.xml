@@ -21,94 +21,133 @@
         android:paddingRight="20dp"
         android:scaleType="centerInside"
         android:src="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/accountDetails"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-
-        android:onClick="displayAccountDetails"
-        android:text="Account Details"
-        android:textAlignment="center"
-        android:textColor="@color/buttonColor"
-        android:textSize="18sp"
-        android:theme="@style/PrimaryFlatButton"
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="245dp"
+        android:columnCount="3"
+        android:rowCount="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/mybutton"
-        android:onClick="displayAccountDetails"
-        android:padding="0dp"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/info" />
+        <ImageButton
+            android:id="@+id/sensorButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_column="0"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_row="0"
+            android:background="@drawable/mybutton"
+            android:onClick="displaySensorData"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/sensoricon" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/mybutton"
-        android:onClick="displaySensorData"
-        android:padding="0dp"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountDetails"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/sensoricon" />
+        <ImageButton
+            android:id="@+id/accountDetailsButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_column="1"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_row="0"
+            android:background="@drawable/mybutton"
+            android:onClick="displayAccountDetails"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/info" />
 
-    <Button
-        android:id="@+id/sensor"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="124dp"
-        android:onClick="displaySensorData"
-        android:text="Sensors"
-        android:textAlignment="center"
-        android:textColor="@color/buttonColor"
-        android:textSize="18sp"
-        android:theme="@style/PrimaryFlatButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
-        app:layout_constraintVertical_bias="0.0" />
+        <ImageButton
+            android:id="@+id/manageButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_column="2"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_row="0"
+            android:background="@drawable/mybutton"
+            android:onClick="startManageAcitivty"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/gear" />
+
+        <Button
+            android:id="@+id/accountDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_column="1"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_row="1"
+            android:onClick="displayAccountDetails"
+            android:text="Account"
+            android:textColor="@color/buttonColor"
+            android:textSize="17sp"
+            android:theme="@style/PrimaryFlatButton" />
+
+        <Button
+            android:id="@+id/sensor"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_column="0"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_row="1"
+            android:onClick="displaySensorData"
+            android:text="Sensors"
+            android:textColor="@color/buttonColor"
+            android:textSize="17sp"
+            android:theme="@style/PrimaryFlatButton" />
+        <Button
+            android:id="@+id/manage"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_column="2"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_row="1"
+            android:onClick="startManageAcitivty"
+            android:text="Manage"
+            android:textColor="@color/buttonColor"
+            android:textSize="17sp"
+            android:theme="@style/PrimaryFlatButton" />
+
+
+    </GridLayout>
 
     <Button
         android:id="@+id/button"
-        android:layout_width="79dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="18dp"
-        android:layout_marginEnd="265dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/mybuttongrey"
-        android:text="Logout"
         android:onClick="logout"
+        android:text="Logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensor"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
         app:layout_constraintVertical_bias="1.0" />
+
 
 </android.support.constraint.ConstraintLayout>

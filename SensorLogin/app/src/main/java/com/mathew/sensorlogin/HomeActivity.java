@@ -77,6 +77,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
+     * starts the Manage activity
+     * passes the token via bundle
+     * @param view
+     */
+    public void startManageAcitivty(View view) {
+        Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+
+    /**
      * method to grab the user ID as it is used to identify what sensors/gateways the user can see
      */
     public void grabUserID()
@@ -153,4 +165,6 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+
 }

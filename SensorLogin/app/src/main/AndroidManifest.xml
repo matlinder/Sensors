@@ -52,9 +52,16 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EditSensorActivity"
+        <activity
+            android:name=".EditSensorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity android:name=".ManageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".CreateNetworkActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
