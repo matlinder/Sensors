@@ -534,13 +534,14 @@ public class SensorActivity extends AppCompatActivity {
     {
         //client
         AsyncHttpClient client = new AsyncHttpClient();
-
+        prgDialog.show();
         //params
         RequestParams params = new RequestParams();
         params.put("networkID", _networkID);
         client.get(base_url + "SensorListExtended/" + authToken, params, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
+                prgDialog.hide();
                 try {
                     //grab the JSON object from the response
                     JSONObject obj = new JSONObject(response);
@@ -597,7 +598,7 @@ public class SensorActivity extends AppCompatActivity {
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {
-
+                prgDialog.hide();
                 // When Http response code is '404'
                 if (statusCode == 404) {
                     Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();

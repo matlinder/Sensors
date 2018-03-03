@@ -56,12 +56,15 @@
             android:name=".EditSensorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ManageActivity"
+        <activity
+            android:name=".ManageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".CreateNetworkActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".CreateNetworkActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".RemoveNetworkActivity" />
     </application>
 
 </manifest>

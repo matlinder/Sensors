@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 public class ManageActivity extends AppCompatActivity {
 
     private String authToken;
     private String userID;
+    Button createNetwork, removeNetwork;
+    boolean shown = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +29,24 @@ public class ManageActivity extends AppCompatActivity {
             authToken = extras.getString("token");
             userID = extras.getString("userID");
         }
+
+        createNetwork = findViewById(R.id.createNetwork);
+        removeNetwork = findViewById(R.id.removeNetwork);
     }
 
+    public void showNetworkButtons(View view) {
+        if(!shown) {
+            createNetwork.setVisibility(View.VISIBLE);
+            removeNetwork.setVisibility(View.VISIBLE);
+            shown = !shown;
+        }
+        else
+        {
+            createNetwork.setVisibility(View.GONE);
+            removeNetwork.setVisibility(View.GONE);
+            shown = !shown;
+        }
+    }
     public void startCreateNetworkActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), CreateNetworkActivity.class);
         intent.putExtra("token", authToken);
@@ -34,8 +54,13 @@ public class ManageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startEditNetworkActivity(View view) {
+    public void startRemoveNetworkActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), RemoveNetworkActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
     }
+
 
     public void startAddGatewayActivity(View view) {
     }
@@ -80,4 +105,5 @@ public class ManageActivity extends AppCompatActivity {
         super.onDestroy();
         finish();
     }
+
 }

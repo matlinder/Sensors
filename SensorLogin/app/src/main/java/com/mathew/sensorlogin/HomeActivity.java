@@ -82,10 +82,67 @@ public class HomeActivity extends AppCompatActivity {
      * @param view
      */
     public void startManageAcitivty(View view) {
-        Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
-        intent.putExtra("token", authToken);
-        intent.putExtra("userID", userID);
-        startActivity(intent);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(base_url + "GetCustomerPermissions/" +authToken, new AsyncHttpResponseHandler() {
+            // When the response returned by REST has Http response code '200'
+
+            public void onSuccess(String response) {
+                boolean access = false;
+                try {
+                    // JSON Object
+                    JSONObject obj = new JSONObject(response);
+                    // Get the array of users
+                    JSONArray users = obj.getJSONArray("Result");
+                    // loop through the array for the specific user and save their details
+                    for(int i = 0; i < users.length(); i++)
+                    {
+                        // grab each object and store in a temp variable
+                        JSONObject temp = users.getJSONObject(i);
+                        // check if the object in the array matches the username entered to login
+                        if(temp.getString("Name").equals("Network_Create"))
+                        {
+                             access = temp.getBoolean("Can");
+                        }
+                    }
+                    if(access) {
+
+                        Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+                        intent.putExtra("token", authToken);
+                        intent.putExtra("userID", userID);
+                        startActivity(intent);
+                    }else
+                    {
+                        Toast.makeText(getApplicationContext(), "You do not have permission to access this", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured could not display data!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+            }
+
+            // When the response returned by REST has Http response code other than '200'
+
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     /**
