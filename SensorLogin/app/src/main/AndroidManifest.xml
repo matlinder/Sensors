@@ -57,22 +57,28 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ManageActivity"
+            android:name=".Manage.ManageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".CreateNetworkActivity"
+            android:name=".Manage.CreateNetworkActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".RemoveNetworkActivity"
+        <activity
+            android:name=".Manage.RemoveNetworkActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".AddGatewayActivity"
+        <activity
+            android:name=".Manage.AddGatewayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".RemoveGatewayActivity"
+        <activity
+            android:name=".Manage.RemoveGatewayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity android:name=".Manage.AddSensorActivity" />
+        <activity android:name=".Manage.MoveSensorActivity" />
+        <activity android:name=".Manage.RemoveSensorActivity"></activity>
     </application>
 
 </manifest>

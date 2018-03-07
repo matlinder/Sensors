@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.mathew.sensorlogin.Manage.ManageActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -117,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
-                    Toast.makeText(getApplicationContext(), "Error Occured could not display data!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error occurred could not display data!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
@@ -138,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 // When Http response code other than 404, 500
                 else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -174,7 +175,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
-                    Toast.makeText(getApplicationContext(), "Error Occured could not display data!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error occurred could not display data!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
@@ -195,7 +196,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 // When Http response code other than 404, 500
                 else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
         });

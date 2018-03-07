@@ -1,4 +1,4 @@
-package com.mathew.sensorlogin;
+package com.mathew.sensorlogin.Manage;
 
 import android.content.Intent;
 import android.os.Build;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.mathew.sensorlogin.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +25,8 @@ public class ManageActivity extends AppCompatActivity {
     private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken;
     private String userID;
-    private Button createNetwork, removeNetwork, addGateway, removeGateway, assignSensor, removeSensor, addUser, removeUser, editUser, userButton;
+    private Button createNetwork, removeNetwork, addGateway, removeGateway, addSensor, moveSensor;
+    private Button editSensor, removeSensor, addUser, removeUser, editUser, userButton;
     private boolean networkVisible = false;
     private boolean gatewayVisible = false;
     private ViewGroup transitionsContainer;
@@ -53,7 +55,9 @@ public class ManageActivity extends AppCompatActivity {
         removeNetwork = findViewById(R.id.removeNetwork);
         addGateway = findViewById(R.id.addGateway);
         removeGateway = findViewById(R.id.removeGateway);
-        assignSensor = findViewById(R.id.assignSensor);
+        addSensor = findViewById(R.id.addSensor);
+        editSensor = findViewById(R.id.editSensor);
+        moveSensor = findViewById(R.id.moveSensor);
         removeSensor = findViewById(R.id.removeSensor);
         addUser = findViewById(R.id.addUser);
         editUser = findViewById(R.id.editUser);
@@ -157,13 +161,30 @@ public class ManageActivity extends AppCompatActivity {
             }
         }
         sensorVisible = !sensorVisible;
-        assignSensor.setVisibility(sensorVisible ? View.VISIBLE : View.GONE);
+        addSensor.setVisibility(sensorVisible ? View.VISIBLE : View.GONE);
+        editSensor.setVisibility(sensorVisible? View.VISIBLE : View.GONE);
+        moveSensor.setVisibility(sensorVisible ? View.VISIBLE : View.GONE);
         removeSensor.setVisibility(sensorVisible ? View.VISIBLE : View.GONE);
     }
-    public void startAssignSensorActivity(View view) {
+    public void startAddSensorActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), AddSensorActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
     }
-
+    public void startMoveSensorActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), MoveSensorActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
     public void startRemoveSensorActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), RemoveSensorActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+    public void startEditSensorActivity(View view) {
     }
 
     public void showUserButtons(View view) {
@@ -229,7 +250,7 @@ public class ManageActivity extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
-                    Toast.makeText(getApplicationContext(), "Error Occured could not display data!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error Occurred could not display data!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
@@ -250,7 +271,7 @@ public class ManageActivity extends AppCompatActivity {
                 }
                 // When Http response code other than 404, 500
                 else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
         });

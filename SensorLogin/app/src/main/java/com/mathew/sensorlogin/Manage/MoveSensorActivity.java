@@ -1,4 +1,4 @@
-package com.mathew.sensorlogin;
+package com.mathew.sensorlogin.Manage;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -10,12 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.mathew.sensorlogin.R;
 
 import org.angmarch.views.NiceSpinner;
 import org.json.JSONArray;
@@ -25,39 +26,31 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RemoveGatewayActivity extends AppCompatActivity {
+public class MoveSensorActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
-    private String networkID, gatewayID, gatewayName;
-    private String authToken;
-    private String userID;
-    private NiceSpinner spinnerNetwork, spinnerGateway; // the spinner
-    // maps to store sensor and network pairs
+    private String authToken, networkID, userID, networkName, sensorName, sensorID;
     private HashMap<String, String> networkPair = new HashMap<String, String>();
     // list to store the names of the network
     private ArrayList<String> networkNames = new ArrayList<String>();
-    // maps to store sensor and network pairs
-    private HashMap<String, String> gatewayPair = new HashMap<String, String>();
+    private HashMap<String, String> sensorPair = new HashMap<String, String>();
     // list to store the names of the network
-    private ArrayList<String> gatewayNames = new ArrayList<String>();
-    private ProgressDialog prgDialog; //dialog
-    private boolean spinnerFlagNetwork = false; // flag to know when spinner is selected
-    private boolean spinnerFlagGateway = false; // flag to know when spinner is selected
+    private ArrayList<String> sensorNames = new ArrayList<String>();
+
+    private boolean spinnerFlag = false; // flag to know when spinner is selected
+    private boolean spinnerFlagSensor = false;
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
+    NiceSpinner spinner, spinnerSensor; // the spinner
+    private ProgressDialog prgDialog; //dialog
+    private HashMap<String, String> sensorDigitPair = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_remove_gateway);
-        getSupportActionBar().setTitle("REMOVE GATEWAY");
+        setContentView(R.layout.activity_move_sensor);
+        getSupportActionBar().setTitle("MOVE SENSOR");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //grab the token from the previous intent
-        Bundle extras = this.getIntent().getExtras();
-        if(extras != null)
-        {
-            authToken = extras.getString("token");
-            userID = extras.getString("userID");
-        }
+
         // Instantiate Progress Dialog object
         prgDialog = new ProgressDialog(this);
         // Set Progress Dialog Text
@@ -65,79 +58,86 @@ public class RemoveGatewayActivity extends AppCompatActivity {
         // Set Cancelable as False
         prgDialog.setCancelable(false);
 
-        spinnerNetwork = findViewById(R.id.spinner);
-        spinnerGateway = findViewById(R.id.spinner2);
+        //grab the tokens from the previous intent
+        Bundle extras = this.getIntent().getExtras();
+        if (extras != null) {
+            authToken = extras.getString("token");
+        }
+
+        spinner = findViewById(R.id.spinner2);
+        spinnerSensor = findViewById(R.id.spinner);
         networkNames.add("Select a Network");
-        gatewayNames.add("Select a Gateway");
-        spinnerNetwork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        sensorNames.add("Select a Sensor to Move");
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
                 // enter this if it is the first time selecting a spinner
                 // change the prompt to be Clear All
-                if(!spinnerFlagNetwork)
+                if(!spinnerFlag)
                 {
                     networkNames.remove("Select a Network");
-                    networkNames.add(0, "Cancel Remove");
-                    spinnerFlagNetwork = true;
+                    networkNames.add(0, "Cancel");
+                    spinnerFlag = true;
                 }
                 if(position != 0)
                 {
                     position--; // snafu to reduce the position because the prompt messed it up
-                    String networkName = parent.getItemAtPosition(position).toString();
+                    networkName = parent.getItemAtPosition(position).toString();
                     if(!networkName.equals("Select a Network")) {
                         // display the associated sensors from the network
                         networkID = networkPair.get(networkName);
-                        displayGatewayDate(networkID);
+
 
                     }
                 }else
                 {
-                    cancelRemove(null);
+                    // "Cancel All" was selected so just clear the table
+                    cancelMove(null);
+
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
         displayNetworkData();
-        spinnerGateway.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        spinnerSensor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
                 // enter this if it is the first time selecting a spinner
                 // change the prompt to be Clear All
-                if(!spinnerFlagGateway)
+                if(!spinnerFlagSensor)
                 {
-                    gatewayNames.remove("Select a Gateway");
-                    gatewayNames.add(0, "Cancel Remove");
-                    spinnerFlagGateway = true;
+                    sensorNames.remove("Select a Sensor to Move");
+                    sensorNames.add(0, "Cancel Remove");
+                    spinnerFlagSensor = true;
                 }
                 if(position != 0)
                 {
                     position--; // snafu to reduce the position because the prompt messed it up
-                    gatewayName = parent.getItemAtPosition(position).toString();
-                    if(!gatewayName.equals("Select a Gateway")) {
+                    sensorName = parent.getItemAtPosition(position).toString();
+                    if(!sensorName.equals("Select a Sensor to Move")) {
                         // display the associated sensors from the network
-                        gatewayID = gatewayPair.get(gatewayName);
-
+                        sensorID = sensorPair.get(sensorName);
                     }
                 }else
                 {
-                    cancelRemove(null);
+                    cancelMove(null);
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        displaySensorData();
     }
 
-    private void displayGatewayDate(String networkID) {
+    private void displaySensorData() {
         prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
-        //grab a specific gateway to display
-        RequestParams params = new RequestParams();
-        params.put("networkID", networkID);
-        client.get(base_url + "GatewayList/" + authToken, params, new AsyncHttpResponseHandler() {
+
+        client.get(base_url + "SensorList/" + authToken, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
                 try {
@@ -147,22 +147,24 @@ public class RemoveGatewayActivity extends AppCompatActivity {
 
                     for (int i = 0; i < objArray.length(); i++) {
                         //grabs the object
-                        JSONObject tempGateway = objArray.getJSONObject(i);
-                        String name = tempGateway.getString("Name");
-                        String ID = tempGateway.getString("GatewayID");
-                        gatewayPair.put(name, ID);
-                        gatewayNames.add(name);
+                        JSONObject tempSensor = objArray.getJSONObject(i);
+                        String name = tempSensor.getString("SensorName");
+                        String ID = tempSensor.getString("SensorID");
+                        String code = tempSensor.getString("CheckDigit");
+                        sensorPair.put(name, ID);
+                        sensorDigitPair.put(ID, code);
+                        sensorNames.add(name);
 
                     }
-                    dataAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item,gatewayNames){};
+                    dataAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item,sensorNames){};
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     //networkSpinner.setAdapter(dataAdapter);
 
-                    spinnerGateway.setAdapter(dataAdapter);
+                    spinnerSensor.setAdapter(dataAdapter);
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
-                    Toast.makeText(getApplicationContext(), "Error Occured could not process data!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error occurred could not process data!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
@@ -179,7 +181,7 @@ public class RemoveGatewayActivity extends AppCompatActivity {
                 }
                 // When Http response code other than 404, 500
                 else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -213,7 +215,7 @@ public class RemoveGatewayActivity extends AppCompatActivity {
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     //networkSpinner.setAdapter(dataAdapter);
 
-                    spinnerNetwork.setAdapter(dataAdapter);
+                    spinner.setAdapter(dataAdapter);
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -234,25 +236,35 @@ public class RemoveGatewayActivity extends AppCompatActivity {
                 }
                 // When Http response code other than 404, 500
                 else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
         });
-
-
     }
 
-    public void confirmRemove(View view) {
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(RemoveGatewayActivity.this);
-        alert.setTitle("Delete");
-        alert.setMessage("Are you sure you want to delete?");
+
+
+    public void confirmMove(View view) {
+        if(sensorID == null || sensorID.length() == 0 )
+        {
+            Toast.makeText(getApplicationContext(), "You must select a sensor to move", Toast.LENGTH_LONG).show();
+            return;
+        }else if( networkID == null || networkID.length() == 0)
+        {
+            Toast.makeText(getApplicationContext(), "You must select a network", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(MoveSensorActivity.this);
+        alert.setTitle("Move Sensor");
+        alert.setMessage("Are you sure you want to move this sensor?");
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                removeGateway();
+                moveSensor();
                 dialog.dismiss();
             }
         });
@@ -268,33 +280,37 @@ public class RemoveGatewayActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public void removeGateway()
+    public void moveSensor()
     {
-        if(networkID == null || networkID.equals("Select a Network"))
-        {
-            Toast.makeText(getApplicationContext(), "You must select a network", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if(gatewayID == null || gatewayID.length() == 0)
-        {
-            Toast.makeText(getApplicationContext(), "You must select a gateway", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        //add the params to a RequestParams object
-        //these will be used in the request
-        RequestParams params = new RequestParams();
-        params.put("gatewayID", gatewayID);
         prgDialog.show();
+        //params
+        String code = sensorDigitPair.get(sensorID);
+        RequestParams params = new RequestParams();
+        params.put("networkID", networkID);
+        params.put("sensorID", sensorID);
+        params.put("checkDigit", code);
+
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(base_url + "RemoveGateway/" + authToken, params, new AsyncHttpResponseHandler() {
+        client.get(base_url + "AssignSensor/" + authToken, params, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
-
                 prgDialog.hide();
-                Toast.makeText(getApplicationContext(), gatewayName + " has been removed", Toast.LENGTH_LONG).show();
-                prgDialog.dismiss();
-                finish();
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    String temp = obj.getString("Result");
+                    if(temp.equals("Success"))
+                    {
+                        Toast.makeText(getApplicationContext(), "Moved the sensor to " + networkName, Toast.LENGTH_LONG).show();
+                        prgDialog.dismiss();
+                        finish();
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Sensor was not moved", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {
@@ -309,13 +325,11 @@ public class RemoveGatewayActivity extends AppCompatActivity {
                 }
                 // When Http response code other than 404, 500
                 else {
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
                 }
             }
         });
-
     }
-
     /**
      * Clicking the back button on the title bar returns to the previous activity on the stack
      * @param item
@@ -340,10 +354,6 @@ public class RemoveGatewayActivity extends AppCompatActivity {
         return true;
     }
 
-    public void cancelRemove(View view) {
-        prgDialog.dismiss();
-        finish();
-    }
 
     /**
      * What to do when the acitivty is destroyed
@@ -355,4 +365,19 @@ public class RemoveGatewayActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * what to do when the activity is paused
+     */
+    public void onPause()
+    {
+        super.onPause();
+        prgDialog.dismiss();
+
+    }
+
+
+    public void cancelMove(View view) {
+        super.finish();
+        prgDialog.dismiss();
+    }
 }
