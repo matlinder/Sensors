@@ -23,5 +23,11 @@
     <string name="gateway">GATEWAYS</string>
     <string name="sensors">Sensors</string>
     <string name="users">Users</string>
+    <string name="assign_sensor">Assign Sensor</string>
+    <string name="remove_sensor">Remove Sensor</string>
+    <string name="add_user">Add User</string>
+    <string name="edit_user">Edit User</string>
+    <string name="remove_user">Remove User</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

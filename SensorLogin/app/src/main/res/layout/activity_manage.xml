@@ -36,9 +36,9 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:background="@drawable/mybuttongrey"
             android:onClick="startCreateNetworkActivity"
-            android:layout_marginTop="20dp"
             android:text="Create Network"
             android:textColor="@android:color/white"
             android:textSize="18sp"
@@ -66,10 +66,36 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/mybutton"
-            android:onClick="startAddGatewayActivity"
+            android:onClick="showGatewayButtons"
             android:text="@string/gateway"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/addGateway"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/mybuttongrey"
+            android:onClick="startAddGatewayActivity"
+            android:text="Add Gateway"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/removeGateway"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/mybuttongrey"
+            android:onClick="startRemoveGatewayActivity"
+            android:text="Remove Gateway"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/sensors"
@@ -77,10 +103,36 @@
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/mybutton"
-            android:onClick="startAddSensorActivity"
+            android:onClick="showSensorButtons"
             android:text="@string/sensors"
             android:textColor="@android:color/white"
             android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/assignSensor"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/mybuttongrey"
+            android:onClick="startAssignSensorActivity"
+            android:text="@string/assign_sensor"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/removeSensor"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/mybuttongrey"
+            android:onClick="startRemoveSensorActivity"
+            android:text="@string/remove_sensor"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/users"
@@ -88,10 +140,50 @@
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/mybutton"
-            android:onClick="startUserActivity"
+            android:onClick="showUserButtons"
             android:text="@string/users"
             android:textColor="@android:color/white"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/addUser"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/mybuttongrey"
+            android:onClick="startAddUserActivity"
+            android:text="@string/add_user"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/editUser"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/mybuttongrey"
+            android:onClick="startEditUserActivity"
+            android:text="@string/edit_user"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/removeUser"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/mybuttongrey"
+            android:onClick="startRemoveUserActivity"
+            android:text="@string/remove_user"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

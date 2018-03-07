@@ -1,19 +1,35 @@
 package com.mathew.sensorlogin;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ManageActivity extends AppCompatActivity {
-
+    // base url for json calls
+    private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken;
     private String userID;
-    Button createNetwork, removeNetwork;
-    boolean shown = false;
+    private Button createNetwork, removeNetwork, addGateway, removeGateway, assignSensor, removeSensor, addUser, removeUser, editUser, userButton;
+    private boolean networkVisible = false;
+    private boolean gatewayVisible = false;
+    private ViewGroup transitionsContainer;
+    private boolean sensorVisible = false;
+    private boolean userVisible = false;
 
 
     @Override
@@ -29,23 +45,47 @@ public class ManageActivity extends AppCompatActivity {
             authToken = extras.getString("token");
             userID = extras.getString("userID");
         }
+        userButton = findViewById(R.id.users);
 
+        userVisibilityButton();
+        transitionsContainer = findViewById(R.id.linearLayout2);
         createNetwork = findViewById(R.id.createNetwork);
         removeNetwork = findViewById(R.id.removeNetwork);
+        addGateway = findViewById(R.id.addGateway);
+        removeGateway = findViewById(R.id.removeGateway);
+        assignSensor = findViewById(R.id.assignSensor);
+        removeSensor = findViewById(R.id.removeSensor);
+        addUser = findViewById(R.id.addUser);
+        editUser = findViewById(R.id.editUser);
+        removeUser = findViewById(R.id.removeUser);
+
+
+
     }
 
     public void showNetworkButtons(View view) {
-        if(!shown) {
-            createNetwork.setVisibility(View.VISIBLE);
-            removeNetwork.setVisibility(View.VISIBLE);
-            shown = !shown;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(transitionsContainer);
         }
-        else
+        if(!networkVisible)
         {
-            createNetwork.setVisibility(View.GONE);
-            removeNetwork.setVisibility(View.GONE);
-            shown = !shown;
+            if(gatewayVisible) {
+                showGatewayButtons(null);
+            }
+            if(sensorVisible)
+            {
+                showSensorButtons(null);
+            }
+            if(userVisible)
+            {
+                showUserButtons(null);
+            }
         }
+        networkVisible = !networkVisible;
+        createNetwork.setVisibility(networkVisible ? View.VISIBLE : View.GONE);
+        removeNetwork.setVisibility(networkVisible ? View.VISIBLE : View.GONE);
+
     }
     public void startCreateNetworkActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), CreateNetworkActivity.class);
@@ -60,18 +100,161 @@ public class ManageActivity extends AppCompatActivity {
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+    public void showGatewayButtons(View view) {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(transitionsContainer);
+        }
+        if(!gatewayVisible)
+        {
+            if(networkVisible) {
+                showNetworkButtons(null);
+            }
+            if(sensorVisible)
+            {
+                showSensorButtons(null);
+            }
+            if(userVisible)
+            {
+                showUserButtons(null);
+            }
+        }
+        gatewayVisible = !gatewayVisible;
+        addGateway.setVisibility(gatewayVisible ? View.VISIBLE : View.GONE);
+        removeGateway.setVisibility(gatewayVisible ? View.VISIBLE : View.GONE);
+    }
 
     public void startAddGatewayActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), AddGatewayActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+    public void startRemoveGatewayActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), RemoveGatewayActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
     }
 
-    public void startAddSensorActivity(View view) {
+    public void showSensorButtons(View view) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(transitionsContainer);
+        }
+        if(!sensorVisible)
+        {
+            if(networkVisible) {
+                showNetworkButtons(null);
+            }
+            if(gatewayVisible)
+            {
+                showGatewayButtons(null);
+            }
+            if(userVisible)
+            {
+                showUserButtons(null);
+            }
+        }
+        sensorVisible = !sensorVisible;
+        assignSensor.setVisibility(sensorVisible ? View.VISIBLE : View.GONE);
+        removeSensor.setVisibility(sensorVisible ? View.VISIBLE : View.GONE);
+    }
+    public void startAssignSensorActivity(View view) {
     }
 
-    public void startMoveSensorActivity(View view) {
+    public void startRemoveSensorActivity(View view) {
     }
 
-    public void startUserActivity(View view) {
+    public void showUserButtons(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(transitionsContainer);
+        }
+        if(!userVisible)
+        {
+            if(networkVisible) {
+                showNetworkButtons(null);
+            }
+            if(gatewayVisible)
+            {
+                showGatewayButtons(null);
+            }
+            if(sensorVisible)
+            {
+                showSensorButtons(null);
+            }
+        }
+        userVisible = !userVisible;
+        addUser.setVisibility(userVisible ? View.VISIBLE : View.GONE);
+        editUser.setVisibility(userVisible ? View.VISIBLE : View.GONE);
+        removeUser.setVisibility(userVisible ? View.VISIBLE : View.GONE);
+    }
+    public void startAddUserActivity(View view) {
+    }
+    public void startEditUserActivity(View view) {
+    }
+    public void startRemoveUserActivity(View view) {
+    }
+
+    /**
+     * Checks the visibility if a user is allowed to add/edit/remove users
+     */
+    public void userVisibilityButton() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(base_url + "GetCustomerPermissions/" +authToken, new AsyncHttpResponseHandler() {
+            // When the response returned by REST has Http response code '200'
+
+            public void onSuccess(String response) {
+                boolean access = false;
+                try {
+                    // JSON Object
+                    JSONObject obj = new JSONObject(response);
+                    // Get the array of users
+                    JSONArray users = obj.getJSONArray("Result");
+                    // loop through the array for the specific user and save their details
+                    for(int i = 0; i < users.length(); i++)
+                    {
+                        // grab each object and store in a temp variable
+                        JSONObject temp = users.getJSONObject(i);
+                        // check if the object in the array matches the username entered to login
+                        if(temp.getString("Name").equals("Customer_Create"))
+                        {
+                            access = temp.getBoolean("Can");
+                        }
+                    }
+                    if(access)
+                    {
+                        userButton.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured could not display data!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+            }
+
+            // When the response returned by REST has Http response code other than '200'
+
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     /**
@@ -105,5 +288,7 @@ public class ManageActivity extends AppCompatActivity {
         super.onDestroy();
         finish();
     }
+
+
 
 }

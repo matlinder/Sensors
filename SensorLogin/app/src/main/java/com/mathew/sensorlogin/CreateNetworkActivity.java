@@ -72,20 +72,12 @@ public class CreateNetworkActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * What to do when the acitivty is destroyed
-     */
-    public void onDestroy() {
-
-        super.onDestroy();
-        prgDialog.dismiss();
-        finish();
-    }
 
     public void createNetwork(View view) {
         prgDialog.show();
-        if(networkName == null)
+        if(networkName == null || networkName.getText().toString().length() == 0)
         {
+            prgDialog.hide();
             Toast.makeText(getApplicationContext(), "You must enter a name!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -212,4 +204,24 @@ public class CreateNetworkActivity extends AppCompatActivity {
     }
 
     public void cancel(View view) { super.finish();    }
+    /**
+     * What to do when the acitivty is destroyed
+     */
+    public void onDestroy() {
+
+        super.onDestroy();
+        prgDialog.dismiss();
+        finish();
+    }
+
+    /**
+     * what to do when the activity is paused
+     */
+    public void onPause()
+    {
+        super.onPause();
+        prgDialog.dismiss();
+
+    }
+    
 }
