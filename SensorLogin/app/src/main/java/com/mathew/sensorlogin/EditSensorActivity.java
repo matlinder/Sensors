@@ -163,8 +163,24 @@ public class EditSensorActivity extends AppCompatActivity {
         client.get(base_url + "SensorSetName/" + authToken, params, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
-                //startSensorActivity();
-                finish();
+                prgDialog.hide();
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    String temp = obj.getString("Result");
+                    if(temp.equals("Success"))
+                    {
+                        Toast.makeText(getApplicationContext(), "Sensor has been updated", Toast.LENGTH_LONG).show();
+                        prgDialog.dismiss();
+                        finish();
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Something went wrong, no changes were made", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {

@@ -126,10 +126,10 @@ public class SensorActivity extends AppCompatActivity {
                     networkNames.add(0, "Clear All");
                     spinnerFlag = true;
                 }
-                if(position != 0)
+                if(id != 0)
                 {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    String networkName = parent.getItemAtPosition(position).toString();
+                    //position--; // snafu to reduce the position because the prompt messed it up
+                    String networkName = parent.getItemAtPosition((int)id).toString();
                     if(!networkName.equals("Select a Network")) {
                         // display the associated sensors from the network
                         networkID = networkPair.get(networkName);

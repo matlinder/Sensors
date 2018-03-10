@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.mathew.sensorlogin.R;
 
 import org.json.JSONArray;
@@ -185,6 +186,10 @@ public class ManageActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void startEditSensorActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), EditAnySensorActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
     }
 
     public void showUserButtons(View view) {
@@ -223,7 +228,10 @@ public class ManageActivity extends AppCompatActivity {
     public void userVisibilityButton() {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(base_url + "GetCustomerPermissions/" +authToken, new AsyncHttpResponseHandler() {
+        //params
+        RequestParams params = new RequestParams();
+        params.put("custID", userID);
+        client.get(base_url + "GetCustomerPermissions/" +authToken,params, new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
 
             public void onSuccess(String response) {

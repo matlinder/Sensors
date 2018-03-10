@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class RemoveNetworkActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
-    private String authToken, networkID;
+    private String authToken, networkID, networkName;
     private String userID;
     private NiceSpinner spinner; // the spinner
     // maps to store sensor and network pairs
@@ -80,7 +80,7 @@ public class RemoveNetworkActivity extends AppCompatActivity {
                 if(position != 0)
                 {
                     position--; // snafu to reduce the position because the prompt messed it up
-                    String networkName = parent.getItemAtPosition(position).toString();
+                    networkName = parent.getItemAtPosition(position).toString();
                     if(!networkName.equals("Select a Network")) {
                         // display the associated sensors from the network
                         networkID = networkPair.get(networkName);
@@ -157,7 +157,7 @@ public class RemoveNetworkActivity extends AppCompatActivity {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(RemoveNetworkActivity.this);
         alert.setTitle("Delete");
-        alert.setMessage("Are you sure you want to delete?");
+        alert.setMessage("Are you sure you want to " + networkName + "?");
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
             @Override

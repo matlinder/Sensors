@@ -29,18 +29,22 @@ import java.util.HashMap;
 public class MoveSensorActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
-    private String authToken, networkID, userID, networkName, sensorName, sensorID;
+    private String authToken, networkID, userID, networkName, sensorName, sensorID, networkNameFrom, networkIDFrom;
     private HashMap<String, String> networkPair = new HashMap<String, String>();
     // list to store the names of the network
     private ArrayList<String> networkNames = new ArrayList<String>();
+    private HashMap<String, String> networkPairFrom = new HashMap<String, String>();
+    // list to store the names of the network
+    private ArrayList<String> networkNamesFrom = new ArrayList<String>();
     private HashMap<String, String> sensorPair = new HashMap<String, String>();
     // list to store the names of the network
     private ArrayList<String> sensorNames = new ArrayList<String>();
 
     private boolean spinnerFlag = false; // flag to know when spinner is selected
     private boolean spinnerFlagSensor = false;
+    private boolean spinnerFlagFrom = false;
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
-    NiceSpinner spinner, spinnerSensor; // the spinner
+    NiceSpinner spinner, spinnerSensor, spinnerNetworkFrom; // the spinner
     private ProgressDialog prgDialog; //dialog
     private HashMap<String, String> sensorDigitPair = new HashMap<String, String>();
 
@@ -65,10 +69,43 @@ public class MoveSensorActivity extends AppCompatActivity {
         }
 
         spinner = findViewById(R.id.spinner2);
+        spinnerNetworkFrom = findViewById(R.id.spinner1);
         spinnerSensor = findViewById(R.id.spinner);
-        networkNames.add("Select a Network");
+        networkNamesFrom.add("Select a Network");
+        networkNames.add("Select a new Network");
         sensorNames.add("Select a Sensor to Move");
+        spinnerNetworkFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                // enter this if it is the first time selecting a spinner
+                // change the prompt to be Clear All
+                if(!spinnerFlagFrom)
+                {
+                    networkNamesFrom.remove("Select a Network");
+                    networkNamesFrom.add(0, "Cancel");
+                    spinnerFlagFrom = true;
 
+                }
+                if(id != 0)
+                {
+                    //id--; // snafu to reduce the position because the prompt messed it up
+                    networkNameFrom = parent.getItemAtPosition((int)id).toString();
+                    if(!networkNameFrom.equals("Select a new Network")) {
+                        // display the associated sensors from the network
+                        networkIDFrom = networkPairFrom.get(networkNameFrom);
+                        displaySensorData(networkIDFrom);
+                    }
+                }else
+                {
+                    // "Cancel All" was selected so just clear the table
+                    cancelMove(null);
+
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -77,18 +114,17 @@ public class MoveSensorActivity extends AppCompatActivity {
                 // change the prompt to be Clear All
                 if(!spinnerFlag)
                 {
-                    networkNames.remove("Select a Network");
+                    networkNames.remove("Select a new Network");
                     networkNames.add(0, "Cancel");
                     spinnerFlag = true;
                 }
-                if(position != 0)
+                if(id != 0)
                 {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    networkName = parent.getItemAtPosition(position).toString();
-                    if(!networkName.equals("Select a Network")) {
+                    //position--; // snafu to reduce the position because the prompt messed it up
+                    networkName = parent.getItemAtPosition((int)id).toString();
+                    if(!networkName.equals("Select a new Network")) {
                         // display the associated sensors from the network
                         networkID = networkPair.get(networkName);
-
 
                     }
                 }else
@@ -101,7 +137,8 @@ public class MoveSensorActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        displayNetworkData();
+        displayNetworkDataSpinnerFrom();
+
         spinnerSensor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -121,6 +158,7 @@ public class MoveSensorActivity extends AppCompatActivity {
                     if(!sensorName.equals("Select a Sensor to Move")) {
                         // display the associated sensors from the network
                         sensorID = sensorPair.get(sensorName);
+                        displayNetworkData();
                     }
                 }else
                 {
@@ -130,21 +168,27 @@ public class MoveSensorActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        displaySensorData();
+
     }
 
-    private void displaySensorData() {
+    private void displaySensorData(String _networkID) {
         prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
+        //params
+        RequestParams params = new RequestParams();
+        params.put("networkID", _networkID);
 
-        client.get(base_url + "SensorList/" + authToken, new AsyncHttpResponseHandler() {
+        client.get(base_url + "SensorList/" + authToken, params, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
                 try {
                     prgDialog.hide();
                     JSONObject obj = new JSONObject(response);
                     JSONArray objArray = obj.getJSONArray("Result");
-
+                    sensorPair.clear();
+                    sensorDigitPair.clear();
+                    sensorNames.clear();
+                    sensorNames.add("Select a Sensor to Move");
                     for (int i = 0; i < objArray.length(); i++) {
                         //grabs the object
                         JSONObject tempSensor = objArray.getJSONObject(i);
@@ -186,7 +230,60 @@ public class MoveSensorActivity extends AppCompatActivity {
             }
         });
     }
+    /**
+     * display the network data of the associated account
+     * user to select which network to display gateways from
+     */
+    public void displayNetworkDataSpinnerFrom() {
+        prgDialog.show();
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(base_url + "NetworkList/" + authToken, new AsyncHttpResponseHandler() {
 
+            public void onSuccess(String response) {
+                try {
+                    prgDialog.hide();
+                    JSONObject obj = new JSONObject(response);
+                    JSONArray objArray = obj.getJSONArray("Result");
+
+                    for (int i = 0; i < objArray.length(); i++) {
+                        //grabs the object
+                        JSONObject tempNetwork = objArray.getJSONObject(i);
+                        String name = tempNetwork.getString("NetworkName");
+                        String ID = tempNetwork.getString("NetworkID");
+                        networkPairFrom.put(name, ID);
+                        networkNamesFrom.add(name);
+
+                    }
+                    dataAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item,networkNamesFrom){};
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    //networkSpinner.setAdapter(dataAdapter);
+
+                    spinnerNetworkFrom.setAdapter(dataAdapter);
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "message: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(int statusCode, Throwable error, String content) {
+                prgDialog.hide();
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
@@ -258,7 +355,7 @@ public class MoveSensorActivity extends AppCompatActivity {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(MoveSensorActivity.this);
         alert.setTitle("Move Sensor");
-        alert.setMessage("Are you sure you want to move this sensor?");
+        alert.setMessage("Are you sure you want to move sensor " + sensorName + " to " + networkName + "?");
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
             @Override

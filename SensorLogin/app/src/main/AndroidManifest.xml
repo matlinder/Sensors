@@ -78,7 +78,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Manage.AddSensorActivity" />
         <activity android:name=".Manage.MoveSensorActivity" />
-        <activity android:name=".Manage.RemoveSensorActivity"></activity>
+        <activity android:name=".Manage.RemoveSensorActivity" />
+        <activity android:name=".Manage.EditAnySensorActivity"></activity>
     </application>
 
 </manifest>

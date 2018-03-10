@@ -255,10 +255,9 @@ public class AddSensorActivity extends AppCompatActivity {
                     String temp = obj.getString("Result");
                     if(temp.equals("Success"))
                     {
-                                Toast.makeText(getApplicationContext(), "Added the sensor to " + networkName, Toast.LENGTH_LONG).show();
-                                prgDialog.dismiss();
-                                finish();
-
+                        Toast.makeText(getApplicationContext(), "Added sensor to " + networkName, Toast.LENGTH_LONG).show();
+                        prgDialog.dismiss();
+                        finish();
                     }
                     else
                     {

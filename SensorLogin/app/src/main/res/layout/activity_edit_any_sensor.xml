@@ -4,22 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mathew.sensorlogin.Manage.AddSensorActivity">
+    tools:context="com.mathew.sensorlogin.Manage.EditAnySensorActivity">
 
     <org.angmarch.views.NiceSpinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner2"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_weight="1"
         android:backgroundTint="#FF5178BD"
         android:textAlignment="center"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <org.angmarch.views.NiceSpinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:backgroundTint="#FF5178BD"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
 
     <LinearLayout
-        android:id="@+id/linearLayout6"
+        android:id="@+id/linearLayout3"
         android:layout_width="0dp"
-        android:layout_height="508dp"
+        android:layout_height="441dp"
         android:background="@android:color/white"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,20 +45,25 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner">
 
         <TextView
-            android:id="@+id/sensorText"
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:padding="8dp"
-            android:text="@string/sensor_id"
+            android:text="Name"
             android:textAlignment="viewStart"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/sensorID"
+            android:id="@+id/editName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -49,23 +71,33 @@
             android:background="@drawable/rounded_edittext"
             android:ems="10"
             android:inputType="textPersonName"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.515"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <TextView
-            android:id="@+id/sensorCodeText"
+            android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:padding="8dp"
-            android:text="@string/sensor_code"
+            android:text="Heartbeat"
             android:textAlignment="viewStart"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/sensorCode"
+            android:id="@+id/editHeartBeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -73,58 +105,41 @@
             android:background="@drawable/rounded_edittext"
             android:ems="10"
             android:inputType="textPersonName"
-            android:padding="8dp" />
-
-        <TextView
-            android:id="@+id/sensorNameText"
-            android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
             android:padding="8dp"
-            android:text="@string/sensor_name"
-            android:textAlignment="viewStart"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/rounded_edittext"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:padding="8dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.515"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <Button
-            android:id="@+id/addSensor"
+            android:id="@+id/saveChanges"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="57dp"
+            android:background="@drawable/mybutton"
+            android:onClick="updateSensor"
+            android:text="UPDATE sensor"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="215dp"
+            tools:layout_editor_absoluteY="285dp" />
+
+        <Button
+            android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="22dp"
             android:background="@drawable/mybutton"
-            android:onClick="addSensor"
-            android:text="@string/add_sensor"
+            android:onClick="cancelEdit"
+            android:text="Cancel"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/mybutton"
-            android:onClick="cancelAdd"
-            android:text="@string/cancel"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            tools:layout_editor_absoluteX="46dp"
+            tools:layout_editor_absoluteY="152dp" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

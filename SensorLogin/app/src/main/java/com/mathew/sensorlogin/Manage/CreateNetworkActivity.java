@@ -26,6 +26,8 @@ public class CreateNetworkActivity extends AppCompatActivity {
     private ProgressDialog prgDialog; //dialog
     private String authToken;
     private EditText networkName;
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class CreateNetworkActivity extends AppCompatActivity {
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             authToken = extras.getString("token");
+            userID = extras.getString("userID");
         }
         networkName = findViewById(R.id.editName);
 
@@ -95,7 +98,7 @@ public class CreateNetworkActivity extends AppCompatActivity {
                 prgDialog.hide();
                 Toast.makeText(getApplicationContext(), name + " was created!", Toast.LENGTH_LONG).show();
                 addNetworkToCurrentUser(name);
-                finish();
+
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {
@@ -177,13 +180,33 @@ public class CreateNetworkActivity extends AppCompatActivity {
 
         //params
         RequestParams params = new RequestParams();
+        params.put("custID", userID);
         params.put(networkParam, "on");
         client.get(base_url + "EditCustomerPermissions/" + authToken, params, new AsyncHttpResponseHandler() {
 
             public void onSuccess(String response) {
+                JSONObject obj = null;
+                try {
+                    obj = new JSONObject(response);
+                    String temp = obj.getString("Result");
+                    if(temp.equals("Success"))
+                    {
+                        Toast.makeText(getApplicationContext(), networkID + " was added to user", Toast.LENGTH_LONG).show();
+                        prgDialog.dismiss();
+                        finish();
 
-                Toast.makeText(getApplicationContext(), networkID + " was added to user", Toast.LENGTH_LONG).show();
-                finish();
+                    }else
+                    {
+                        Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_LONG).show();
+                        prgDialog.dismiss();
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {
