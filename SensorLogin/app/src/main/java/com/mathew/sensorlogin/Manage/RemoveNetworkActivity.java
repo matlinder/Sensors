@@ -77,15 +77,12 @@ public class RemoveNetworkActivity extends AppCompatActivity {
                     networkNames.add(0, "Cancel Remove");
                     spinnerFlag = true;
                 }
-                if(position != 0)
-                {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    networkName = parent.getItemAtPosition(position).toString();
-                    if(!networkName.equals("Select a Network")) {
-                        // display the associated sensors from the network
-                        networkID = networkPair.get(networkName);
-                        networkPrompt.setVisibility(View.INVISIBLE);
-                    }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a Network") && !networkName.equals("Cancel Remove")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
+                    networkPrompt.setVisibility(View.INVISIBLE);
                 }else
                 {
                     cancelRemove(null);

@@ -81,16 +81,12 @@ public class RemoveSensorActivity extends AppCompatActivity {
                     networkNames.add(0, "Cancel Edit");
                     spinnerFlagNetwork = true;
                 }
-                if(id != 0)
-                {
-                    //position--; // snafu to reduce the position because the prompt messed it up
-                    String networkName = parent.getItemAtPosition((int)id).toString();
-                    if(!networkName.equals("Select a Network")) {
-                        // display the associated sensors from the network
-                        networkID = networkPair.get(networkName);
-                        displaySensorData(networkID);
-
-                    }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                String networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a Network") && !networkName.equals("Cancel Edit")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
+                    displaySensorData(networkID);
                 }else
                 {
                     cancel(null);
@@ -112,14 +108,11 @@ public class RemoveSensorActivity extends AppCompatActivity {
                     sensorNames.add(0, "Cancel Remove");
                     spinnerFlagSensor = true;
                 }
-                if(id != 0)
-                {
-                    //position--; // snafu to reduce the position because the prompt messed it up
-                    sensorName = parent.getItemAtPosition((int)id).toString();
-                    if(!sensorName.equals("Select a Sensor to Remove")) {
-                        // display the associated sensors from the network
-                        sensorID = sensorPair.get(sensorName);
-                    }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                sensorName = parent.getItemAtPosition((int)id).toString();
+                if(!sensorName.equals("Select a Sensor to Remove") && !sensorName.equals("Cancel Remove")) {
+                    // display the associated sensors from the network
+                    sensorID = sensorPair.get(sensorName);
                 }else
                 {
                     cancel(null);

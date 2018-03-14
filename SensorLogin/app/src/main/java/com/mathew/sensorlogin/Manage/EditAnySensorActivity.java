@@ -92,16 +92,13 @@ public class EditAnySensorActivity extends AppCompatActivity {
                     networkNames.add(0, "Cancel Edit");
                     spinnerFlagNetwork = true;
                 }
-                if(position != 0)
-                {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    String networkName = parent.getItemAtPosition(position).toString();
-                    if(!networkName.equals("Select a Network")) {
-                        // display the associated sensors from the network
-                        networkID = networkPair.get(networkName);
-                        displaySensorData(networkID);
 
-                    }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                String networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a Network") && !networkName.equals("Cancel Edit")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
+                    displaySensorData(networkID);
                 }else
                 {
                     cancelEdit(null);
@@ -123,15 +120,12 @@ public class EditAnySensorActivity extends AppCompatActivity {
                     sensorNames.add(0, "Cancel Edit");
                     spinnerFlagSensor = true;
                 }
-                if(position != 0)
-                {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    sensorName = parent.getItemAtPosition(position).toString();
-                    if(!sensorName.equals("Select a Sensor to Edit")) {
-                        // display the associated sensors from the network
-                        sensorID = sensorPair.get(sensorName);
-                        populateEditFields(sensorID);
-                    }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                sensorName = parent.getItemAtPosition((int)id).toString();
+                if(!sensorName.equals("Select a Sensor to Edit") && !sensorName.equals("Cancel Edit")) {
+                    // display the associated sensors from the network
+                    sensorID = sensorPair.get(sensorName);
+                    populateEditFields(sensorID);
                 }else
                 {
                     cancelEdit(null);

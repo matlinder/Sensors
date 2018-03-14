@@ -36,6 +36,7 @@ public class AddGatewayActivity extends AppCompatActivity {
     private ArrayList<String> networkNames = new ArrayList<String>();
     private ProgressDialog prgDialog; //dialog
     private boolean spinnerFlag = false; // flag to know when spinner is selected
+    private boolean repeat = false;
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
     NiceSpinner spinner; // the spinner
 
@@ -76,21 +77,17 @@ public class AddGatewayActivity extends AppCompatActivity {
                     networkNames.add(0, "Cancel");
                     spinnerFlag = true;
                 }
-                if(position != 0)
-                {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    networkName = parent.getItemAtPosition(position).toString();
-                    if(!networkName.equals("Select a Network")) {
-                        // display the associated sensors from the network
-                        networkID = networkPair.get(networkName);
 
+                //position--; // snafu to reduce the position because the prompt messed it up
+                networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a Network") && !networkName.equals("Cancel")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
 
-                    }
                 }else
                 {
                     // "Cancel All" was selected so just clear the table
                     cancelCreate(null);
-
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -185,8 +182,10 @@ public class AddGatewayActivity extends AppCompatActivity {
 
         if(gatewayCode != null && gatewayID != null)
         {
-            String ID = gatewayID.getText().toString();
-            String code = gatewayCode.getText().toString();
+            final String ID = gatewayID.getText().toString();
+            final String code = gatewayCode.getText().toString();
+            final String errorMsg = "GatewayID: " + ID + " could not be transfered to new network.";
+
 
             if(networkID == null)
             {
@@ -217,14 +216,21 @@ public class AddGatewayActivity extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             String temp = obj.getString("Result");
-                            if(temp.equals("Success"))
+                            if(temp.equals(errorMsg) && !repeat)
+                            {
+                                Toast.makeText(getApplicationContext(), "Running again ", Toast.LENGTH_LONG).show();
+                                repeat = true;
+                                addGateway(null); //snafu need to call the method again since first time could be false negative
+                            }else if(temp.equals("Success"))
                             {
                                 Toast.makeText(getApplicationContext(), "Added the gateway to " + networkName, Toast.LENGTH_LONG).show();
+                                repeat = false;
                                 prgDialog.dismiss();
                                 finish();
                             }
                             else
                             {
+                                repeat = false;
                                 Toast.makeText(getApplicationContext(), "ID or Code is incorrect", Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {

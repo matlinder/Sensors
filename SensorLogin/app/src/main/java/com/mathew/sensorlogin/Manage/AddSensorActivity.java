@@ -76,21 +76,16 @@ public class AddSensorActivity extends AppCompatActivity {
                     networkNames.add(0, "Cancel");
                     spinnerFlag = true;
                 }
-                if(position != 0)
-                {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    networkName = parent.getItemAtPosition(position).toString();
-                    if(!networkName.equals("Select a Network")) {
-                        // display the associated sensors from the network
-                        networkID = networkPair.get(networkName);
 
-
-                    }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a Network") && !networkName.equals("Cancel")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
                 }else
                 {
                     // "Cancel All" was selected so just clear the table
                     cancelAdd(null);
-
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {

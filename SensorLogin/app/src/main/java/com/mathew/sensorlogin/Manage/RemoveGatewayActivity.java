@@ -81,16 +81,12 @@ public class RemoveGatewayActivity extends AppCompatActivity {
                     networkNames.add(0, "Cancel Remove");
                     spinnerFlagNetwork = true;
                 }
-                if(position != 0)
-                {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    String networkName = parent.getItemAtPosition(position).toString();
-                    if(!networkName.equals("Select a Network")) {
-                        // display the associated sensors from the network
-                        networkID = networkPair.get(networkName);
-                        displayGatewayDate(networkID);
-
-                    }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                String networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a Network") && !networkName.equals("Cancel Remove")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
+                    displayGatewayDate(networkID);
                 }else
                 {
                     cancelRemove(null);
@@ -112,15 +108,13 @@ public class RemoveGatewayActivity extends AppCompatActivity {
                     gatewayNames.add(0, "Cancel Remove");
                     spinnerFlagGateway = true;
                 }
-                if(position != 0)
-                {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    gatewayName = parent.getItemAtPosition(position).toString();
-                    if(!gatewayName.equals("Select a Gateway")) {
-                        // display the associated sensors from the network
-                        gatewayID = gatewayPair.get(gatewayName);
 
-                    }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                gatewayName = parent.getItemAtPosition((int)id).toString();
+                if(!gatewayName.equals("Select a Gateway") && !gatewayName.equals("Cancel Remove")) {
+                    // display the associated sensors from the network
+                    gatewayID = gatewayPair.get(gatewayName);
+
                 }else
                 {
                     cancelRemove(null);

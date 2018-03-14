@@ -126,20 +126,18 @@ public class SensorActivity extends AppCompatActivity {
                     networkNames.add(0, "Clear All");
                     spinnerFlag = true;
                 }
-                if(id != 0)
-                {
-                    //position--; // snafu to reduce the position because the prompt messed it up
-                    String networkName = parent.getItemAtPosition((int)id).toString();
-                    if(!networkName.equals("Select a Network")) {
-                        // display the associated sensors from the network
-                        networkID = networkPair.get(networkName);
-                        networkPrompt.setVisibility(View.INVISIBLE);
-                        mainTable.removeAllViews(); //clear the table
-                        createTable(); // create the header
 
-                        displayNetworkSensors(networkID); // add the sensors to the rows
-                    }
-                }else
+                //position--; // snafu to reduce the position because the prompt messed it up
+                String networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a Network") && !networkName.equals("Clear All")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
+                    networkPrompt.setVisibility(View.INVISIBLE);
+                    mainTable.removeAllViews(); //clear the table
+                    createTable(); // create the header
+                    displayNetworkSensors(networkID); // add the sensors to the rows
+                }
+                else
                 {
                     // "Clear all" was selected so just clear the table
                     mainTable.removeAllViews();

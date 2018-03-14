@@ -87,20 +87,18 @@ public class MoveSensorActivity extends AppCompatActivity {
                     spinnerFlagFrom = true;
 
                 }
-                if(id != 0)
-                {
-                    //id--; // snafu to reduce the position because the prompt messed it up
-                    networkNameFrom = parent.getItemAtPosition((int)id).toString();
-                    if(!networkNameFrom.equals("Select a new Network")) {
-                        // display the associated sensors from the network
-                        networkIDFrom = networkPairFrom.get(networkNameFrom);
-                        displaySensorData(networkIDFrom);
-                    }
+
+                //id--; // snafu to reduce the position because the prompt messed it up
+                networkNameFrom = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a new Network") && !networkName.equals("Cancel")) {
+                    // display the associated sensors from the network
+                    networkIDFrom = networkPairFrom.get(networkNameFrom);
+                    displaySensorData(networkIDFrom);
+
                 }else
                 {
                     // "Cancel All" was selected so just clear the table
                     cancelMove(null);
-
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -118,21 +116,18 @@ public class MoveSensorActivity extends AppCompatActivity {
                     networkNames.add(0, "Cancel");
                     spinnerFlag = true;
                 }
-                if(id != 0)
-                {
-                    //position--; // snafu to reduce the position because the prompt messed it up
-                    networkName = parent.getItemAtPosition((int)id).toString();
-                    if(!networkName.equals("Select a new Network")) {
-                        // display the associated sensors from the network
-                        networkID = networkPair.get(networkName);
 
-                    }
-                }else
-                {
+                //position--; // snafu to reduce the position because the prompt messed it up
+                networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a new Network") && !networkName.equals("Cancel")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
+                }else {
+
                     // "Cancel All" was selected so just clear the table
                     cancelMove(null);
-
                 }
+
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }
