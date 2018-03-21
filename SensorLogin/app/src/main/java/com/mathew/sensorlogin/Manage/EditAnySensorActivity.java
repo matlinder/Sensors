@@ -194,9 +194,9 @@ public class EditAnySensorActivity extends AppCompatActivity {
     }
 
     /*
-         * Text change listener
-         * Only change value if the text has been changed, otherwise finish the activity
-         */
+     * Text change listener
+     * Only change value if the text has been changed, otherwise finish the activity
+     */
     private TextWatcher nameTextWatcher = new TextWatcher() {
 
         @Override

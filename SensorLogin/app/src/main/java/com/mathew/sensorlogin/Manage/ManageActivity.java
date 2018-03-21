@@ -216,6 +216,10 @@ public class ManageActivity extends AppCompatActivity {
         removeUser.setVisibility(userVisible ? View.VISIBLE : View.GONE);
     }
     public void startAddUserActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), AddUserActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
     }
     public void startEditUserActivity(View view) {
     }

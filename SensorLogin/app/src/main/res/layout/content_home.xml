@@ -29,7 +29,7 @@
 
     <GridLayout
         android:id="@+id/gridLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="245dp"
         android:columnCount="3"
         android:rowCount="3"
@@ -115,6 +115,7 @@
             android:textColor="@color/buttonColor"
             android:textSize="17sp"
             android:theme="@style/PrimaryFlatButton" />
+
         <Button
             android:id="@+id/manage"
             android:layout_width="100dp"

@@ -74,6 +74,9 @@ public class MoveSensorActivity extends AppCompatActivity {
         networkNamesFrom.add("Select a Network");
         networkNames.add("Select a new Network");
         sensorNames.add("Select a Sensor to Move");
+
+        displayNetworkDataSpinnerFrom();
+
         spinnerNetworkFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -90,7 +93,7 @@ public class MoveSensorActivity extends AppCompatActivity {
 
                 //id--; // snafu to reduce the position because the prompt messed it up
                 networkNameFrom = parent.getItemAtPosition((int)id).toString();
-                if(!networkName.equals("Select a new Network") && !networkName.equals("Cancel")) {
+                if(!networkNameFrom.equals("Select a new Network") && !networkNameFrom.equals("Cancel")) {
                     // display the associated sensors from the network
                     networkIDFrom = networkPairFrom.get(networkNameFrom);
                     displaySensorData(networkIDFrom);
@@ -132,7 +135,7 @@ public class MoveSensorActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        displayNetworkDataSpinnerFrom();
+
 
         spinnerSensor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
