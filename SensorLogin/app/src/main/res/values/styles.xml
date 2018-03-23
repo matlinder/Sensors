@@ -57,5 +57,10 @@
 
     </style>
 
+    <style name="CheckboxStyle" parent="AppTheme">
+        <item name="colorAccent">@color/colorAccent</item>  // for checked
+        <item name="android:textColorSecondary">@android:color/black</item>  // for unchecked
+    </style>
+
 
 </resources>

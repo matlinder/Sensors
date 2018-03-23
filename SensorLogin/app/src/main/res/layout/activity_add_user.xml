@@ -47,12 +47,25 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/errorUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="TextView"
+                android:textColor="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                tools:text="Username not available" />
+
+            <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:padding="8dp"
                 android:text="First Name"
                 android:textAlignment="viewStart"
@@ -72,12 +85,24 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/errorFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="Required"
+                android:textColor="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+            <TextView
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:padding="8dp"
                 android:text="Last Name"
                 android:textAlignment="viewStart"
@@ -97,12 +122,24 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/errorLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="Required"
+                android:textColor="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+            <TextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:padding="8dp"
                 android:text="Email"
                 android:textAlignment="viewStart"
@@ -122,12 +159,24 @@
                 android:textColor="@android:color/black" />
 
             <TextView
+                android:id="@+id/errorEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="Invalid Email Address"
+                android:textColor="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:padding="8dp"
                 android:text="Password"
                 android:textAlignment="viewStart"
@@ -145,13 +194,26 @@
                 android:inputType="textPassword"
                 android:padding="8dp"
                 android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/errorPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="Password must be at least 8 characters"
+                android:textColor="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:padding="8dp"
                 android:text="Confirm Password"
                 android:textAlignment="viewStart"
@@ -169,6 +231,19 @@
                 android:inputType="textPassword"
                 android:padding="8dp"
                 android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/errorConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="Passwords do not match"
+                android:textColor="@android:color/holo_red_light"
+                android:textStyle="bold"
+                android:visibility="invisible" />
 
             <CheckBox
                 android:id="@+id/admin"

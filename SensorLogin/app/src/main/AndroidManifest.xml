@@ -80,7 +80,8 @@
         <activity android:name=".Manage.MoveSensorActivity" />
         <activity android:name=".Manage.RemoveSensorActivity" />
         <activity android:name=".Manage.EditAnySensorActivity" />
-        <activity android:name=".Manage.AddUserActivity"></activity>
+        <activity android:name=".Manage.AddUserActivity" />
+        <activity android:name=".Manage.AddUserPermissionActivity"></activity>
     </application>
 
 </manifest>

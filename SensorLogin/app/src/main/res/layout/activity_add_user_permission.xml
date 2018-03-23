@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mathew.sensorlogin.Manage.AddUserPermissionActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/permLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:padding="8dp"
+                android:text="Select User Permissions"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/ackNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Acknowledge Notifications" />
+
+            <CheckBox
+                android:id="@+id/addNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="false"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Add Network" />
+
+            <CheckBox
+                android:id="@+id/addUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:padding="8dp"
+                android:text="Add User" />
+
+            <CheckBox
+                android:id="@+id/calibrateSensor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Calibrate Sensor" />
+
+            <CheckBox
+                android:id="@+id/delUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Delete Users" />
+
+            <CheckBox
+                android:id="@+id/disableNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Disable Notifications from Network" />
+
+            <CheckBox
+                android:id="@+id/editAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Account" />
+
+            <CheckBox
+                android:id="@+id/editGateway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Gateway Information" />
+
+            <CheckBox
+                android:id="@+id/editNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Network" />
+
+            <CheckBox
+                android:id="@+id/editNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Notifications" />
+
+            <CheckBox
+                android:id="@+id/editUsers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Other Users" />
+
+            <CheckBox
+                android:id="@+id/editSelf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Self" />
+
+            <CheckBox
+                android:id="@+id/editSensor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Sensor" />
+
+            <CheckBox
+                android:id="@+id/editSensorMult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Sensor (Multiple)" />
+
+            <CheckBox
+                android:id="@+id/editSensorGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit Sensor Group" />
+
+            <CheckBox
+                android:id="@+id/editUserNames"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Edit User Names" />
+
+            <CheckBox
+                android:id="@+id/export"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Export Data" />
+
+            <CheckBox
+                android:id="@+id/modifyMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Modify Visual Map" />
+
+            <CheckBox
+                android:id="@+id/unlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Password Unlock" />
+
+            <CheckBox
+                android:id="@+id/pauseNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:checked="true"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Pause Notifications" />
+
+            <CheckBox
+                android:id="@+id/resetOtherPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:theme="@style/CheckboxStyle"
+                android:text="Reset Other User Password" />
+            <CheckBox
+                android:id="@+id/sensorChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:checked="true"
+                android:theme="@style/CheckboxStyle"
+                android:text="View Sensor Chart" />
+            <CheckBox
+                android:id="@+id/viewMaps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:checked="true"
+                android:theme="@style/CheckboxStyle"
+                android:text="View Maps" />
+            <CheckBox
+                android:id="@+id/viewMyAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:checked="true"
+                android:theme="@style/CheckboxStyle"
+                android:text="View My Account" />
+            <CheckBox
+                android:id="@+id/viewNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:checked="true"
+                android:theme="@style/CheckboxStyle"
+                android:text="View Notifications" />
+            <CheckBox
+                android:id="@+id/viewReports"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:checked="false"
+                android:theme="@style/CheckboxStyle"
+                android:text="View Reports" />
+
+            <CheckBox
+                android:id="@+id/viewSensorHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                android:checked="true"
+                android:theme="@style/CheckboxStyle"
+                android:text="View Sensor History" />
+
+            <Button
+                android:id="@+id/addPermissions"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/mybutton"
+                android:onClick="addPermissions"
+                android:text="ADD PERMISSIONS"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

@@ -217,6 +217,7 @@ public class ManageActivity extends AppCompatActivity {
     }
     public void startAddUserActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), AddUserActivity.class);
+        //Intent intent = new Intent(getApplicationContext(), AddUserPermissionActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);

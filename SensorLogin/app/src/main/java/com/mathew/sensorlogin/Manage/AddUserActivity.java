@@ -1,6 +1,7 @@
 package com.mathew.sensorlogin.Manage;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,17 +13,20 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.mathew.sensorlogin.AccountActivity;
 import com.mathew.sensorlogin.R;
 import com.mathew.sensorlogin.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class AddUserActivity extends AppCompatActivity {
     // base url for json calls
@@ -30,6 +34,7 @@ public class AddUserActivity extends AppCompatActivity {
     private String authToken, userID;
     private ProgressDialog prgDialog; //dialog
     private EditText userName, firstName, lastName, email, password, confirmPassword;
+    private TextView errorUserName, errorFirstName, errorLastName, errorEmail, errorPassword, errorConfirmPassword;
     private CheckBox admin;
     private boolean validEmail = false;
     private boolean passwordMatch = false;
@@ -64,6 +69,13 @@ public class AddUserActivity extends AppCompatActivity {
         admin = findViewById(R.id.admin);
         email.addTextChangedListener(emailTextWatcher);
 
+        errorUserName = findViewById(R.id.errorUserName);
+        errorFirstName = findViewById(R.id.errorFirstName);
+        errorLastName = findViewById(R.id.errorLastName);
+        errorEmail = findViewById(R.id.errorEmail);
+        errorPassword = findViewById(R.id.errorPassword);
+        errorConfirmPassword = findViewById(R.id.errorConfirmPassword);
+
         admin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
          {
 
@@ -89,12 +101,14 @@ public class AddUserActivity extends AppCompatActivity {
                 {
                     if(email != null && email.length() != 0 && !Utility.validate(email.getText().toString()))
                     {
-                        Toast.makeText(getApplicationContext(), "Email is not the correct format", Toast.LENGTH_LONG).show();
-                        email.setTextColor(Color.RED);
+                        //Toast.makeText(getApplicationContext(), "Email is not the correct format", Toast.LENGTH_LONG).show();
+                        //email.setTextColor(Color.RED);
+                        errorEmail.setVisibility(View.VISIBLE);
                         validEmail = false;
                     }else
                     {
-                        email.setTextColor(Color.BLACK);
+                        //email.setTextColor(Color.BLACK);
+                        errorEmail.setVisibility(View.INVISIBLE);
                         validEmail = true;
                     }
                 }
@@ -110,7 +124,11 @@ public class AddUserActivity extends AppCompatActivity {
                     String p1 = password.getText().toString();
                     if(p1 != null && p1.length() < 8)
                     {
-                        Toast.makeText(getApplicationContext(), "Password must be at least 8 characters", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Password must be at least 8 characters", Toast.LENGTH_LONG).show();
+                        errorPassword.setVisibility(View.VISIBLE);
+                    }else
+                    {
+                        errorPassword.setVisibility(View.INVISIBLE);
                     }
                 }
             }
@@ -127,10 +145,12 @@ public class AddUserActivity extends AppCompatActivity {
 
                     if(!p1.equals(p2))
                     {
-                        Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
+                        errorConfirmPassword.setVisibility(View.VISIBLE);
                         passwordMatch = false;
                     }else
                     {
+                        errorConfirmPassword.setVisibility(View.INVISIBLE);
                         passwordMatch = true;
                     }
                 }
@@ -175,57 +195,99 @@ public class AddUserActivity extends AppCompatActivity {
         String _admin = String.valueOf(admin.isChecked());
         boolean errorFlag = false;
         StringBuilder errorMsg = new StringBuilder();
+        boolean errorFound = false;
 
         if(_userName == null || _userName.length() == 0)
         {
             //Toast.makeText(getApplicationContext(), "Please enter a username", Toast.LENGTH_LONG).show();
-            userName.setHint("Required");
-            userName.setHintTextColor(Color.RED);
+//            userName.setHint("Required");
+//            userName.setHintTextColor(Color.RED);
+            errorUserName.setText("Required");
+            errorUserName.setVisibility(View.VISIBLE);
             errorFlag = true;
+            errorFound = true;
+            userName.requestFocus();
+
         }
         if(_firstName == null || _firstName.length() == 0)
         {
             //Toast.makeText(getApplicationContext(), "Please enter a first name", Toast.LENGTH_LONG).show();
-            firstName.setHint("Required");
-            firstName.setHintTextColor(Color.RED);
+//            firstName.setHint("Required");
+//            firstName.setHintTextColor(Color.RED);
+            errorFirstName.setVisibility(View.VISIBLE);
             errorFlag = true;
+            if(!errorFound)
+            {
+                errorFound = true;
+                firstName.requestFocus();
+            }
         }
         if(_lastName == null || _lastName.length() == 0)
         {
             //Toast.makeText(getApplicationContext(), "Please enter a last name", Toast.LENGTH_LONG).show();
-            lastName.setHint("Required");
-            lastName.setHintTextColor(Color.RED);
+//            lastName.setHint("Required");
+//            lastName.setHintTextColor(Color.RED);
+            errorLastName.setVisibility(View.VISIBLE);
             errorFlag = true;
+            if(!errorFound)
+            {
+                errorFound = true;
+                lastName.requestFocus();
+            }
         }
         if(!Utility.validate(_email))
         {
 //            Toast.makeText(getApplicationContext(), "Email is not the correct format", Toast.LENGTH_LONG).show();
-            errorMsg.append("Email is not the correct format\n");
-            if(_email != null && _email.length() != 0) {
-                email.setTextColor(Color.RED);
+//            errorMsg.append("Email is not the correct format\n");
+//            if(_email != null && _email.length() != 0) {
+//                email.setTextColor(Color.RED);
+//            }
+//            validEmail = false;
+            errorEmail.setVisibility(View.VISIBLE);
+            errorFlag = true;
+            if(!errorFound)
+            {
+                errorFound = true;
+                email.requestFocus();
             }
-            validEmail = false;
-            errorFlag = true;
-        }else
-        {
-            email.setTextColor(Color.BLACK);
-            validEmail = true;
         }
-        if(!_password.equals(_confirmPassword))
+        if(_password == null || _confirmPassword == null || _password.length() == 0 || _confirmPassword.length() == 0 )
         {
-            errorMsg.append("Passwords do not match\n");
-            passwordMatch = false;
+            errorPassword.setVisibility(View.VISIBLE);
             errorFlag = true;
-        }else
-        {
-            passwordMatch = true;
+            if(!errorFound)
+            {
+                errorFound = true;
+                password.requestFocus();
+            }
         }
+        if(_password == null || _confirmPassword == null || !_password.equals(_confirmPassword))
+        {
+//            errorMsg.append("Passwords do not match\n");
+//            passwordMatch = false;
+
+            errorConfirmPassword.setVisibility(View.VISIBLE);
+            errorFlag = true;
+            if(!errorFound)
+            {
+                errorFound = true;
+                confirmPassword.requestFocus();
+            }
+        }
+
 
         if(errorFlag)
         {
-            errorMsg.append("Please fix the required fields");
-            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
             return;
+        }else
+        {
+            errorUserName.setVisibility(View.INVISIBLE);
+            errorFirstName.setVisibility(View.INVISIBLE);
+            errorLastName.setVisibility(View.INVISIBLE);
+            errorEmail.setVisibility(View.INVISIBLE);
+            errorConfirmPassword.setVisibility(View.INVISIBLE);
+            errorPassword.setVisibility(View.INVISIBLE);
+
         }
         //client
         AsyncHttpClient client = new AsyncHttpClient();
@@ -251,21 +313,29 @@ public class AddUserActivity extends AppCompatActivity {
 
                     if(item instanceof JSONArray)
                     {
-                        Toast.makeText(getApplicationContext(), "Array of Errors", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Array of Errors", Toast.LENGTH_LONG).show();
                         JSONArray resultArray = (JSONArray) item;
 
                         for(int i = 0; i < resultArray.length(); i++)
                         {
+                            JSONObject temp = resultArray.getJSONObject(i);
+                            //String error = temp.getString("Error");
+                            //Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                            userName.requestFocus();
+                            errorUserName.setText("Username not available");
+                            errorUserName.setVisibility(View.VISIBLE);
 
                         }
 
                     }else
                     {
+                        JSONObject result = (JSONObject) item;
+                        String userID = result.getString("UserID");
 
-
-                        Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_LONG).show();
                         prgDialog.dismiss();
                         finish();
+                        startAddUserPermissionActivity(userID, admin.isChecked());
                     }
 
 
@@ -293,6 +363,14 @@ public class AddUserActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void startAddUserPermissionActivity(String userID, boolean admin) {
+        Intent intent = new Intent(getApplicationContext(), AddUserPermissionActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        intent.putExtra("isAdmin", admin);
+        startActivity(intent);
     }
 
     public void cancelAdd(View view) {

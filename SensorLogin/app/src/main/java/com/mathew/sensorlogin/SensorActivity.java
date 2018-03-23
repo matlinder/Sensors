@@ -76,7 +76,7 @@ public class SensorActivity extends AppCompatActivity {
 
     // files to store the data from the json request
     private String sensorFileContents, gatewayFileContents;
-    private String[] listOfSensors; // extrated file contents
+    private String[] listOfSensors; // extracted file contents
     private String[] listOfPairs; // extracted file contents
 
 
