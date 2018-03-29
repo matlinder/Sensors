@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.mathew.sensorlogin.Manage.ManageActivity;
+import com.mathew.sensorlogin.Manage.manageActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     if(access) {
 
-                        Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), manageActivity.class);
                         intent.putExtra("token", authToken);
                         intent.putExtra("userID", userID);
                         startActivity(intent);

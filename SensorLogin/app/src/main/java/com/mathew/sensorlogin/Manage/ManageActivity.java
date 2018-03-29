@@ -21,7 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ManageActivity extends AppCompatActivity {
+public class manageActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken;
@@ -223,6 +223,10 @@ public class ManageActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void startEditUserActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), EditUserActivity.class);
+        //Intent intent = new Intent(getApplicationContext(), AddUserPermissionActivity.class);
+        intent.putExtra("token", authToken);
+        startActivity(intent);
     }
     public void startRemoveUserActivity(View view) {
     }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="com.mathew.sensorlogin.Manage.ManageActivity">
+    tools:context="com.mathew.sensorlogin.Manage.manageActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -23,7 +23,7 @@
         <Button
             android:id="@+id/networks"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/button_height"
             android:layout_marginTop="40dp"
             android:background="@drawable/mybutton"
             android:onClick="showNetworkButtons"
@@ -62,8 +62,8 @@
         <Button
             android:id="@+id/gateways"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/bottom_button_spacer"
             android:background="@drawable/mybutton"
             android:onClick="showGatewayButtons"
             android:text="@string/gateway"
@@ -100,13 +100,13 @@
         <Button
             android:id="@+id/sensors"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/bottom_button_spacer"
             android:background="@drawable/mybutton"
             android:onClick="showSensorButtons"
             android:text="@string/sensors"
             android:textColor="@android:color/white"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/addSensor"
@@ -162,14 +162,14 @@
         <Button
             android:id="@+id/users"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/bottom_button_spacer"
             android:background="@drawable/mybutton"
             android:onClick="showUserButtons"
             android:text="@string/users"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/addUser"

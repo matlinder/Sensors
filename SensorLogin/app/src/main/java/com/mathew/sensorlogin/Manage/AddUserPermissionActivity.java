@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -49,8 +50,8 @@ public class AddUserPermissionActivity extends AppCompatActivity {
     private ArrayList<String> networkNames = new ArrayList<String>();
     private HashMap<String, String> networkPair = new HashMap<String, String>();
     private ArrayList<String> seeNetworks = new ArrayList<String>();
-    private Drawable id;
     private boolean admin;
+    private TextView prompt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +71,10 @@ public class AddUserPermissionActivity extends AppCompatActivity {
         if (extras != null) {
             authToken = extras.getString("token");
             userID = extras.getString("userID");
-            admin = extras.getBoolean("admin");
+            admin = extras.getBoolean("isAdmin");
         }
 
         ackNotifications = findViewById(R.id.ackNotifications);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            id = ackNotifications.getButtonDrawable();
-        }
         addNetwork = findViewById(R.id.addNetwork);
         addUser = findViewById(R.id.addUser);
         if(!admin){addUser.setVisibility(View.GONE);}
@@ -106,8 +104,44 @@ public class AddUserPermissionActivity extends AppCompatActivity {
         viewSensorHistory = findViewById(R.id.viewSensorHistory);
 
         addPermissions = findViewById(R.id.addPermissions);
-        if(admin){addPermissions.setText("All Permissions Selected for Admin");}
+        prompt = findViewById(R.id.textView7);
+
         permLayout = findViewById(R.id.permLayout);
+
+        if(admin){
+
+            prompt.setText("All Permissions Selected for Admin");
+            ackNotifications.setChecked(true);
+            addNetwork.setChecked(true);
+            addUser.setChecked(true);
+            calibrateSensor.setChecked(true);
+            delUser.setChecked(true);
+            disableNotifications.setChecked(true);
+            editAccount.setChecked(true);
+            editGateway.setChecked(true);
+            editNetwork.setChecked(true);
+            editNotifications.setChecked(true);
+            editUsers.setChecked(true);
+            editSelf.setChecked(true);
+            editSensor.setChecked(true);
+            editSensorMult.setChecked(true);
+            editSensorGroup.setChecked(true);
+            editUserNames.setChecked(true);
+            export.setChecked(true);
+            modifyMap.setChecked(true);
+            unlock.setChecked(true);
+            pauseNotifications.setChecked(true);
+            resetOtherPass.setChecked(true);
+            sensorViewChart.setChecked(true);
+            viewMaps.setChecked(true);
+            viewMyAccount.setChecked(true);
+            viewNotifications.setChecked(true);
+            viewReports.setChecked(true);
+            viewSensorHistory.setChecked(true);
+
+        }
+
+
 
         displayNetworkData();
         //createNetworkCheckBoxes();
@@ -277,6 +311,7 @@ public class AddUserPermissionActivity extends AppCompatActivity {
 
                                 }
                             });
+                            if(admin){ch.setChecked(true);}
                             permLayout.addView(ch, params);
 
                         }

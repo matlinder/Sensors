@@ -3,24 +3,27 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical"
-    android:padding="10dip">
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="211dp"
         android:layout_marginBottom="50dip"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/ccmetlogosmall"></ImageView>
+        android:src="@drawable/ccmetlogosmall" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="20dip"
         android:text="@string/login_title"
         android:textAlignment="viewStart"
@@ -33,21 +36,25 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/rounded_edittext"
-        android:padding="8dp"
-        android:hint="Username"
-        android:inputType="textEmailAddress"
+        android:hint="@string/username"
 
+        android:inputType="textEmailAddress"
+        android:padding="8dp"
         android:textColor="@android:color/black" />
 
     <EditText
         android:id="@+id/loginPassword"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/rounded_edittext"
-        android:hint="Password"
-        android:padding="8dp"
+        android:hint="@string/password"
         android:inputType="textPassword"
+        android:padding="8dp"
         android:textColor="@android:color/black" />
 
 
@@ -55,21 +62,34 @@
         android:id="@+id/checkBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="remember username and password" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/remember_username_and_password" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="20dip"
-        android:background="@drawable/mybutton"
-        android:onClick="loginUser"
-        android:padding="10dp"
-        android:text="Login"
-        android:textColor="#fff"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginBottom="@dimen/bottom_screen_margin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/bottom_button_spacer"
+            android:background="@drawable/mybutton"
+            android:onClick="loginUser"
+            android:padding="10dp"
+            android:text="@string/login"
+            android:textColor="#fff"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </LinearLayout>
     <!--android:background="@color/buttonColor"-->
 </LinearLayout>
 

@@ -98,7 +98,7 @@ public class AccountActivity extends AppCompatActivity {
                     JSONObject result = obj.getJSONObject("Result");
                     // assign the data to the fields so that it is displayed
                     name.setText(String.format("Name: \t\t%s %s", result.getString("FirstName"), result.getString("LastName")));
-                    email.setText(String.format("Email: \t\t%s", result.getString("EmailAddress")));
+                    email.setText(String.format("Email: \t\t\t%s", result.getString("EmailAddress")));
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

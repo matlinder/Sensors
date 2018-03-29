@@ -57,7 +57,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Manage.ManageActivity"
+            android:name=".Manage.manageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
@@ -81,7 +81,9 @@
         <activity android:name=".Manage.RemoveSensorActivity" />
         <activity android:name=".Manage.EditAnySensorActivity" />
         <activity android:name=".Manage.AddUserActivity" />
-        <activity android:name=".Manage.AddUserPermissionActivity"></activity>
+        <activity android:name=".Manage.AddUserPermissionActivity" />
+        <activity android:name=".Manage.EditUserActivity" />
+        <activity android:name=".Manage.EditUserPermissionActivity"></activity>
     </application>
 
 </manifest>

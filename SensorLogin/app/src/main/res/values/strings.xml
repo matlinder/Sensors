@@ -32,8 +32,17 @@
     <string name="move_sensor">Move Sensor</string>
     <string name="sensor_id">Sensor ID</string>
     <string name="sensor_code">Sensor Code</string>
-    <string name="cancel">Cancel</string>
     <string name="sensor_name">Sensor Name</string>
     <string name="edit_sensor">Edit Sensor</string>
+    <string name="current_temp">Current Temp:</string>
+    <string name="no_communication_last_info_displayed">No Communication, last info displayed</string>
+    <string name="history">History</string>
+    <string name="graph">GRAPH</string>
+    <string name="remove_network">Remove Network</string>
+    <string name="cancel">Cancel</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="remember_username_and_password">remember username and password</string>
+    <string name="login">Login</string>
 
 </resources>

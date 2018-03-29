@@ -47,6 +47,7 @@ public class HistoryActivity extends AppCompatActivity {
     private String endParam; // end date param for request
     private String startParam; // start date param for request
     private Calendar todaysDate, yesterdayDate; // instances of today and yesterday's dates
+    private boolean backgroundColor = true;
 
     /**
      * Create the history activity and populate the table with the last day's history of the sensor
@@ -279,15 +280,25 @@ public class HistoryActivity extends AppCompatActivity {
         label_ID.setText("Date");
         label_ID.setWidth(350);
         label_ID.setTextColor(Color.WHITE);
-        label_ID.setPadding(50, 50, 5, 50);
-        tr_head.addView(label_ID);// add the column to the table row here
-
-        TextView label_Name = new TextView(this);
-        label_Name.setId(21);// define id that must be unique
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
+        if(width < 1100)
+        {
+            label_ID.setWidth(350);
+            label_ID.setPadding(50, 0, 5, 0); // set the padding (if required)
+        }else
+        {
+            label_ID.setWidth(500);
+            label_ID.setPadding(150, 50, 5, 50); // set the padding (if required)
+        }
+        //label_ID.setPadding(50, 0, 5, 0);
+        //label_ID.setPadding(50, 50, 5, 50);
+        tr_head.addView(label_ID);// add the column to the table row here
+
+        TextView label_Name = new TextView(this);
+        label_Name.setId(21);// define id that must be unique
 
         label_Name.setText("Signal"); // set the text for the header
         label_Name.setTextColor(Color.WHITE); // set the color
@@ -348,16 +359,24 @@ public class HistoryActivity extends AppCompatActivity {
         label_ID.setText(myDate );
         label_ID.setWidth(350);
         label_ID.setTextColor(Color.BLACK);
-        label_ID.setPadding(50, 0, 5, 0);
-        tr_head.addView(label_ID);// add the column to the table row here
-
-        TextView label_Name = new TextView(this);
-        label_Name.setId(21);// define id that must be unique
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
+        if(width < 1100)
+        {
+            label_ID.setWidth(350);
+            label_ID.setPadding(50, 0, 5, 15); // set the padding (if required)
+        }else
+        {
+            label_ID.setWidth(500);
+            label_ID.setPadding(150, 25, 5, 25); // set the padding (if required)
+        }
+        //label_ID.setPadding(50, 0, 5, 0);
+        tr_head.addView(label_ID);// add the column to the table row here
 
+        TextView label_Name = new TextView(this);
+        label_Name.setId(21);// define id that must be unique
         label_Name.setText(signalStrength); // set the text for the header
         label_Name.setTextColor(Color.BLACK); // set the color
         label_Name.setPadding(75, 0, 5, 0); // set the padding (if required)
@@ -368,15 +387,7 @@ public class HistoryActivity extends AppCompatActivity {
         label_signal.setTextColor(Color.BLACK); // set the color
         label_signal.setPadding(75, 0, 5, 0);
 
-//        if(width < 1100)
-//        {
-//            label_Name.setWidth(375);
-//            label_signal.setPadding(100, 50, 5, 50); // set the padding (if required)
-//        }else
-//        {
-//            label_Name.setWidth(500);
-//            label_signal.setPadding(150, 50, 5, 50); // set the padding (if required)
-//        }
+
 
         tr_head.addView(label_Name); // add the column to the table row here
         tr_head.addView(label_signal); // add the column to the table row here
@@ -388,6 +399,11 @@ public class HistoryActivity extends AppCompatActivity {
         label_battery.setWidth(350);
         label_battery.setPadding(100, 0, 0, 0); // set the padding (if required)
         tr_head.addView(label_battery); // add the column to the table row here
+        if(backgroundColor) {
+            tr_head.setBackgroundColor(Color.LTGRAY);
+        }
+
+        backgroundColor = !backgroundColor;
 
         mainTable.addView(tr_head, new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT,

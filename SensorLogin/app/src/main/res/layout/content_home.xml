@@ -10,144 +10,161 @@
     tools:showIn="@layout/activity_home">
 
 
-    <ImageView
-        android:id="@+id/imageView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="211dp"
-        android:adjustViewBounds="true"
-        android:padding="20dp"
-        android:paddingBottom="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/gridLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="match_parent"
-        android:layout_height="245dp"
-        android:columnCount="3"
-        android:rowCount="3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="211dp"
+            android:adjustViewBounds="true"
+            android:padding="20dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/sensorButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_column="0"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_row="0"
-            android:background="@drawable/mybutton"
-            android:onClick="displaySensorData"
-            android:padding="0dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/sensoricon" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="188dp">
 
-        <ImageButton
-            android:id="@+id/accountDetailsButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_column="1"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_row="0"
-            android:background="@drawable/mybutton"
-            android:onClick="displayAccountDetails"
-            android:padding="0dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/info" />
+            <ImageButton
+                android:id="@+id/sensorButton"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_column="0"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_row="0"
+                android:layout_weight="1"
+                android:background="@drawable/mybutton"
+                android:onClick="displaySensorData"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/sensoricon" />
 
-        <ImageButton
-            android:id="@+id/manageButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_column="2"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_row="0"
-            android:background="@drawable/mybutton"
-            android:onClick="startManageAcitivty"
-            android:padding="0dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/gear" />
+            <ImageButton
+                android:id="@+id/accountDetailsButton"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_column="1"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_row="0"
+                android:layout_weight="1"
+                android:background="@drawable/mybutton"
+                android:cropToPadding="false"
+                android:onClick="displayAccountDetails"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/info" />
+
+            <ImageButton
+                android:id="@+id/manageButton"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_column="2"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_row="0"
+                android:layout_weight="1"
+                android:background="@drawable/mybutton"
+                android:onClick="startManageAcitivty"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/gear" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/sensor"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_column="0"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_row="1"
+                android:layout_weight="1"
+                android:onClick="displaySensorData"
+                android:text="Sensors"
+                android:textColor="@color/buttonColor"
+                android:textSize="16sp"
+                android:theme="@style/PrimaryFlatButton" />
+
+            <Button
+                android:id="@+id/accountDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_column="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_row="1"
+                android:layout_weight="1"
+                android:onClick="displayAccountDetails"
+                android:text="Account"
+                android:textColor="@color/buttonColor"
+                android:textSize="16sp"
+                android:theme="@style/PrimaryFlatButton" />
+
+            <Button
+                android:id="@+id/manage"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_column="2"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_row="1"
+                android:layout_weight="1"
+                android:onClick="startManageAcitivty"
+                android:text="Manage"
+                android:textColor="@color/buttonColor"
+                android:textSize="16sp"
+                android:theme="@style/PrimaryFlatButton" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/accountDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_column="1"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_row="1"
-            android:onClick="displayAccountDetails"
-            android:text="Account"
-            android:textColor="@color/buttonColor"
-            android:textSize="17sp"
-            android:theme="@style/PrimaryFlatButton" />
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="@dimen/bottom_screen_margin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/mybuttongrey"
+            android:onClick="logout"
+            android:text="Logout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.973"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/sensor"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_column="0"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_row="1"
-            android:onClick="displaySensorData"
-            android:text="Sensors"
-            android:textColor="@color/buttonColor"
-            android:textSize="17sp"
-            android:theme="@style/PrimaryFlatButton" />
-
-        <Button
-            android:id="@+id/manage"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_column="2"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_row="1"
-            android:onClick="startManageAcitivty"
-            android:text="Manage"
-            android:textColor="@color/buttonColor"
-            android:textSize="17sp"
-            android:theme="@style/PrimaryFlatButton" />
-
-
-    </GridLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/mybuttongrey"
-        android:onClick="logout"
-        android:text="Logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.973"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
-        app:layout_constraintVertical_bias="1.0" />
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>
