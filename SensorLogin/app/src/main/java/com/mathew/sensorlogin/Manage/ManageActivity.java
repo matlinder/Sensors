@@ -2,8 +2,8 @@ package com.mathew.sensorlogin.Manage;
 
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class manageActivity extends AppCompatActivity {
+public class ManageActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken;

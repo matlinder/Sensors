@@ -136,35 +136,38 @@
         <Button
             android:id="@+id/historyBtn"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/button_height"
             android:layout_marginBottom="@dimen/bottom_button_spacer"
             android:background="@drawable/mybutton"
             android:onClick="startHistoryActivity"
             android:text="@string/history"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/graphBtn"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/button_height"
             android:layout_marginBottom="@dimen/bottom_button_spacer"
             android:background="@drawable/mybutton"
             android:onClick="startGraphActivity"
             android:text="@string/graph"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/editBtn"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/button_height"
             android:layout_marginBottom="@dimen/bottom_screen_margin"
             android:background="@drawable/mybutton"
             android:onClick="startEditActivity"
             android:text="@string/edit_sensor"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

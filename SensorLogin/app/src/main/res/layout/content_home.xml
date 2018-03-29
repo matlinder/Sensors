@@ -159,6 +159,7 @@
             android:background="@drawable/mybuttongrey"
             android:onClick="logout"
             android:text="Logout"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.973"

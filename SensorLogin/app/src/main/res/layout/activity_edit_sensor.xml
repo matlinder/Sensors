@@ -60,8 +60,8 @@
         <Button
             android:id="@+id/saveChanges"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginBottom="@dimen/bottom_button_spacer"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_weight="0"
@@ -76,9 +76,9 @@
         <Button
             android:id="@+id/button3"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/button_height"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="@dimen/bottom_screen_margin"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_weight="0"
