@@ -47,7 +47,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:padding="8dp" />
 
         <TextView
@@ -70,7 +70,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textCapCharacters|textCapWords"
             android:padding="8dp" />
 
     </LinearLayout>

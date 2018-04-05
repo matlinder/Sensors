@@ -70,9 +70,9 @@ public class ManageActivity extends AppCompatActivity {
 
     public void showNetworkButtons(View view) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            TransitionManager.beginDelayedTransition(transitionsContainer);
-        }
+
+        TransitionManager.beginDelayedTransition(transitionsContainer);
+
         if(!networkVisible)
         {
             if(gatewayVisible) {
@@ -107,9 +107,9 @@ public class ManageActivity extends AppCompatActivity {
     }
     public void showGatewayButtons(View view) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
             TransitionManager.beginDelayedTransition(transitionsContainer);
-        }
+
         if(!gatewayVisible)
         {
             if(networkVisible) {
@@ -144,9 +144,8 @@ public class ManageActivity extends AppCompatActivity {
 
     public void showSensorButtons(View view) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(transitionsContainer);
-        }
+
         if(!sensorVisible)
         {
             if(networkVisible) {
@@ -193,9 +192,9 @@ public class ManageActivity extends AppCompatActivity {
     }
 
     public void showUserButtons(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
             TransitionManager.beginDelayedTransition(transitionsContainer);
-        }
+
         if(!userVisible)
         {
             if(networkVisible) {

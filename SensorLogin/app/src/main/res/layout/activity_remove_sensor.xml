@@ -1,62 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mathew.sensorlogin.Manage.RemoveSensorActivity">
 
-    <org.angmarch.views.NiceSpinner
-        android:id="@+id/spinner1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:backgroundTint="#FF5178BD"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
-    <org.angmarch.views.NiceSpinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:backgroundTint="#FF5178BD"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner1" />
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/spinner1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:backgroundTint="#FF5178BD"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#FF5178BD"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/linearLayout5"
-        android:layout_width="0dp"
-        android:layout_height="226dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        app:layout_constraintVertical_bias="0.952">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/removeGateway"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="68dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginBottom="@dimen/bottom_button_spacer"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/mybutton"
             android:onClick="confirmRemove"
             android:text="Remove Sensor"
@@ -66,11 +57,14 @@
         <Button
             android:id="@+id/cancel"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginBottom="@dimen/bottom_screen_margin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/mybutton"
             android:onClick="cancel"
             android:text="Cancel"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

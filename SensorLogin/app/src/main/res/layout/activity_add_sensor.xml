@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="com.mathew.sensorlogin.Manage.AddSensorActivity">
-
-    <org.angmarch.views.NiceSpinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_weight="1"
-        android:backgroundTint="#FF5178BD"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/linearLayout6"
-        android:layout_width="0dp"
-        android:layout_height="508dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@android:color/white"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner">
+        android:orientation="vertical">
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:backgroundTint="#FF5178BD"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/sensorText"
@@ -48,7 +45,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:padding="8dp" />
 
         <TextView
@@ -72,7 +69,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textCapCharacters|textCapWords"
             android:padding="8dp" />
 
         <TextView
@@ -99,13 +96,21 @@
             android:inputType="textPersonName"
             android:padding="8dp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
         <Button
             android:id="@+id/addSensor"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginBottom="@dimen/bottom_button_spacer"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="22dp"
             android:background="@drawable/mybutton"
             android:onClick="addSensor"
             android:text="@string/add_sensor"
@@ -116,10 +121,10 @@
         <Button
             android:id="@+id/cancel"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginBottom="@dimen/bottom_screen_margin"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
             android:background="@drawable/mybutton"
             android:onClick="cancelAdd"
             android:text="@string/cancel"
@@ -127,4 +132,5 @@
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>

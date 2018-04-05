@@ -15,6 +15,7 @@
         android:layout_marginBottom="50dip"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:src="@drawable/ccmetlogosmall" />
@@ -23,13 +24,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dip"
+        android:layout_marginEnd="100dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="100dp"
         android:text="@string/login_title"
         android:textAlignment="viewStart"
         android:textColor="@android:color/black"
-        android:textSize="25sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <EditText
@@ -37,35 +38,38 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginStart="100dp"
         android:background="@drawable/rounded_edittext"
         android:hint="@string/username"
 
         android:inputType="textEmailAddress"
         android:padding="8dp"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/loginPassword"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginStart="100dp"
         android:background="@drawable/rounded_edittext"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="8dp"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:textSize="24sp" />
 
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/remember_username_and_password" />
+        android:layout_marginEnd="100dp"
+        android:layout_marginStart="100dp"
+        android:text="@string/remember_username_and_password"
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,11 +81,11 @@
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
+            android:layout_height="@android:dimen/notification_large_icon_height"
             android:layout_gravity="center_horizontal|center"
-            android:layout_marginBottom="@dimen/bottom_screen_margin"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="@dimen/bottom_button_spacer"
             android:background="@drawable/mybutton"
             android:onClick="loginUser"

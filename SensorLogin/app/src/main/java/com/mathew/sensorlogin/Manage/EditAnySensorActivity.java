@@ -307,6 +307,10 @@ public class EditAnySensorActivity extends AppCompatActivity {
             public void onSuccess(String response) {
                 try {
                     prgDialog.hide();
+                    sensorPair.clear();
+                    sensorDigitPair.clear();
+                    sensorNames.clear();
+                    sensorNames.add("Select a Sensor to Edit");
                     JSONObject obj = new JSONObject(response);
                     JSONArray objArray = obj.getJSONArray("Result");
 
