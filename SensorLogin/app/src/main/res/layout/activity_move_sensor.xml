@@ -35,11 +35,20 @@
             android:id="@+id/spinner2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/bottom_button_spacer"
             android:layout_marginTop="8dp"
             android:backgroundTint="#FF5178BD"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/multiCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Move Multiple Sensors" />
     </LinearLayout>
 
     <LinearLayout
@@ -60,7 +69,8 @@
             android:onClick="confirmMove"
             android:text="Move Sensor"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/cancel"
@@ -73,6 +83,7 @@
             android:onClick="cancelMove"
             android:text="Cancel"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>

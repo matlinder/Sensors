@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -50,6 +53,8 @@ public class EditAnySensorActivity extends AppCompatActivity {
     private boolean heartbeatChanged = false;
     private int nameChangeCount = 0;
     private int heartBeatChangeCount = 0;
+    private CheckBox multiCheck;
+    private Button cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,21 @@ public class EditAnySensorActivity extends AppCompatActivity {
         sensorNames.add("Select a Sensor to Edit");
         networkNames.add("Select a Network");
         spinnerNetwork = findViewById(R.id.spinner2);
+        multiCheck = findViewById(R.id.editCheckBox);
+        cancel = findViewById(R.id.cancel);
+        multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked)
+                {
+                    cancel.setText("DONE");
+                }else
+                {
+                    cancel.setText("CANCEL");
+                }
+            }
+        });
+
         spinnerNetwork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -390,7 +410,9 @@ public class EditAnySensorActivity extends AppCompatActivity {
                             {
                                 Toast.makeText(getApplicationContext(), "Changes saved", Toast.LENGTH_LONG).show();
                                 prgDialog.dismiss();
-                                finish();
+                                if(!multiCheck.isChecked()) {
+                                    finish();
+                                }
                             }
                             else
                             {
@@ -450,7 +472,9 @@ public class EditAnySensorActivity extends AppCompatActivity {
                         {
                             Toast.makeText(getApplicationContext(), "Changes saved", Toast.LENGTH_LONG).show();
                             prgDialog.dismiss();
-                            finish();
+                            if(!multiCheck.isChecked()) {
+                                finish();
+                            }
                         }
                         else
                         {
@@ -482,6 +506,12 @@ public class EditAnySensorActivity extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(), "Cannot have an empty name", Toast.LENGTH_LONG).show();
 
+        }
+        if(networkID != null) {
+            displaySensorData(networkID);
+            sensorEditName.setText("");
+            sensorHeartBeat.setText("");
+            sensorEditName.requestFocus();
         }
 
     }

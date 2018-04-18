@@ -155,8 +155,8 @@
                 android:layout_marginStart="8dp"
                 android:checked="true"
                 android:padding="8dp"
-                android:theme="@style/CheckboxStyle"
-                android:text="Edit Self" />
+                android:text="Edit Self"
+                android:theme="@style/CheckboxStyle" />
 
             <CheckBox
                 android:id="@+id/editSensor"

@@ -59,7 +59,8 @@
             android:onClick="confirmRemove"
             android:text="Remove Gateway"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/cancel"
@@ -72,7 +73,8 @@
             android:onClick="cancelRemove"
             android:text="Cancel"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

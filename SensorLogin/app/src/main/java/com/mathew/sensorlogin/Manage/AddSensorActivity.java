@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,6 +41,8 @@ public class AddSensorActivity extends AppCompatActivity {
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
     NiceSpinner spinner; // the spinner
     private ProgressDialog prgDialog; //dialog
+    private CheckBox multiCheck;
+    private Button cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,20 @@ public class AddSensorActivity extends AppCompatActivity {
         sensorID = findViewById(R.id.sensorID);
         sensorCode = findViewById(R.id.sensorCode);
         sensorName = findViewById(R.id.name);
+        cancel = findViewById(R.id.cancel);
+        multiCheck = findViewById(R.id.addCheckBox);
+        multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked)
+                {
+                    cancel.setText("DONE");
+                }else
+                {
+                    cancel.setText("CANCEL");
+                }
+            }
+        });
 
         networkNames.add("Select a Network");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -252,7 +271,15 @@ public class AddSensorActivity extends AppCompatActivity {
                     {
                         Toast.makeText(getApplicationContext(), "Added sensor to " + networkName, Toast.LENGTH_LONG).show();
                         prgDialog.dismiss();
-                        finish();
+                        if(!multiCheck.isChecked()) {
+                            finish();
+                        }else
+                        {
+                            sensorID.setText("");
+                            sensorID.requestFocus();
+                            sensorCode.setText("");
+                            sensorName.setText("");
+                        }
                     }
                     else
                     {

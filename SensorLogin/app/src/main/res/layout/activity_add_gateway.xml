@@ -82,6 +82,20 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/addGateway"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/bottom_screen_margin"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/mybutton"
+            android:onClick="addGateway"
+            android:text="Add Gateway"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
             android:id="@+id/cancel"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
@@ -95,19 +109,6 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/addGateway"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="@dimen/bottom_screen_margin"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/mybutton"
-            android:onClick="addGateway"
-            android:text="Add Gateway"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

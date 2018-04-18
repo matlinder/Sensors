@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,10 +46,13 @@ public class MoveSensorActivity extends AppCompatActivity {
     private boolean spinnerFlag = false; // flag to know when spinner is selected
     private boolean spinnerFlagSensor = false;
     private boolean spinnerFlagFrom = false;
+    private boolean displayNetworkData = false;
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
     NiceSpinner spinner, spinnerSensor, spinnerNetworkFrom; // the spinner
     private ProgressDialog prgDialog; //dialog
     private HashMap<String, String> sensorDigitPair = new HashMap<String, String>();
+    private CheckBox multiCheck;
+    private Button cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +80,20 @@ public class MoveSensorActivity extends AppCompatActivity {
         networkNamesFrom.add("Select a Network");
         networkNames.add("Select a new Network");
         sensorNames.add("Select a Sensor to Move");
-
+        cancel = findViewById(R.id.cancel);
+        multiCheck = findViewById(R.id.multiCheck);
+        multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked)
+                {
+                    cancel.setText("DONE");
+                }else
+                {
+                    cancel.setText("CANCEL");
+                }
+            }
+        });
         displayNetworkDataSpinnerFrom();
 
         spinnerNetworkFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -156,7 +175,11 @@ public class MoveSensorActivity extends AppCompatActivity {
                     if(!sensorName.equals("Select a Sensor to Move")) {
                         // display the associated sensors from the network
                         sensorID = sensorPair.get(sensorName);
-                        displayNetworkData();
+                        if(!displayNetworkData)
+                        {
+                            displayNetworkData = !displayNetworkData;
+                            displayNetworkData();
+                        }
                     }
                 }else
                 {
@@ -397,7 +420,12 @@ public class MoveSensorActivity extends AppCompatActivity {
                     {
                         Toast.makeText(getApplicationContext(), "Moved the sensor to " + networkName, Toast.LENGTH_LONG).show();
                         prgDialog.dismiss();
-                        finish();
+                        if(!multiCheck.isChecked()) {
+                            finish();
+                        }else
+                        {
+                            displaySensorData(networkIDFrom);
+                        }
                     }
                     else
                     {

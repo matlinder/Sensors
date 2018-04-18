@@ -29,7 +29,8 @@
             android:onClick="showNetworkButtons"
             android:text="@string/network"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/createNetwork"
@@ -68,7 +69,8 @@
             android:onClick="showGatewayButtons"
             android:text="@string/gateway"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/addGateway"
@@ -106,7 +108,8 @@
             android:onClick="showSensorButtons"
             android:text="@string/sensors"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/addSensor"
@@ -169,6 +172,7 @@
             android:text="@string/users"
             android:textColor="@android:color/white"
             android:textSize="18sp"
+            android:textStyle="bold"
             android:visibility="gone" />
 
         <Button

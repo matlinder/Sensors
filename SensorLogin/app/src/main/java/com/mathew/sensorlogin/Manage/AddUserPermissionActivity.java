@@ -287,17 +287,17 @@ public class AddUserPermissionActivity extends AppCompatActivity {
 
                             ch.setText("Can See Network " + name);
                             ch.setPadding(dp, dp, dp, dp);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                                ch.setButtonTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.colorAccent));
+
                                 ch.setButtonTintList(myList);
-                            }
+
 
                             ViewGroup.MarginLayoutParams params = new LinearLayout.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                             params.setMargins(dp,0,dp,0);
                             ch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                 @Override
                                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                                {   String name = buttonView.getText().toString();
+                                {
+                                    String name = buttonView.getText().toString();
                                     name = name.substring(16);
 
                                     if(isChecked)

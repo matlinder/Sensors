@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,6 +46,8 @@ public class RemoveSensorActivity extends AppCompatActivity {
     NiceSpinner spinner, spinnerNetwork; // the spinner
     private ProgressDialog prgDialog; //dialog
     private HashMap<String, String> sensorDigitPair = new HashMap<String, String>();
+    private Button cancel;
+    private CheckBox multiCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,20 @@ public class RemoveSensorActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         sensorNames.add("Select a Sensor to Remove");
         networkNames.add("Select a Network");
-
+        cancel = findViewById(R.id.cancel);
+        multiCheck = findViewById(R.id.multiCheckRemove);
+        multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked)
+                {
+                    cancel.setText("DONE");
+                }else
+                {
+                    cancel.setText("CANCEL");
+                }
+            }
+        });
         spinnerNetwork = findViewById(R.id.spinner1);
         spinnerNetwork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -303,6 +321,7 @@ public class RemoveSensorActivity extends AppCompatActivity {
 
                 removeSensor();
                 dialog.dismiss();
+
             }
         });
 
@@ -336,7 +355,17 @@ public class RemoveSensorActivity extends AppCompatActivity {
                     {
                         Toast.makeText(getApplicationContext(), sensorName + " has been removed", Toast.LENGTH_LONG).show();
                         prgDialog.dismiss();
-                        finish();
+                        if(!multiCheck.isChecked())
+                        {
+                            finish();
+                        }else
+                        {
+                            if(networkID != null)
+                            {
+                                displaySensorData(networkID);
+                            }
+                        }
+
                     }
                     else
                     {
@@ -364,6 +393,8 @@ public class RemoveSensorActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 }
 

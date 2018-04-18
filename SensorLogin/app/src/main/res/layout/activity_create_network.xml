@@ -70,7 +70,8 @@
             android:onClick="createNetwork"
             android:text="Create Network"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/cancel"
@@ -83,7 +84,8 @@
             android:onClick="cancel"
             android:text="Cancel"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

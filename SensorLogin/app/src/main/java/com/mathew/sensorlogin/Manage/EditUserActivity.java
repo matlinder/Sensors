@@ -129,7 +129,6 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void startEditPermissionsActivity(String tempID) {
-        Toast.makeText(getApplicationContext(), tempID, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getApplicationContext(), EditUserPermissionActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", tempID);
