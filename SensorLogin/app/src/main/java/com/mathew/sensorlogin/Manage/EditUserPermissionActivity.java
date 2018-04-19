@@ -86,6 +86,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         displayNetworkData();
         populateUserPermissions();
         setVisibility();
+        testChecked();
+        testChecked();
+
+
     }
 
 
@@ -121,6 +125,7 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
                                 if(temp != null) {
                                     temp.setChecked(isChecked);
+
                                 }
 
                             }else {
@@ -131,6 +136,8 @@ public class EditUserPermissionActivity extends AppCompatActivity {
                             }
                         }
                     }
+
+
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "message: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -270,7 +277,9 @@ public class EditUserPermissionActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                            ch.setVisibility(View.GONE);
+                            //ch.setVisibility(View.GONE);
+                            ch.setVisibility(View.INVISIBLE);
+                            ch.setChecked(true);
                             networkCheckBox.put(networkPair.get(name), ch);
                             transitionsContainer.addView(ch, params);
                         }
@@ -388,6 +397,7 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         viewNotifications.setVisibility(View.VISIBLE);
         viewReports.setVisibility(View.VISIBLE);
         viewSensorHistory.setVisibility(View.VISIBLE);
+
         Iterator it = networkCheckBox.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
@@ -495,13 +505,52 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         viewReports.setVisibility(View.GONE);
         viewSensorHistory.setVisibility(View.GONE);
 
-        Iterator it = networkCheckBox.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            CheckBox check = (CheckBox) pair.getValue();
-            check.setVisibility(View.GONE);
+        Iterator iit = networkCheckBox.entrySet().iterator();
+        while (iit.hasNext()) {
+            Map.Entry pairr = (Map.Entry) iit.next();
+            CheckBox checkk = (CheckBox) pairr.getValue();
+            checkk.setVisibility(View.GONE);
         }
     }
+
+    private void testChecked()
+    {
+        ackNotifications.setChecked(!ackNotifications.isChecked());
+        addNetwork.setChecked(!addNetwork.isChecked());
+        calibrateSensor.setChecked(!calibrateSensor.isChecked());
+        delUser.setChecked(!delUser.isChecked());
+        disableNotifications.setChecked(!disableNotifications.isChecked());
+        editAccount.setChecked(!editAccount.isChecked());
+        editGateway.setChecked(!editGateway.isChecked());
+        editNetwork.setChecked(!editNetwork.isChecked());
+        editNotifications.setChecked(!editNotifications.isChecked());
+        editUsers.setChecked(!editUsers.isChecked());
+        editSelf.setChecked(!editSelf.isChecked());
+        editSensor.setChecked(!editSensor.isChecked());
+        editSensorMult.setChecked(!editSensorMult.isChecked());
+        editSensorGroup.setChecked(!editSensorGroup.isChecked());
+        editUserNames.setChecked(!editUserNames.isChecked());
+        export.setChecked(!export.isChecked());
+        modifyMap.setChecked(!modifyMap.isChecked());
+        unlock.setChecked(!unlock.isChecked());
+        pauseNotifications.setChecked(!pauseNotifications.isChecked());
+        resetOtherPass.setChecked(!resetOtherPass.isChecked());
+        sensorViewChart.setChecked(!sensorViewChart.isChecked());
+        viewMaps.setChecked(!viewMaps.isChecked());
+        viewMyAccount.setChecked(!viewMyAccount.isChecked());
+        viewNotifications.setChecked(!viewNotifications.isChecked());
+        viewReports.setChecked(!viewReports.isChecked());
+        viewSensorHistory.setChecked(!viewSensorHistory.isChecked());
+
+        Iterator iit = networkCheckBox.entrySet().iterator();
+        while (iit.hasNext()) {
+            Map.Entry pairr = (Map.Entry) iit.next();
+            CheckBox checkk = (CheckBox) pairr.getValue();
+            checkk.setChecked(!checkk.isChecked());
+        }
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -546,8 +595,13 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
 
     public void updateSensor(View view) {
+
+
+
     }
 
     public void cancelEdit(View view) {
+        prgDialog.dismiss();
+        finish();
     }
 }

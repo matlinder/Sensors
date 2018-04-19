@@ -190,11 +190,11 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Acknowledge Notifications"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/addNetwork2"
@@ -202,11 +202,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Add Network"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/calibrateSensor2"
@@ -214,11 +214,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Calibrate Sensor"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/delUser2"
@@ -226,11 +226,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Delete Users"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/disableNotifications2"
@@ -238,11 +238,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Disable Notifications from Network"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editAccount2"
@@ -250,11 +250,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit Account"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editGateway2"
@@ -262,11 +262,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit Gateway Information"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editNetwork2"
@@ -274,11 +274,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit Network"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editNotifications2"
@@ -286,11 +286,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit Notifications"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editUsers2"
@@ -298,9 +298,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
+                    android:checked="true"
                     android:paddingStart="8dp"
                     android:text="Edit User"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editSelf2"
@@ -308,10 +309,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit Self"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editSensor2"
@@ -319,11 +321,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit Sensor"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editSensorMult2"
@@ -331,11 +333,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit Sensor (Multiple)"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editSensorGroup2"
@@ -343,11 +345,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit Sensor Group"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/editUserNames2"
@@ -355,11 +357,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Edit User Names"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/export2"
@@ -367,11 +369,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Export Data"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/modifyMap2"
@@ -379,11 +381,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Modify Visual Map"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/unlock2"
@@ -391,11 +393,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Password Unlock"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/pauseNotifications2"
@@ -403,11 +405,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Pause Notifications"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/resetOtherPass2"
@@ -415,11 +417,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="Reset Other User Password"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/sensorChart2"
@@ -427,11 +429,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="View Sensor Chart"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/viewMaps2"
@@ -439,11 +441,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="View Maps"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/viewMyAccount2"
@@ -451,11 +453,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="View My Account"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/viewNotifications2"
@@ -463,11 +465,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="View Notifications"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/viewReports2"
@@ -475,11 +477,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="View Reports"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/viewSensorHistory2"
@@ -487,11 +489,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:checked="false"
+                    android:checked="true"
                     android:padding="8dp"
                     android:text="View Sensor History"
                     android:theme="@style/CheckboxStyle"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
 
             </LinearLayout>
         </ScrollView>
