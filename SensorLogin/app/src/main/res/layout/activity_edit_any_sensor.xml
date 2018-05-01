@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinnerGateway"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
@@ -104,6 +104,23 @@
             app:layout_constraintHorizontal_bias="0.515"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lastText" />
+
+        <Switch
+            android:id="@+id/tempSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/bottom_button_spacer"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:showText="true"
+            android:text="Temperature"
+            android:textOff="F"
+            android:textOn="C"
+            android:textSize="18sp"
+            android:thumb="@drawable/customswitchselector"
+            android:track="@drawable/custom_track" />
 
         <CheckBox
             android:id="@+id/editCheckBox"

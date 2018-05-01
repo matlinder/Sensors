@@ -17,7 +17,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinnerGateway"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/bottom_button_spacer"
@@ -66,12 +66,21 @@
             android:id="@+id/gatewayCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/bottom_button_spacer"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/rounded_edittext"
             android:ems="10"
             android:inputType="textCapCharacters|textCapWords"
             android:padding="8dp" />
+
+        <CheckBox
+            android:id="@+id/multiCheckGateway2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Add Multiple Gateways" />
 
     </LinearLayout>
 
@@ -96,7 +105,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/cancel"
+            android:id="@+id/cancelAddGateway"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginBottom="@dimen/bottom_button_spacer"

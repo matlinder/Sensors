@@ -7,7 +7,7 @@
     tools:context="com.mathew.sensorlogin.Manage.RemoveNetworkActivity">
 
     <org.angmarch.views.NiceSpinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerGateway"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="225dp"
@@ -20,6 +20,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/multiCheckNetwork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="72dp"
+        android:text="Remove Multiple Networks" />
 
     <TextView
         android:id="@+id/networkPrompt"
@@ -35,7 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerGateway"
         app:layout_constraintVertical_bias="0.388" />
 
     <LinearLayout
@@ -47,7 +58,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner">
+        app:layout_constraintTop_toBottomOf="@+id/spinnerGateway">
 
         <Button
             android:id="@+id/removeNetwork"
@@ -64,7 +75,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/cancel"
+            android:id="@+id/cancelNetwork"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginBottom="@dimen/bottom_screen_margin"

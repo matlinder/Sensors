@@ -1,12 +1,17 @@
 package com.mathew.sensorlogin.Manage;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -18,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class CreateNetworkActivity extends AppCompatActivity {
 
     // base url for json calls
@@ -27,6 +34,10 @@ public class CreateNetworkActivity extends AppCompatActivity {
     private String authToken;
     private EditText networkName;
     private String userID;
+    private ArrayList<String> userIDs = new ArrayList<String>();
+    private ArrayList<String> userNames = new ArrayList<String>();
+    private ArrayList<String> viewIDs = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,7 @@ public class CreateNetworkActivity extends AppCompatActivity {
             userID = extras.getString("userID");
         }
         networkName = findViewById(R.id.editName);
+        populateUserList();
 
     }
 
@@ -99,6 +111,7 @@ public class CreateNetworkActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), name + " was created!", Toast.LENGTH_LONG).show();
                 addNetworkToCurrentUser(name);
 
+
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {
@@ -118,6 +131,100 @@ public class CreateNetworkActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void addNetworkToMultipleUsers(final String networkParam, final String name) {
+
+        final String[] names = userNames.toArray(new String[userNames.size()]);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(CreateNetworkActivity.this);
+        alert.setTitle("Select Users to View " + name);
+
+        alert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                addNetworkToAllUsers(networkParam);
+
+            }
+        });
+        alert.setMultiChoiceItems(names,null, new DialogInterface.OnMultiChoiceClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if(isChecked) {
+                    viewIDs.add(userIDs.get(which));
+                }else
+                {
+                    viewIDs.remove(userIDs.get(which));
+                }
+            }
+        });
+
+        alert.show();
+    }
+
+    private void addNetworkToAllUsers(String networkParam) {
+        prgDialog.show();
+        for(String id : viewIDs)
+        {
+            //String networkParam = "Network_View_Net_" + networkID;
+
+            AsyncHttpClient client = new AsyncHttpClient();
+
+            //params
+            RequestParams params = new RequestParams();
+            params.put("custID", id);
+            params.put(networkParam, "on");
+            client.get(base_url + "EditCustomerPermissions/" + authToken, params, new AsyncHttpResponseHandler() {
+
+                public void onSuccess(String response) {
+                    JSONObject obj = null;
+                    try {
+                        obj = new JSONObject(response);
+                        String temp = obj.getString("Result");
+                        if(temp.equalsIgnoreCase("Save successful."))
+                        {
+                            //Toast.makeText(getApplicationContext(), networkID + " was added to user", Toast.LENGTH_LONG).show();
+                            //prgDialog.dismiss();
+
+
+
+                        }else
+                        {
+                            Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_LONG).show();
+                            prgDialog.dismiss();
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                }
+
+                public void onFailure(int statusCode, Throwable error, String content) {
+
+                    // When Http response code is '404'
+                    if (statusCode == 404) {
+                        Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    }
+                    // When Http response code is '500'
+                    else if (statusCode == 500) {
+                        Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    }
+                    // When Http response code other than 404, 500
+                    else {
+                        Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+        prgDialog.dismiss();
+        finish();
+    }
+
+
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
@@ -139,7 +246,7 @@ public class CreateNetworkActivity extends AppCompatActivity {
                         if(name.equals(tempNetwork.getString("NetworkName")))
                         {
                             String ID = tempNetwork.getString("NetworkID");
-                            addNetwork(ID);
+                            addNetwork(ID, name);
                         }
 
 
@@ -172,9 +279,9 @@ public class CreateNetworkActivity extends AppCompatActivity {
 
 
     }
-    private void addNetwork(final String networkID)
+    private void addNetwork(final String networkID, final String name)
     {
-        String networkParam = "Network_View_Net_" + networkID;
+        final String networkParam = "Network_View_Net_" + networkID;
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -189,17 +296,18 @@ public class CreateNetworkActivity extends AppCompatActivity {
                 try {
                     obj = new JSONObject(response);
                     String temp = obj.getString("Result");
-                    if(temp.equals("Success"))
+                    if(temp.equalsIgnoreCase("Save successful."))
                     {
                         Toast.makeText(getApplicationContext(), networkID + " was added to user", Toast.LENGTH_LONG).show();
                         prgDialog.dismiss();
-                        finish();
+                        addNetworkToMultipleUsers(networkParam, name);
+
 
                     }else
                     {
                         Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_LONG).show();
                         prgDialog.dismiss();
-                        finish();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -226,7 +334,55 @@ public class CreateNetworkActivity extends AppCompatActivity {
             }
         });
     }
+    public void populateUserList()
+    {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(base_url + "AccountUserList/" + authToken, new AsyncHttpResponseHandler() {
 
+            public void onSuccess(String response) {
+                try {
+
+                    JSONObject obj = new JSONObject(response);
+                    JSONArray objArray = obj.getJSONArray("Result");
+
+                    for (int i = 0; i < objArray.length(); i++) {
+                        //grabs the object
+                        JSONObject tempUser = objArray.getJSONObject(i);
+                        String ID = tempUser.getString("UserID");
+                        String first = tempUser.getString("FirstName");
+                        String last = tempUser.getString("LastName");
+                        String name = first + " " + last;
+
+
+                        userIDs.add(ID);
+                        userNames.add(name);
+                    }
+
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "message: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(int statusCode, Throwable error, String content) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
     public void cancel(View view) { super.finish();    }
     /**
      * What to do when the acitivty is destroyed

@@ -8,8 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -39,6 +41,9 @@ public class AddGatewayActivity extends AppCompatActivity {
     private boolean repeat = false;
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
     NiceSpinner spinner; // the spinner
+    private Button cancel;
+    private CheckBox multiCheck;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +65,24 @@ public class AddGatewayActivity extends AppCompatActivity {
         // Set Cancelable as False
         prgDialog.setCancelable(false);
 
-        spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinnerGateway);
         gatewayID = findViewById(R.id.gatewayID);
         gatewayCode = findViewById(R.id.gatewayCode);
+
+        cancel = findViewById(R.id.cancelAddGateway);
+        multiCheck = findViewById(R.id.multiCheckGateway2);
+        multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked)
+                {
+                    cancel.setText("DONE");
+                }else
+                {
+                    cancel.setText("CANCEL");
+                }
+            }
+        });
 
         networkNames.add("Select a Network");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -226,7 +246,15 @@ public class AddGatewayActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Added the gateway to " + networkName, Toast.LENGTH_LONG).show();
                                 repeat = false;
                                 prgDialog.dismiss();
-                                finish();
+                                if(!multiCheck.isChecked()) {
+                                    finish();
+                                }
+                                else
+                                {
+                                    gatewayID.setText("");
+                                    gatewayCode.setText("");
+                                    gatewayID.requestFocus();
+                                }
                             }
                             else
                             {

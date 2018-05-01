@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -76,8 +75,9 @@ public class MoveSensorActivity extends AppCompatActivity {
 
         spinner = findViewById(R.id.spinner2);
         spinnerNetworkFrom = findViewById(R.id.spinner1);
-        spinnerSensor = findViewById(R.id.spinner);
+        spinnerSensor = findViewById(R.id.spinnerGateway);
         networkNamesFrom.add("Select a Network");
+        networkNamesFrom.add("All Networks");
         networkNames.add("Select a new Network");
         sensorNames.add("Select a Sensor to Move");
         cancel = findViewById(R.id.cancel);
@@ -165,21 +165,23 @@ public class MoveSensorActivity extends AppCompatActivity {
                 if(!spinnerFlagSensor)
                 {
                     sensorNames.remove("Select a Sensor to Move");
-                    sensorNames.add(0, "Cancel Remove");
+                    sensorNames.add(0, "Cancel");
                     spinnerFlagSensor = true;
                 }
-                if(position != 0)
+                if(sensorNames.get(0).equalsIgnoreCase("Select a Sensor to Move"))
                 {
-                    position--; // snafu to reduce the position because the prompt messed it up
-                    sensorName = parent.getItemAtPosition(position).toString();
-                    if(!sensorName.equals("Select a Sensor to Move")) {
-                        // display the associated sensors from the network
-                        sensorID = sensorPair.get(sensorName);
-                        if(!displayNetworkData)
-                        {
-                            displayNetworkData = !displayNetworkData;
-                            displayNetworkData();
-                        }
+                    sensorNames.remove("Select a Sensor to Move");
+                    sensorNames.add(0, "Cancel");
+                }
+
+                sensorName = parent.getItemAtPosition((int)id).toString();
+                if(!sensorName.equals("Select a Sensor to Move") && !sensorName.equals("Cancel")) {
+                    // display the associated sensors from the network
+                    sensorID = sensorPair.get(sensorName);
+                    if(!displayNetworkData)
+                    {
+                        displayNetworkData = !displayNetworkData;
+                        displayNetworkData();
                     }
                 }else
                 {

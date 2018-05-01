@@ -103,16 +103,31 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/error"
+            android:id="@+id/temp2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:text="Last Communication:"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sensorName" />
+
+        <TextView
+            android:id="@+id/communicationDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/no_communication_last_info_displayed"
-            android:textSize="18sp"
-            android:visibility="invisible"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

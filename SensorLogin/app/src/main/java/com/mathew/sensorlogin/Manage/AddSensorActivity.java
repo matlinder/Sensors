@@ -63,7 +63,7 @@ public class AddSensorActivity extends AppCompatActivity {
         if (extras != null) {
             authToken = extras.getString("token");
         }
-        spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinnerGateway);
         sensorID = findViewById(R.id.sensorID);
         sensorCode = findViewById(R.id.sensorCode);
         sensorName = findViewById(R.id.name);

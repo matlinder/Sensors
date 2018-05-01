@@ -111,7 +111,7 @@ public class SensorActivity extends AppCompatActivity {
         //grab the components from the view
         networkPrompt = findViewById(R.id.networkPrompt);
         mainTable = findViewById(R.id.main_table);
-        spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinnerGateway);
 
         networkNames.add("Select a Network");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()

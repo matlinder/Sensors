@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mathew.sensorlogin.Manage.MoveSensorActivity">
+    tools:context="com.mathew.sensorlogin.Manage.MoveGatewayActivity">
 
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner1"
+            android:id="@+id/spinnerNetworkStart"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:backgroundTint="#FF5178BD"
@@ -32,7 +32,7 @@
             android:textStyle="bold" />
 
         <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner2"
+            android:id="@+id/spinnerNetworkEnd"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/bottom_button_spacer"
@@ -43,12 +43,12 @@
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/multiCheck"
+            android:id="@+id/multiCheckGateway"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:text="Move Multiple Sensors" />
+            android:text="Move Multiple Gateways" />
     </LinearLayout>
 
     <LinearLayout
@@ -59,7 +59,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/moveSensor"
+            android:id="@+id/moveGateway"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/bottom_button_spacer"
@@ -67,13 +67,13 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/mybutton"
             android:onClick="confirmMove"
-            android:text="Move Sensor"
+            android:text="Move Gateway"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/cancel"
+            android:id="@+id/cancelMoveGateway"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="@dimen/bottom_screen_margin"

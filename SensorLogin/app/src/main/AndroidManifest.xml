@@ -38,7 +38,7 @@
             android:name=".SensorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-            <!--android:screenOrientation="portrait"-->
+        <!-- android:screenOrientation="portrait" -->
 
         <activity
             android:name=".SensorDetailActivity"
@@ -81,11 +81,13 @@
         <activity android:name=".Manage.AddSensorActivity" />
         <activity android:name=".Manage.MoveSensorActivity" />
         <activity android:name=".Manage.RemoveSensorActivity" />
-        <activity android:name=".Manage.EditAnySensorActivity"/>
+        <activity android:name=".Manage.EditAnySensorActivity" />
         <activity android:name=".Manage.AddUserActivity" />
         <activity android:name=".Manage.AddUserPermissionActivity" />
         <activity android:name=".Manage.EditUserActivity" />
-        <activity android:name=".Manage.EditUserPermissionActivity"></activity>
+        <activity android:name=".Manage.EditUserPermissionActivity" />
+        <activity android:name=".Manage.RemoveUserActivity" />
+        <activity android:name=".Manage.MoveGatewayActivity" />
     </application>
 
 </manifest>

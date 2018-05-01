@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -69,7 +68,7 @@ public class RemoveSensorActivity extends AppCompatActivity {
         if (extras != null) {
             authToken = extras.getString("token");
         }
-        spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinnerGateway);
         sensorNames.add("Select a Sensor to Remove");
         networkNames.add("Select a Network");
         cancel = findViewById(R.id.cancel);

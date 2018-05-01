@@ -26,7 +26,7 @@ public class SensorDetailActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
     // views from the layoutpage
-    private TextView sensorIDText, nameText, tempText, errorText;
+    private TextView sensorIDText, nameText, tempText, commText;
     // info passed from previous intent
     private String authToken, sensorID;
     // alert flag if the sensor has stopped communicating
@@ -50,7 +50,7 @@ public class SensorDetailActivity extends AppCompatActivity {
         sensorIDText = findViewById(R.id.sensorID);
         nameText = findViewById(R.id.sensorName);
         tempText = findViewById(R.id.tempField);
-        errorText = findViewById(R.id.error);
+        commText = findViewById(R.id.communicationDate);
         //grab the tokens from the previous intent
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
@@ -81,7 +81,7 @@ public class SensorDetailActivity extends AppCompatActivity {
         sensorIDText = findViewById(R.id.sensorID);
         nameText = findViewById(R.id.sensorName);
         tempText = findViewById(R.id.tempField);
-        errorText = findViewById(R.id.error);
+        commText = findViewById(R.id.communicationDate);
         //grab the tokens from the previous intent
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
@@ -139,9 +139,10 @@ public class SensorDetailActivity extends AppCompatActivity {
                         tempText.setBackgroundColor(color);
                         nameText.setBackgroundColor(color);
                         sensorIDText.setBackgroundColor(color);
-                        errorText.setText("No communication\nLast communication: " + myDate);
-                        errorText.setTextColor(Color.RED);
-                        errorText.setVisibility(TextView.VISIBLE);
+                        commText.setText(myDate);
+                        commText.setTextColor(Color.RED);
+                        commText.setBackgroundColor(color);
+
                     }else
                     {
                         nameText.setText( name);
@@ -153,7 +154,9 @@ public class SensorDetailActivity extends AppCompatActivity {
                         nameText.setBackgroundColor(Color.WHITE);
                         tempText.setTextColor(Color.BLACK);
                         tempText.setBackgroundColor(Color.WHITE);
-                        errorText.setVisibility(TextView.INVISIBLE);
+                        commText.setText(myDate);
+                        commText.setTextColor(Color.BLACK);
+                        commText.setBackgroundColor(Color.WHITE);
                     }
 
 

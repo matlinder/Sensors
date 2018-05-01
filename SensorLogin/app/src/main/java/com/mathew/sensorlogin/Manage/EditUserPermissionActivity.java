@@ -5,6 +5,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +59,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
     private HashMap<String, CheckBox> networkCheckBox = new HashMap<String, CheckBox>();
     private HashMap<String, String> permissionPair = new HashMap<String, String>();
     private HashMap<String, CheckBox> varCheckPair = new HashMap<String, CheckBox>();
+    private boolean emailChanged = false;
+    private boolean nameChanged = false;
+    private boolean validEmail = true;
+    private boolean checkBoxChange = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +94,78 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         setVisibility();
         testChecked();
         testChecked();
+        initListeners();
+        first.addTextChangedListener(nameTextWatcher);
+        last.addTextChangedListener(nameTextWatcher);
+        email.addTextChangedListener(emailTextWatcher);
+        email.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (!hasFocus && emailChanged)
+                {
+                    if(email != null && email.length() != 0 && !Utility.validate(email.getText().toString()))
+                    {
+                        //Toast.makeText(getApplicationContext(), "Email is not the correct format", Toast.LENGTH_LONG).show();
+                        //email.setTextColor(Color.RED);
+                        errorEmail.setVisibility(View.VISIBLE);
+                        validEmail = false;
+                    }else
+                    {
+                        //email.setTextColor(Color.BLACK);
+                        errorEmail.setVisibility(View.INVISIBLE);
+                        validEmail = true;
+                    }
+                }
+            }
+        });
 
-
+        emailChanged = false;
+        nameChanged = false;
+        checkBoxChange = false;
     }
 
 
+    private TextWatcher nameTextWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            nameChanged = true;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+    /*
+     * Text change listener
+     * Only change value if the text has been changed, otherwise finish the activity
+     */
+    private TextWatcher emailTextWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            emailChanged = true;
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     private void populateUserPermissions() {
 
@@ -136,7 +209,9 @@ public class EditUserPermissionActivity extends AppCompatActivity {
                             }
                         }
                     }
-
+                    emailChanged = false;
+                    nameChanged = false;
+                    checkBoxChange = false;
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -215,7 +290,6 @@ public class EditUserPermissionActivity extends AppCompatActivity {
             }
         });
     }
-
 
     /**
      * display the network data of the associated account
@@ -309,6 +383,7 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
 
     }
+
     public void userDetailsDisplay(View view) {
         TransitionManager.beginDelayedTransition(transitionsContainer);
 
@@ -405,6 +480,40 @@ public class EditUserPermissionActivity extends AppCompatActivity {
             check.setVisibility(View.VISIBLE);
         }
     }
+
+    public void initListeners()
+    {
+        Iterator iit = networkCheckBox.entrySet().iterator();
+        while (iit.hasNext()) {
+            Map.Entry pairr = (Map.Entry) iit.next();
+            CheckBox checkk = (CheckBox) pairr.getValue();
+            checkk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                    checkBoxChange = true;
+                }
+
+            });
+        }
+
+        Iterator it = varCheckPair.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            CheckBox check = (CheckBox) pair.getValue();
+            check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                    checkBoxChange = true;
+                }
+
+            });
+        }
+
+
+    }
+
     private void initVariables() {
         details = findViewById(R.id.buttonOne);
         permissions = findViewById(R.id.buttonTwo);
@@ -550,7 +659,6 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -593,11 +701,177 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
     }
 
+    public void updateUser(View view) {
 
-    public void updateSensor(View view) {
+        email.clearFocus();
+        if(errorEmail.getVisibility() == View.VISIBLE)
+        {
+            email.requestFocus();
+            return;
+        }
+        if(!nameChanged && !emailChanged && !checkBoxChange)
+        {
+            Toast.makeText(getApplicationContext(), "No changes have been made" , Toast.LENGTH_LONG).show();
+            return;
+        }else if(first == null || first.getText().length() == 0 || last == null || last.getText().length() == 0)
+        {
+            Toast.makeText(getApplicationContext(), "Names cannot be blank", Toast.LENGTH_LONG).show();
+            return;
+        }else if(emailChanged && !validEmail)
+        {
+            Toast.makeText(getApplicationContext(), "Invalid email", Toast.LENGTH_LONG).show();
+            return;
+        }else
+        {
+            Toast.makeText(getApplicationContext(), "Updating user information", Toast.LENGTH_LONG).show();
+
+            if(nameChanged || emailChanged)
+            {
+                String _firstName = first.getText().toString();
+                String _lastName = last.getText().toString();
+                String _email = email.getText().toString();
+
+                //client
+                AsyncHttpClient client = new AsyncHttpClient();
+                prgDialog.show();
+                //params
+                RequestParams params = new RequestParams();
+                params.put("userID", userID);
+                params.put("FirstName", _firstName);
+                params.put("LastName", _lastName);
+                params.put("NotificationEmail", _email);
+
+                client.get(base_url + "AccountUserEdit/" + authToken, params, new AsyncHttpResponseHandler() {
+
+                    public void onSuccess(String response) {
+                        prgDialog.hide();
+                        try
+                        {
+                            JSONObject obj = new JSONObject(response);
+                            Object item = obj.get("Result");
+
+                            if(item instanceof String)
+                            {
+                                //Toast.makeText(getApplicationContext(), "Array of Errors", Toast.LENGTH_LONG).show();
+                                String result = (String) item;
+                                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+                                return;
+
+                            }
+
+                        } catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    public void onFailure(int statusCode, Throwable error, String content) {
+                        prgDialog.hide();
+                        // When Http response code is '404'
+                        if (statusCode == 404) {
+                            Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                        }
+                        // When Http response code is '500'
+                        else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "Something went wrong at server end ", Toast.LENGTH_LONG).show();
+                        }
+                        // When Http response code other than 404, 500
+                        else {
+                            Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+            if(checkBoxChange)
+            {
+                //client
+                AsyncHttpClient client = new AsyncHttpClient();
+                prgDialog.show();
+                //params
+                RequestParams params = new RequestParams();
+                params.put("custID", userID);
+                for(String name : seeNetworks)
+                {
+                    String networkID = networkPair.get(name);
+
+                    params.add("Network_View_Net_"+networkID, "on");
+                }
+
+                params.put("Customer_Delete", (delUser.isChecked() ?  "on" : "off"));
+                params.put("Notification_Disable_Network",(disableNotifications.isChecked() ?  "on" : "off"));
+                params.put("Account_Edit", (editAccount.isChecked() ?  "on" : "off"));
+                params.put("Network_Edit_Gateway_Settings", (editGateway.isChecked() ?  "on" : "off"));
+                params.put("Network_Edit", (editNetwork.isChecked() ?  "on" : "off"));
+                params.put("Notification_Edit", (editNotifications.isChecked() ?  "on" : "off"));
+                params.put("Customer_Edit_Other", (editUsers.isChecked() ?  "on" : "off"));
+                params.put("Customer_Edit_Self", (editSelf.isChecked() ?  "on" : "off"));
+                params.put("Sensor_Edit", (editSensor.isChecked() ?  "on" : "off"));
+                params.put("Sensor_Configure_Multiple", (editSensorMult.isChecked() ?  "on" : "off"));
+                params.put("Visual_Map_Edit", (modifyMap.isChecked() ?  "on" : "off"));
+                params.put("Customer_Reset_Password_Other", (resetOtherPass.isChecked() ?  "on" : "off"));
+                params.put("Sensor_Calibrate", (calibrateSensor.isChecked() ?  "on" : "off"));
+                params.put("Sensor_Export_Data", (export.isChecked() ?  "on" : "off"));
+                params.put("Sensor_View_Chart", (sensorViewChart.isChecked() ?  "on" : "off"));
+                params.put("Navigation_View_Maps", (viewMaps.isChecked() ?  "on" : "off"));
+                params.put("Navigation_View_My_Account", (viewMyAccount.isChecked() ?  "on" : "off"));
+                params.put("Sensor_View_Notifications", (viewNotifications.isChecked() ?  "on" : "off"));
+                params.put("Navigation_View_Reports", (viewReports.isChecked() ?  "on" : "off"));
+                params.put("Sensor_View_History", (viewSensorHistory.isChecked() ?  "on" : "off"));
+                params.put("Network_Create", (addNetwork.isChecked() ?  "on" : "off"));
+//        params.put("Sensor_Advanced_Configuration
+//        params.put("Sensor_Heartbeat_Restriction
+                params.put("Customer_Change_Username", (editUserNames.isChecked() ?  "on" : "off"));
+                params.put("Unlock_User", (unlock.isChecked() ?  "on" : "off"));
+                params.put("Sensor_Group_Edit",(editSensorGroup.isChecked() ?  "on" : "off"));
+//        params.put("Show_Dashboard
+                params.put("Notification_Pause", (pauseNotifications.isChecked() ?  "on" : "off"));
+//        params.put("Navigation_View_API
+                params.put("Notification_Can_Acknowledge", (ackNotifications.isChecked() ?  "on" : "off"));
 
 
+                client.get(base_url + "EditCustomerPermissions/" + authToken, params, new AsyncHttpResponseHandler() {
 
+                    public void onSuccess(String response) {
+                        prgDialog.hide();
+                        try
+                        {
+                            JSONObject obj = null;
+                            obj = new JSONObject(response);
+
+                            String result = obj.getString("Result");
+
+                            if(result.equals("Save successful.")) {
+
+                            }else
+                            {
+                                Toast.makeText(getApplicationContext(), "Permissions did not save. " + result, Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        } catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                    public void onFailure(int statusCode, Throwable error, String content) {
+                        prgDialog.hide();
+                        // When Http response code is '404'
+                        if (statusCode == 404) {
+                            Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                        }
+                        // When Http response code is '500'
+                        else if (statusCode == 500) {
+                            Toast.makeText(getApplicationContext(), "Something went wrong at server end ", Toast.LENGTH_LONG).show();
+                        }
+                        // When Http response code other than 404, 500
+                        else {
+                            Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+            prgDialog.dismiss();
+            finish();
+        }
     }
 
     public void cancelEdit(View view) {

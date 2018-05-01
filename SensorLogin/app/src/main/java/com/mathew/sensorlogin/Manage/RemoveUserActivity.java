@@ -1,8 +1,9 @@
 package com.mathew.sensorlogin.Manage;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.mathew.sensorlogin.R;
 
 import org.json.JSONArray;
@@ -22,7 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class EditUserActivity extends AppCompatActivity {
+public class RemoveUserActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken;
@@ -30,13 +32,11 @@ public class EditUserActivity extends AppCompatActivity {
     private LinearLayout listLayout;
     private ArrayList<String> userIDs = new ArrayList<String>();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user);
-        getSupportActionBar().setTitle("EDIT USER");
+        setContentView(R.layout.activity_remove_user);
+        getSupportActionBar().setTitle("REMOVE USER");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -54,8 +54,8 @@ public class EditUserActivity extends AppCompatActivity {
 
         }
 
-        listLayout = findViewById(R.id.userList);
-        //populateUserList();
+        listLayout = findViewById(R.id.userRemoveList);
+        populateUserList();
     }
 
 
@@ -76,7 +76,7 @@ public class EditUserActivity extends AppCompatActivity {
                         String ID = tempUser.getString("UserID");
                         String first = tempUser.getString("FirstName");
                         String last = tempUser.getString("LastName");
-                        String name = first + " " + last;
+                        final String name = first + " " + last;
                         String email = tempUser.getString("EmailAddress");
 
                         userIDs.add(ID);
@@ -95,8 +95,8 @@ public class EditUserActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 int id = item.getId();
                                 String tempID = userIDs.get(id);
+                                removeUserPrompt(tempID, name);
 
-                                startEditPermissionsActivity(tempID);
                             }
                         });
                         listLayout.addView(item);
@@ -128,15 +128,92 @@ public class EditUserActivity extends AppCompatActivity {
         });
     }
 
-    private void startEditPermissionsActivity(String tempID) {
-        Intent intent = new Intent(getApplicationContext(), EditUserPermissionActivity.class);
-        intent.putExtra("token", authToken);
-        intent.putExtra("userID", tempID);
-        startActivity(intent);
+    private void removeUserPrompt(final String tempID, final String name) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(RemoveUserActivity.this);
+        alert.setTitle("Remove User");
+        alert.setMessage("Are you sure you want to remove " + name + "?");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                removeUser(tempID, name);
+                dialog.dismiss();
+            }
+        });
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alert.show();
     }
 
+    private void removeUser(String tempID, final String name)
+    {
+        if(tempID == null)
+        {
+            Toast.makeText(getApplicationContext(), name + " ID cannot be null", Toast.LENGTH_LONG).show();
+            return;
+        }
+        //add the params to a RequestParams object
+        //these will be used in the request
+        RequestParams params = new RequestParams();
+        params.put("userID", tempID);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(base_url + "AccountUserDelete/" + authToken, params, new AsyncHttpResponseHandler() {
 
+            public void onSuccess(String response) {
+                try {
+
+                    JSONObject obj = new JSONObject(response);
+                    String result = obj.getString("Result");
+
+                    if(result.equalsIgnoreCase("Success"))
+                    {
+                        Toast.makeText(getApplicationContext(), name + " was removed", Toast.LENGTH_LONG).show();
+                        listLayout.removeAllViews();
+                        populateUserList();
+                    }else
+                    {
+                        Toast.makeText(getApplicationContext(), "Something went wrong, user was not removed", Toast.LENGTH_LONG).show();
+                    }
+
+
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "message: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(int statusCode, Throwable error, String content) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+    /**
+     * Clicking the back button on the title bar returns to the previous activity on the stack
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -145,22 +222,18 @@ public class EditUserActivity extends AppCompatActivity {
                 finish();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     /**
-     * Standard method for the back button
-     * @param menu
-     * @return
+     * Method for back button on title bar
      */
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
 
     /**
-     * finish the activity and close the dialog
-     * needed this because of leaked activity
+     * What to do when the acitivty is destroyed
      */
     public void onDestroy() {
 
@@ -169,21 +242,9 @@ public class EditUserActivity extends AppCompatActivity {
         finish();
     }
 
-    /**
-     * dismiss the dialog so that we do not have a leaked activity
-     */
-    public void onPause()
-    {
-        super.onPause();
+    public void cancelRemove(View view) {
+        super.finish();
         prgDialog.dismiss();
-
     }
 
-    public void onResume()
-    {
-        super.onResume();
-        listLayout.removeAllViews();
-        populateUserList();
-
-    }
 }

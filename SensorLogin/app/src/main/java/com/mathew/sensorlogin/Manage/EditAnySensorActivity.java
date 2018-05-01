@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -51,10 +52,13 @@ public class EditAnySensorActivity extends AppCompatActivity {
     private EditText sensorEditName, sensorHeartBeat;
     private boolean nameChanged = false;
     private boolean heartbeatChanged = false;
+    private boolean temperatureChanged = false;
     private int nameChangeCount = 0;
     private int heartBeatChangeCount = 0;
+    private int temperatureChangedCount = 0;
     private CheckBox multiCheck;
     private Button cancel;
+    private Switch temperature;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,16 +81,32 @@ public class EditAnySensorActivity extends AppCompatActivity {
             authToken = extras.getString("token");
         }
 
-        spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinnerGateway);
         sensorEditName = findViewById(R.id.editName);
         sensorEditName.addTextChangedListener(nameTextWatcher);
         sensorHeartBeat = findViewById(R.id.editHeartBeat);
         sensorHeartBeat.addTextChangedListener(heartbeatTextWatcher);
         sensorNames.add("Select a Sensor to Edit");
         networkNames.add("Select a Network");
+        networkNames.add("All Networks");
         spinnerNetwork = findViewById(R.id.spinner2);
         multiCheck = findViewById(R.id.editCheckBox);
         cancel = findViewById(R.id.cancel);
+        temperature = findViewById(R.id.tempSwitch);
+
+
+        temperature.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // do something, the isChecked will be
+                // true if the switch is in the On position
+                if(temperatureChangedCount > 0) {
+                    temperatureChanged = !temperatureChanged;
+                }
+                temperatureChangedCount++;
+            }
+        });
+
+
         multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
@@ -313,6 +333,50 @@ public class EditAnySensorActivity extends AppCompatActivity {
                 }
             }
         });
+        client.get(base_url + "SensorAttributes/" + authToken, params, new AsyncHttpResponseHandler() {
+
+            public void onSuccess(String response) {
+                try {
+                    //grab the JSON object from the response
+                    JSONObject obj = new JSONObject(response);
+                    //grab the result array
+                    JSONArray objArray = obj.getJSONArray("Result");
+                    for (int i = 0; i < objArray.length(); i++) {
+                        //grabs the object
+                        JSONObject tempObject = objArray.getJSONObject(i);
+
+                        String name = tempObject.getString("Value");
+                        if (name.equalsIgnoreCase("C")) {
+                            temperature.setChecked(true);
+                        } else {
+                            temperature.setChecked(false);
+                        }
+                    }
+
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "message: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(int statusCode, Throwable error, String content) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void displaySensorData(String _networkID) {
@@ -377,7 +441,7 @@ public class EditAnySensorActivity extends AppCompatActivity {
     }
 
     public void updateSensor(View view) {
-        if(!nameChanged && !heartbeatChanged)
+        if(!nameChanged && !heartbeatChanged && !temperatureChanged)
         {
             Toast.makeText(getApplicationContext(), "No changes made", Toast.LENGTH_LONG).show();
             return;
@@ -507,6 +571,45 @@ public class EditAnySensorActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Cannot have an empty name", Toast.LENGTH_LONG).show();
 
         }
+
+        //client
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        //params
+
+
+        RequestParams params2 = new RequestParams();
+        params2.put("sensorID", sensorID);
+        params2.put("name", "CorF");
+        params2.put("value", temperature.isChecked() ? "C" : "F");
+        client.get(base_url + "SensorAttributeSet/" + authToken, params2, new AsyncHttpResponseHandler() {
+
+            public void onSuccess(String response) {
+                prgDialog.hide();
+                displaySensorData(networkID);
+                if(!multiCheck.isChecked()) {
+                    prgDialog.dismiss();
+                    finish();
+                }
+            }
+
+            public void onFailure(int statusCode, Throwable error, String content) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occurred! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         if(networkID != null) {
             displaySensorData(networkID);
             sensorEditName.setText("");

@@ -515,7 +515,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_weight="0"
                 android:background="@drawable/mybutton"
-                android:onClick="updateSensor"
+                android:onClick="updateUser"
                 android:text="UPDATE"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"

@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,8 @@ public class RemoveNetworkActivity extends AppCompatActivity {
     private TextView networkPrompt; // prompt to tell the user to select a network
     private boolean spinnerFlag = false; // flag to know when spinner is selected
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
+    private Button cancel;
+    private CheckBox multiCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +67,26 @@ public class RemoveNetworkActivity extends AppCompatActivity {
         // Set Cancelable as False
         prgDialog.setCancelable(false);
 
-        spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinnerGateway);
         networkNames.add("Select a Network");
         networkPrompt = findViewById(R.id.networkPrompt);
+
+        cancel = findViewById(R.id.cancelNetwork);
+        multiCheck = findViewById(R.id.multiCheckNetwork);
+        multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked)
+                {
+                    cancel.setText("DONE");
+                }else
+                {
+                    cancel.setText("CANCEL");
+                }
+            }
+        });
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -76,6 +98,11 @@ public class RemoveNetworkActivity extends AppCompatActivity {
                     networkNames.remove("Select a Network");
                     networkNames.add(0, "Cancel Remove");
                     spinnerFlag = true;
+                }
+                if(networkNames.get(0).equalsIgnoreCase("Select a Network"))
+                {
+                    networkNames.remove("Select a Network");
+                    networkNames.add(0, "Cancel Remove");
                 }
                 //position--; // snafu to reduce the position because the prompt messed it up
                 networkName = parent.getItemAtPosition((int)id).toString();
@@ -194,8 +221,15 @@ public class RemoveNetworkActivity extends AppCompatActivity {
 
                 prgDialog.hide();
                 Toast.makeText(getApplicationContext(), networkID + " has been removed", Toast.LENGTH_LONG).show();
-                prgDialog.dismiss();
-                finish();
+                if(!multiCheck.isChecked()) {
+                    prgDialog.dismiss();
+                    finish();
+                }else
+                {
+                    networkNames.clear();
+                    networkNames.add("Select a Network");
+                    displayNetworkData();
+                }
             }
 
             public void onFailure(int statusCode, Throwable error, String content) {

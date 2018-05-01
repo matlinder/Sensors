@@ -26,7 +26,7 @@ public class ManageActivity extends AppCompatActivity {
     private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken;
     private String userID;
-    private Button createNetwork, removeNetwork, addGateway, removeGateway, addSensor, moveSensor;
+    private Button createNetwork, removeNetwork, addGateway, moveGateway, removeGateway, addSensor, moveSensor;
     private Button editSensor, removeSensor, addUser, removeUser, editUser, userButton;
     private boolean networkVisible = false;
     private boolean gatewayVisible = false;
@@ -55,6 +55,7 @@ public class ManageActivity extends AppCompatActivity {
         createNetwork = findViewById(R.id.createNetwork);
         removeNetwork = findViewById(R.id.removeNetwork);
         addGateway = findViewById(R.id.addGateway);
+        moveGateway = findViewById(R.id.moveGateway);
         removeGateway = findViewById(R.id.removeGateway);
         addSensor = findViewById(R.id.addSensor);
         editSensor = findViewById(R.id.editSensor);
@@ -126,11 +127,18 @@ public class ManageActivity extends AppCompatActivity {
         }
         gatewayVisible = !gatewayVisible;
         addGateway.setVisibility(gatewayVisible ? View.VISIBLE : View.GONE);
+        moveGateway.setVisibility(gatewayVisible ? View.VISIBLE : View.GONE);
         removeGateway.setVisibility(gatewayVisible ? View.VISIBLE : View.GONE);
     }
 
     public void startAddGatewayActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), AddGatewayActivity.class);
+        intent.putExtra("token", authToken);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+    public void startMoveGatewayActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), MoveGatewayActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);
@@ -228,6 +236,11 @@ public class ManageActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void startRemoveUserActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), RemoveUserActivity.class);
+        //Intent intent = new Intent(getApplicationContext(), AddUserPermissionActivity.class);
+        intent.putExtra("token", authToken);
+        startActivity(intent);
+
     }
 
     /**
