@@ -78,6 +78,7 @@ public class SensorActivity extends AppCompatActivity {
     private String sensorFileContents, gatewayFileContents;
     private String[] listOfSensors; // extracted file contents
     private String[] listOfPairs; // extracted file contents
+    private TextView networkLabel;
 
 
     /**
@@ -112,6 +113,7 @@ public class SensorActivity extends AppCompatActivity {
         networkPrompt = findViewById(R.id.networkPrompt);
         mainTable = findViewById(R.id.main_table);
         spinner = findViewById(R.id.spinnerGateway);
+        networkLabel = findViewById(R.id.networkLabel);
 
         networkNames.add("Select a Network");
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -157,6 +159,7 @@ public class SensorActivity extends AppCompatActivity {
         displayNetworkData();
 
 
+
     }
 
 
@@ -190,6 +193,16 @@ public class SensorActivity extends AppCompatActivity {
                     //networkSpinner.setAdapter(dataAdapter);
 
                     spinner.setAdapter(dataAdapter);
+
+                    if(networkNames.size() == 2)
+                    {
+                        spinner.setVisibility(View.GONE);
+                        networkPrompt.setVisibility(View.GONE);
+                        networkID = networkPair.get(networkNames.get(1));
+                        networkLabel.setText(networkNames.get(1));
+                        networkLabel.setVisibility(View.VISIBLE);
+                        displayNetworkSensors(networkID); // add the sensors to the rows
+                    }
 
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
