@@ -78,16 +78,26 @@
             android:name=".Manage.RemoveGatewayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Manage.AddSensorActivity" />
-        <activity android:name=".Manage.MoveSensorActivity" />
-        <activity android:name=".Manage.RemoveSensorActivity" />
-        <activity android:name=".Manage.EditAnySensorActivity" />
-        <activity android:name=".Manage.AddUserActivity" />
-        <activity android:name=".Manage.AddUserPermissionActivity" />
-        <activity android:name=".Manage.EditUserActivity" />
-        <activity android:name=".Manage.EditUserPermissionActivity" />
-        <activity android:name=".Manage.RemoveUserActivity" />
-        <activity android:name=".Manage.MoveGatewayActivity" />
+        <activity android:name=".Manage.AddSensorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.MoveSensorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.RemoveSensorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.EditAnySensorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.AddUserActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.AddUserPermissionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.EditUserActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.EditUserPermissionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.RemoveUserActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Manage.MoveGatewayActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
