@@ -27,25 +27,35 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Activity to add a phyical gateway to the account
+ * The gateway will have information on it that will need to be entered
+ */
 public class AddGatewayActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
     // Strings to store the information from the previous intent
-    private String authToken, networkID, userID, networkName;
-    private EditText gatewayID, gatewayCode;
+    private String authToken, networkID, userID, networkName; //holders for the data
+    private EditText gatewayID, gatewayCode; //the typed in information
+    // list to store the pairs of name to network ids
     private HashMap<String, String> networkPair = new HashMap<String, String>();
     // list to store the names of the network
     private ArrayList<String> networkNames = new ArrayList<String>();
     private ProgressDialog prgDialog; //dialog
     private boolean spinnerFlag = false; // flag to know when spinner is selected
-    private boolean repeat = false;
+    private boolean repeat = false; // boolean to repeat a json call
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
     NiceSpinner spinner; // the spinner
-    private Button cancel;
-    private CheckBox multiCheck;
+    private Button cancel; // button to cancel the add activity
+    private CheckBox multiCheck; // checkbox to see if multiple entries need to be added
 
 
     @Override
+    /**
+     * create the activity and set up the fields
+     * grab all the ids and set up the spinner so that you may choose what network to add this
+     * gateway
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_gateway);
@@ -118,8 +128,9 @@ public class AddGatewayActivity extends AppCompatActivity {
     }
 
     /**
-     * display the network data of the associated account
-     * user to select which network to display gateways from
+     * Display the network data of the associated account in the spinner.
+     * User will select a network.
+     * Selected network will have the new gateway added to it.
      */
     public void displayNetworkData() {
         prgDialog.show();
@@ -198,6 +209,12 @@ public class AddGatewayActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method to add the gateway to the selected network.
+     * Performs the method "AssignGateway"
+     * Before assigning the gateway, all the requirements are validated
+     * @param view
+     */
     public void addGateway(View view) {
 
         if(gatewayCode != null && gatewayID != null)
@@ -293,6 +310,10 @@ public class AddGatewayActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * OnClick for cancel button
+     * @param view
+     */
     public void cancelCreate(View view) {
         prgDialog.dismiss();
         finish();

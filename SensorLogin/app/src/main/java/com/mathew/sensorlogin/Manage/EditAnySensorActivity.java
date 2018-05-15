@@ -30,6 +30,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Edit any sensor that has been added to the account
+ */
 public class EditAnySensorActivity extends AppCompatActivity {
 
     // base url for json calls
@@ -50,17 +53,26 @@ public class EditAnySensorActivity extends AppCompatActivity {
     // list to store the names of the network
     private ArrayList<String> networkNames = new ArrayList<String>();
     private EditText sensorEditName, sensorHeartBeat;
+    // variables used to track if changes have been made
     private boolean nameChanged = false;
     private boolean heartbeatChanged = false;
     private boolean temperatureChanged = false;
     private int nameChangeCount = 0;
     private int heartBeatChangeCount = 0;
     private int temperatureChangedCount = 0;
+    // checkbox to edit muliple sensors, does not close application
     private CheckBox multiCheck;
+    // cancel button
     private Button cancel;
+    // temperature switcher button
     private Switch temperature;
 
     @Override
+    /**
+     * Creates the Edit Sensor Activity
+     * Sets up the network spinner and the entry fields to change the name, heartbeat and the
+     * temperature unit (F/C)
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_any_sensor);
@@ -94,88 +106,11 @@ public class EditAnySensorActivity extends AppCompatActivity {
         cancel = findViewById(R.id.cancel);
         temperature = findViewById(R.id.tempSwitch);
 
-
-        temperature.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // do something, the isChecked will be
-                // true if the switch is in the On position
-                if(temperatureChangedCount > 0) {
-                    temperatureChanged = !temperatureChanged;
-                }
-                temperatureChangedCount++;
-            }
-        });
-
-
-        multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked)
-                {
-                    cancel.setText("DONE");
-                }else
-                {
-                    cancel.setText("CANCEL");
-                }
-            }
-        });
-
-        spinnerNetwork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                // enter this if it is the first time selecting a spinner
-                // change the prompt to be Clear All
-                if(!spinnerFlagNetwork)
-                {
-                    networkNames.remove("Select a Network");
-                    networkNames.add(0, "Cancel Edit");
-                    spinnerFlagNetwork = true;
-                }
-
-                //position--; // snafu to reduce the position because the prompt messed it up
-                String networkName = parent.getItemAtPosition((int)id).toString();
-                if(!networkName.equals("Select a Network") && !networkName.equals("Cancel Edit")) {
-                    // display the associated sensors from the network
-                    networkID = networkPair.get(networkName);
-                    displaySensorData(networkID);
-                }else
-                {
-                    cancelEdit(null);
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        displayNetworkData();
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                // enter this if it is the first time selecting a spinner
-                // change the prompt to be Clear All
-                if(!spinnerFlagSensor)
-                {
-                    sensorNames.remove("Select a Sensor to Edit");
-                    sensorNames.add(0, "Cancel Edit");
-                    spinnerFlagSensor = true;
-                }
-                //position--; // snafu to reduce the position because the prompt messed it up
-                sensorName = parent.getItemAtPosition((int)id).toString();
-                if(!sensorName.equals("Select a Sensor to Edit") && !sensorName.equals("Cancel Edit")) {
-                    // display the associated sensors from the network
-                    sensorID = sensorPair.get(sensorName);
-                    populateEditFields(sensorID);
-                }else
-                {
-                    cancelEdit(null);
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        setupListeners();
+        setupSpinners();
 
     }
+
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
@@ -260,6 +195,7 @@ public class EditAnySensorActivity extends AppCompatActivity {
             nameChangeCount++;
         }
     };
+
     /*
      * Text change listener
      * Only change value if the text has been changed, otherwise finish the activity
@@ -287,6 +223,13 @@ public class EditAnySensorActivity extends AppCompatActivity {
             heartBeatChangeCount++;
         }
     };
+
+    /*
+     * When a sensor is selected, read the current information and put it into the text fields
+     * so the user sees what is there currently and can make adjustments if needed.
+     * Nothing will save unless information has been changed. That is what the watchers/listeners
+     * are for.
+     */
     private void populateEditFields(String sensorID) {
         //client
         AsyncHttpClient client = new AsyncHttpClient();
@@ -379,6 +322,11 @@ public class EditAnySensorActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     * Pull all the sensors from the chosen network and display them in a spinner
+     * Populate the collections to link the names with the IDs and checkdigits, so all the info
+     * needed to call methods to edit is already stored.
+     */
     private void displaySensorData(String _networkID) {
         prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -440,6 +388,14 @@ public class EditAnySensorActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * OnClick method to update the details of the selected sensor
+     * Validates the information first, returns if no changes were made to the fields
+     * Calls "SenorNameSet" "SensorHeartBeatSet" "SensorAttributeSet" if the conditions are met
+     * Finishes the activity if the Multiple Entry checkbox is not selected
+     *
+     * @param view autogenerated param, not needed
+     */
     public void updateSensor(View view) {
         if(!nameChanged && !heartbeatChanged && !temperatureChanged)
         {
@@ -619,12 +575,115 @@ public class EditAnySensorActivity extends AppCompatActivity {
 
     }
 
+    /*
+     * method to set up the listeners for the fields
+     * if the field is changed, then the flag is changed and the button is allowed to be
+     * pressed to follow through with the edit
+     */
+    private void setupListeners() {
+        temperature.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // do something, the isChecked will be
+                // true if the switch is in the On position
+                if(temperatureChangedCount > 0) {
+                    temperatureChanged = !temperatureChanged;
+                }
+                temperatureChangedCount++;
+            }
+        });
+
+
+        multiCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked)
+                {
+                    cancel.setText("DONE");
+                }else
+                {
+                    cancel.setText("CANCEL");
+                }
+            }
+        });
+    }
+
+    /*
+     * method to set up the spinners for the network and for the sensors
+     * calls the appropriate method when a network and a sensor is clicked
+     */
+    private void setupSpinners() {
+        spinnerNetwork.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                // enter this if it is the first time selecting a spinner
+                // change the prompt to be Clear All
+                if(!spinnerFlagNetwork)
+                {
+                    networkNames.remove("Select a Network");
+                    networkNames.add(0, "Cancel Edit");
+                    spinnerFlagNetwork = true;
+                }
+
+                //position--; // snafu to reduce the position because the prompt messed it up
+                String networkName = parent.getItemAtPosition((int)id).toString();
+                if(!networkName.equals("Select a Network") && !networkName.equals("Cancel Edit")) {
+                    // display the associated sensors from the network
+                    networkID = networkPair.get(networkName);
+                    displaySensorData(networkID);
+                }else
+                {
+                    cancelEdit(null);
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        displayNetworkData();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                // enter this if it is the first time selecting a spinner
+                // change the prompt to be Clear All
+                if(!spinnerFlagSensor)
+                {
+                    sensorNames.remove("Select a Sensor to Edit");
+                    sensorNames.add(0, "Cancel Edit");
+                    spinnerFlagSensor = true;
+                }
+                //position--; // snafu to reduce the position because the prompt messed it up
+                sensorName = parent.getItemAtPosition((int)id).toString();
+                if(!sensorName.equals("Select a Sensor to Edit") && !sensorName.equals("Cancel Edit")) {
+                    // display the associated sensors from the network
+                    sensorID = sensorPair.get(sensorName);
+                    populateEditFields(sensorID);
+                }else
+                {
+                    cancelEdit(null);
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    /**
+     * OnClick for the cancel button
+     * Finishes the activity
+     * @param view
+     */
     public void cancelEdit(View view) {
         prgDialog.dismiss();
         finish();
     }
 
     @Override
+    /**
+     * Menu selection method to determine what happens when a specific menu item is selected
+     * This activity only has a home button, meaning the top left arrow to go back to the previous
+     * activity on the stack
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -637,7 +696,7 @@ public class EditAnySensorActivity extends AppCompatActivity {
     }
 
     /**
-     * Standard method for the back button
+     * Standard method for the menu to create it
      * @param menu
      * @return
      */

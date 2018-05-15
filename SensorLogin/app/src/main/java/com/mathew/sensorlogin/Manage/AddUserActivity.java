@@ -2,9 +2,8 @@ package com.mathew.sensorlogin.Manage;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -19,20 +18,24 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.mathew.sensorlogin.AccountActivity;
 import com.mathew.sensorlogin.R;
 import com.mathew.sensorlogin.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
+/**
+ * Activity to add a user to the parent account
+ * User will be able to see networks assigned to them
+ * Permission activity will start after this and user permissions will be selected
+ */
 public class AddUserActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken, userID;
     private ProgressDialog prgDialog; //dialog
+    // IDs to link with the layout
     private EditText userName, firstName, lastName, email, password, confirmPassword;
     private TextView errorUserName, errorFirstName, errorLastName, errorEmail, errorPassword, errorConfirmPassword;
     private CheckBox admin;
@@ -41,6 +44,11 @@ public class AddUserActivity extends AppCompatActivity {
     private boolean emailChanged = false;
 
     @Override
+    /**
+     * Creates the activity and sets up the entry fields
+     * Finds IDs
+     * Sets up input listeners and watchers
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
@@ -162,10 +170,10 @@ public class AddUserActivity extends AppCompatActivity {
 
 
 
-    /*
-         * Text change listener
-         * Only change value if the text has been changed, otherwise finish the activity
-         */
+    /**
+     * Text change listener
+     * Only change value if the text has been changed, otherwise finish the activity
+     */
     private TextWatcher emailTextWatcher = new TextWatcher() {
 
         @Override
@@ -184,6 +192,13 @@ public class AddUserActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Add the new user to the account
+     * Grab all the specific data, validate it, and add the user
+     * If any information is incorrect, display an error message and return from this method
+     * Calls "CreateAccountUser"
+     * @param view
+     */
     public void addUser(View view) {
 
         String _password =  password.getText().toString();
@@ -365,6 +380,11 @@ public class AddUserActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Start UserPermission activity
+     * @param userID the ID of the new user, used for accessing permissions
+     * @param admin true if they are an admin account
+     */
     private void startAddUserPermissionActivity(String userID, boolean admin) {
         Intent intent = new Intent(getApplicationContext(), AddUserPermissionActivity.class);
         intent.putExtra("token", authToken);
@@ -373,12 +393,19 @@ public class AddUserActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * OnClick method to finish the activity when the cancel button is pressed
+     * @param view
+     */
     public void cancelAdd(View view) {
         prgDialog.dismiss();
         finish();
     }
 
     @Override
+    /**
+     * Finish the activity when the back arrow button is pressed
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:

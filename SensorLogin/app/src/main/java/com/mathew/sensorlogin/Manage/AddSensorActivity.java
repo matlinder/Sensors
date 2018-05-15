@@ -27,6 +27,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Activity to add a physical sensor to the parent account
+ *
+ */
 public class AddSensorActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -45,6 +49,10 @@ public class AddSensorActivity extends AppCompatActivity {
     private Button cancel;
 
     @Override
+    /**
+     * Creates the activity and grads the IDs for the entry fields
+     * Sets up the spinners and displays what networks are available to add to
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sensor);
@@ -116,7 +124,7 @@ public class AddSensorActivity extends AppCompatActivity {
 
     /**
      * display the network data of the associated account
-     * user to select which network to display gateways from
+     * user to select which network to add to
      */
     public void displayNetworkData() {
         prgDialog.show();
@@ -168,6 +176,14 @@ public class AddSensorActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Method to validate all the entered data and to call the method "AssignSensor"
+     * AssignSensor will take the entered information and add the sensor to the selected
+     * network
+     *
+     * @param view
+     */
     public void addSensor(View view) {
 
         if(sensorCode != null && sensorID != null && sensorName != null)
@@ -250,6 +266,13 @@ public class AddSensorActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Separate method to name the sensor, or else it will get a default one given by Monnit.
+     * Calls method "SensorSetName"
+     *
+     * @param name the name of the sensor
+     * @param ID the unique ID to identify which sensor we are editing
+     */
     public void setSensorName(String name, String ID)
     {
         //params
@@ -352,6 +375,11 @@ public class AddSensorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * OnClick method for the cancel button
+     * finishes the activity
+     * @param view
+     */
     public void cancelAdd(View view) {
         super.finish();
         prgDialog.dismiss();

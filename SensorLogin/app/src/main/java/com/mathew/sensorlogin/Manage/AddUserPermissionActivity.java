@@ -3,18 +3,11 @@ package com.mathew.sensorlogin.Manage;
 import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.CompoundButtonCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -34,11 +27,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Activity that starts after a new user is added
+ * Displays all permissions and networks and allows you to choose which ones the
+ * new user should have
+ */
 public class AddUserPermissionActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken, userID;
     private ProgressDialog prgDialog; //dialog
+    // all the checkboxes
     private CheckBox ackNotifications, addNetwork, addUser, calibrateSensor, delUser, disableNotifications;
     private CheckBox editAccount, editGateway, editNetwork, editNotifications, editUsers, editSelf;
     private CheckBox editSensor, editSensorMult, editSensorGroup, editUserNames, export, modifyMap;
@@ -49,11 +48,16 @@ public class AddUserPermissionActivity extends AppCompatActivity {
     // list to store the names of the network
     private ArrayList<String> networkNames = new ArrayList<String>();
     private HashMap<String, String> networkPair = new HashMap<String, String>();
-    private ArrayList<String> seeNetworks = new ArrayList<String>();
+    private ArrayList<String> seeNetworks = new ArrayList<String>(); // stores networks we want the user to see
     private boolean admin;
     private TextView prompt;
 
     @Override
+    /**
+     * Creates the activity
+     * Initializes all the textboxes for permissions and dynamically creates the network
+     * checkboxes
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user_permission);
@@ -148,6 +152,13 @@ public class AddUserPermissionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Cycles through the textboxes and if they are checked, will add that permission to the
+     * new user
+     * Calls the method "EditCustomerPermissions"
+     * If the new user was set to an admin, everything will be checked automatically
+     * @param view
+     */
     public void addPermissions(View view) {
 
 
@@ -244,6 +255,7 @@ public class AddUserPermissionActivity extends AppCompatActivity {
         });
 
     }
+
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
@@ -347,23 +359,6 @@ public class AddUserPermissionActivity extends AppCompatActivity {
 
 
     }
-
-//    private void createNetworkCheckBoxes() {
-//
-//        for(String name : networkNames)
-//        {
-//            if(name != null)
-//            {
-//                CheckBox ch = new CheckBox(getApplicationContext());
-//                ch.setText("Can See Network " + name);
-//                permLayout.addView(ch);
-//
-//            }
-//        }
-//
-//
-//    }
-
 
     /**
      * finish the activity and close the dialog

@@ -2,16 +2,13 @@ package com.mathew.sensorlogin.Manage;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -25,6 +22,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Activity to create a network in which we can add gateways and sensors to
+ */
 public class CreateNetworkActivity extends AppCompatActivity {
 
     // base url for json calls
@@ -34,12 +34,17 @@ public class CreateNetworkActivity extends AppCompatActivity {
     private String authToken;
     private EditText networkName;
     private String userID;
+
+    // collections to hold the various IDs
     private ArrayList<String> userIDs = new ArrayList<String>();
     private ArrayList<String> userNames = new ArrayList<String>();
     private ArrayList<String> viewIDs = new ArrayList<String>();
 
 
     @Override
+    /**
+     * Creates the activity and sets up the field for the network name
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_network);
@@ -88,7 +93,12 @@ public class CreateNetworkActivity extends AppCompatActivity {
         return true;
     }
 
-
+    /**
+     * Method that creates the network in the monnit system
+     * Called the method "CreateNetwork"
+     * All that is needed is a name of the network
+     * @param view
+     */
     public void createNetwork(View view) {
         prgDialog.show();
         if(networkName == null || networkName.getText().toString().length() == 0)
@@ -132,6 +142,13 @@ public class CreateNetworkActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Build an alert that shows all the users with checkboxes beside them
+     * User checks off which account is able to see the current created network
+     * Pressing Done will add the network to all users
+     * @param networkParam the ID of the newly created network
+     * @param name the name of the newly created network
+     */
     private void addNetworkToMultipleUsers(final String networkParam, final String name) {
 
         final String[] names = userNames.toArray(new String[userNames.size()]);
@@ -163,6 +180,12 @@ public class CreateNetworkActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /**
+     * Loop through all of the users that were checked off in the alert
+     * Add the newly created network to these users.
+     * Each one is a separate called to "EditCustomerPermissions"
+     * @param networkParam the ID of the newly created network
+     */
     private void addNetworkToAllUsers(String networkParam) {
         prgDialog.show();
         for(String id : viewIDs)
@@ -224,10 +247,12 @@ public class CreateNetworkActivity extends AppCompatActivity {
         finish();
     }
 
-
     /**
-     * display the network data of the associated account
-     * user to select which network to display gateways from
+     * When creating a network, it is not shown to anyone unless you are an admin.
+     * If you are creating it, you need to see it.
+     * This method adds the current network to your list, so the logged in user can see it.
+     * Kind of useless since only admins can create it, but there are times when you can have create
+     * network ability, and not be an admin.
      */
     public void addNetworkToCurrentUser(final String name) {
 
@@ -279,6 +304,14 @@ public class CreateNetworkActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * Method that adds the entered network ID to the entered user
+     * Calls "EditCustomerPermissions" to add the network to the user's list
+     *
+     * @param networkID the network that the passes in user needs to view
+     * @param name the name of the user that will get access to view the network
+     */
     private void addNetwork(final String networkID, final String name)
     {
         final String networkParam = "Network_View_Net_" + networkID;
@@ -334,6 +367,14 @@ public class CreateNetworkActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Populates the list of all users on the account and will display them as check boxes
+     * for the user to check if they want that user to be able to view the created network.
+     * This streamlines the process by removing the need to edit each user individually to
+     * access each network.
+     * Calls "AccountUserList"
+     */
     public void populateUserList()
     {
         AsyncHttpClient client = new AsyncHttpClient();
@@ -383,7 +424,15 @@ public class CreateNetworkActivity extends AppCompatActivity {
             }
         });
     }
-    public void cancel(View view) { super.finish();    }
+
+    /**
+     * Cancels the activity when the button is pressed
+     * @param view
+     */
+    public void cancel(View view) {
+        super.finish();
+    }
+
     /**
      * What to do when the acitivty is destroyed
      */

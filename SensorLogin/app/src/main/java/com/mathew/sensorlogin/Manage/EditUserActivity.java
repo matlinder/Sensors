@@ -22,6 +22,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Activity to display all users to select one to edit
+ */
 public class EditUserActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -33,6 +36,9 @@ public class EditUserActivity extends AppCompatActivity {
 
 
     @Override
+    /**
+     * creates the activity and displays a lit of current users on the logged in parent account
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user);
@@ -58,7 +64,10 @@ public class EditUserActivity extends AppCompatActivity {
         //populateUserList();
     }
 
-
+    /**
+     * Call "AccountUserList" and grab the user details for each user and place them into
+     * a textview and all them to the list
+     */
     public void populateUserList()
     {
         AsyncHttpClient client = new AsyncHttpClient();
@@ -128,6 +137,11 @@ public class EditUserActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Once a user is selected, start the permission activity to edit the user details
+     * and/or permissions
+     * @param tempID the ID of the User we wish to edit
+     */
     private void startEditPermissionsActivity(String tempID) {
         Intent intent = new Intent(getApplicationContext(), EditUserPermissionActivity.class);
         intent.putExtra("token", authToken);
@@ -136,8 +150,12 @@ public class EditUserActivity extends AppCompatActivity {
 
     }
 
-
     @Override
+    /**
+     * Menu selection method to determine what happens when a specific menu item is selected
+     * This activity only has a home button, meaning the top left arrow to go back to the previous
+     * activity on the stack
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -179,6 +197,10 @@ public class EditUserActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method to call when the activity is resumed on the stack
+     * repopulates the userlist so that you can see any changes that were just made
+     */
     public void onResume()
     {
         super.onResume();

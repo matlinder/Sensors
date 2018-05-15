@@ -3,8 +3,8 @@ package com.mathew.sensorlogin.Manage;
 import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.TransitionManager;
@@ -30,14 +30,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * I hate this activity.
+ * Hackjob to get the checkboxes to work because for unknown reasons they would change from checked
+ * to unchecked or while being unchecked, they would show a black checkmark.
+ *
+ * Acitivty to edit a users details and/or their permissions
+ */
 public class EditUserPermissionActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -65,6 +69,9 @@ public class EditUserPermissionActivity extends AppCompatActivity {
     private boolean checkBoxChange = false;
 
     @Override
+    /**
+     * Creates the activity with buttons, edit fields and check boxes
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_permission);
@@ -126,7 +133,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         checkBoxChange = false;
     }
 
-
+    /**
+     * text watcher to see that the edit fields have been changed
+     * if no changes, no need to call the method to change them
+     */
     private TextWatcher nameTextWatcher = new TextWatcher() {
 
         @Override
@@ -167,6 +177,11 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * users will have permissions already, grab the permissions and set the checkboxes to true
+     * or false accordingly
+     * calls GetCustomerPermissions
+     */
     private void populateUserPermissions() {
 
         //client
@@ -240,6 +255,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Call AccountUserGet and get the selected user information to populate the fields so you can
+     * see what the information is. Changing the fields and saving will change the account info.
+     */
     private void populateUserDetails() {
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -384,6 +403,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * switching method to hide the checkboxes and show the edittext fields
+     * @param view
+     */
     public void userDetailsDisplay(View view) {
         TransitionManager.beginDelayedTransition(transitionsContainer);
 
@@ -432,6 +455,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * switching method to hide the edittext fields and show the checkboxes
+     * @param view
+     */
     public void userPermissionsDisplay(View view) {
 
         TransitionManager.beginDelayedTransition(transitionsContainer);
@@ -481,7 +508,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         }
     }
 
-    public void initListeners()
+    /*
+     * method to initialize the listeners on the checkboxes
+     */
+    private void initListeners()
     {
         Iterator iit = networkCheckBox.entrySet().iterator();
         while (iit.hasNext()) {
@@ -514,6 +544,9 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
     }
 
+    /*
+     * initialize the variables by locating the view on the layout
+     */
     private void initVariables() {
         details = findViewById(R.id.buttonOne);
         permissions = findViewById(R.id.buttonTwo);
@@ -558,9 +591,9 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         editSensorGroup = findViewById(R.id.editSensorGroup2);
         varCheckPair.put("Sensor_Group_Edit",editSensorGroup );
         editUserNames = findViewById(R.id.editUserNames2);
-        varCheckPair.put("",editUserNames );
+        varCheckPair.put("Customer_Change_Username",editUserNames );
         export = findViewById(R.id.export2);
-        varCheckPair.put("Customer_Change_Username",export );
+        varCheckPair.put("Sensor_Export_Data",export );
         modifyMap = findViewById(R.id.modifyMap2);
         varCheckPair.put("Visual_Map_Edit", modifyMap);
         unlock = findViewById(R.id.unlock2);
@@ -585,6 +618,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
     }
 
+    /*
+     * fubar method to set the visibility programmatically because setting it through xml caused
+     * problems and this seemed to fix it
+     */
     private void setVisibility()
     {
         ackNotifications.setVisibility(View.GONE);
@@ -622,6 +659,12 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * fubar method to switch the checked value programmatically because setting it through xml
+     * caused problems and this seemed to fix it by switching it and then switching it back
+     * problems were that the boxes were checked but not shown as checked or shown as an empty box
+     * with the checked
+     */
     private void testChecked()
     {
         ackNotifications.setChecked(!ackNotifications.isChecked());
@@ -660,6 +703,10 @@ public class EditUserPermissionActivity extends AppCompatActivity {
     }
 
     @Override
+    /**
+     * what do to when a menu item is selected
+     * home button only, go back to the previous activity
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -701,6 +748,11 @@ public class EditUserPermissionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * update the user details and the permissions if any changes have been made
+     * calls AccountUserEdit and EditCustomerPermissions
+     * @param view
+     */
     public void updateUser(View view) {
 
         email.clearFocus();
@@ -874,6 +926,11 @@ public class EditUserPermissionActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * OnClick method when cancel button is hit
+     * finishes the activity
+     * @param view
+     */
     public void cancelEdit(View view) {
         prgDialog.dismiss();
         finish();
