@@ -24,6 +24,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Activity that allows the current user to select a user and remove that account
+ */
 public class RemoveUserActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -33,6 +36,9 @@ public class RemoveUserActivity extends AppCompatActivity {
     private ArrayList<String> userIDs = new ArrayList<String>();
 
     @Override
+    /**
+     * Creates the activity and displays all the user accounts for the parent account
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_user);
@@ -58,7 +64,10 @@ public class RemoveUserActivity extends AppCompatActivity {
         populateUserList();
     }
 
-
+    /**
+     * Grabs all the users from the parent account and displays them in table format
+     * User is able to click on a user and it will prompt for deletion
+     */
     public void populateUserList()
     {
         AsyncHttpClient client = new AsyncHttpClient();
@@ -128,6 +137,9 @@ public class RemoveUserActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     * Have the user confirm the remove action. If the user selects ok, removeUser is called
+     */
     private void removeUserPrompt(final String tempID, final String name) {
         AlertDialog.Builder alert = new AlertDialog.Builder(RemoveUserActivity.this);
         alert.setTitle("Remove User");
@@ -153,6 +165,10 @@ public class RemoveUserActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /*
+     * Removes the selected user from the parent account
+     * Calls AccountUserDelete
+     */
     private void removeUser(String tempID, final String name)
     {
         if(tempID == null)
@@ -209,6 +225,7 @@ public class RemoveUserActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * Clicking the back button on the title bar returns to the previous activity on the stack
      * @param item
@@ -242,6 +259,11 @@ public class RemoveUserActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * OnClick method to call when the cancel button is pressed
+     * Finishes the activity
+     * @param view
+     */
     public void cancelRemove(View view) {
         super.finish();
         prgDialog.dismiss();

@@ -28,7 +28,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * Activity to remove a sensor from a selected network
+ */
 public class RemoveSensorActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -49,6 +51,11 @@ public class RemoveSensorActivity extends AppCompatActivity {
     private CheckBox multiCheck;
 
     @Override
+    /**
+     * Creates the activity
+     * Populates the drop down spinners
+     * Finds IDs so that they may be used throughout the code
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_sensor);
@@ -142,7 +149,7 @@ public class RemoveSensorActivity extends AppCompatActivity {
 
     /**
      * display the network data of the associated account
-     * user to select which network to display gateways from
+     * user to select which network to display sensors from
      */
     public void displayNetworkData() {
         prgDialog.show();
@@ -197,6 +204,10 @@ public class RemoveSensorActivity extends AppCompatActivity {
 
     }
 
+    /*
+     * Once the user selects a network, this method is called
+     * This populates the sensor spinner with the sensors that belong to the network
+     */
     private void displaySensorData(String _networkID) {
         prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -255,6 +266,7 @@ public class RemoveSensorActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * Clicking the back button on the title bar returns to the previous activity on the stack
      * @param item
@@ -279,9 +291,14 @@ public class RemoveSensorActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * OnClick method for when the user wants to finish the activity
+     * @param view
+     */
     public void cancel(View view) {
         super.finish();
         prgDialog.dismiss();}
+
     /**
      * What to do when the acitivty is destroyed
      */
@@ -302,6 +319,12 @@ public class RemoveSensorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * User is asked to confirm before removing the selected sensor. The sensor could be in use
+     * and collecting data, so the user cannot accidentally select one to remove.
+     * If the user selects ok, removeSensor() is called.
+     * @param view
+     */
     public void confirmRemove(View view) {
         if(sensorID == null || sensorID.equals("Select a Sensor to Remove"))
         {
@@ -335,6 +358,10 @@ public class RemoveSensorActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /*
+     * Method to remove the selected sensor after confirmation from the user
+     * calls RemoveSensor
+     */
     private void removeSensor() {
         //add the params to a RequestParams object
         //these will be used in the request

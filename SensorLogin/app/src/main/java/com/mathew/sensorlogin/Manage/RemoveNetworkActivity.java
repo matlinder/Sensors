@@ -29,6 +29,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Activity to remove a network from the current user account
+ */
 public class RemoveNetworkActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -47,6 +50,9 @@ public class RemoveNetworkActivity extends AppCompatActivity {
     private CheckBox multiCheck;
 
     @Override
+    /**
+     * OnCreate to create the layout of the activity and set up the spinners with information
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_network);
@@ -177,6 +183,11 @@ public class RemoveNetworkActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * User to confirm if they want to remove the selected network. If yes, removeNetwork() is called.
+     * @param view
+     */
     public void confirmRemove(View view) {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(RemoveNetworkActivity.this);
@@ -202,6 +213,10 @@ public class RemoveNetworkActivity extends AppCompatActivity {
 
         alert.show();
     }
+
+    /**
+     * Calls RemoveNetwork and removes the selected network from the current account
+     */
     public void removeNetwork() {
 
         if(networkID == null)
@@ -283,6 +298,10 @@ public class RemoveNetworkActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * OnClick method to finish the activity when the cancel button is pressed
+     * @param view
+     */
     public void cancelRemove(View view) {
         super.finish();
         prgDialog.dismiss();

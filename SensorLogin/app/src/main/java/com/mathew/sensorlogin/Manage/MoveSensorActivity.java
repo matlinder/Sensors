@@ -28,6 +28,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Activity to move a sensor from one network to another
+ */
 public class MoveSensorActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -54,6 +57,9 @@ public class MoveSensorActivity extends AppCompatActivity {
     private Button cancel;
 
     @Override
+    /**
+     * Create the activity and set up the spinners with data and listeners
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_move_sensor);
@@ -194,6 +200,11 @@ public class MoveSensorActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Populate the sensor spinner with the sensors from the selected network
+     * Calls SensorList
+     * @param _networkID the network that was selected by the user
+     */
     private void displaySensorData(String _networkID) {
         prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -253,6 +264,7 @@ public class MoveSensorActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
@@ -307,6 +319,7 @@ public class MoveSensorActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
@@ -362,9 +375,11 @@ public class MoveSensorActivity extends AppCompatActivity {
         });
     }
 
-
-
-
+    /**
+     * Provide an alert to the user before moving a sensor since moving it could cause problems
+     * if it is in use. If the user confirms it, moveSensor method is called.
+     * @param view
+     */
     public void confirmMove(View view) {
         if(sensorID == null || sensorID.length() == 0 )
         {
@@ -400,6 +415,9 @@ public class MoveSensorActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /**
+     * calls AssignSensor to move the sensor to the new selected gateway
+     */
     public void moveSensor()
     {
         prgDialog.show();
@@ -455,6 +473,7 @@ public class MoveSensorActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * Clicking the back button on the title bar returns to the previous activity on the stack
      * @param item
@@ -479,7 +498,6 @@ public class MoveSensorActivity extends AppCompatActivity {
         return true;
     }
 
-
     /**
      * What to do when the acitivty is destroyed
      */
@@ -500,7 +518,10 @@ public class MoveSensorActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * OnClick for cancel button to finish activity
+     * @param view
+     */
     public void cancelMove(View view) {
         super.finish();
         prgDialog.dismiss();

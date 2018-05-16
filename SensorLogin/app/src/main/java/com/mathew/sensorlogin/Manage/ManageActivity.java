@@ -1,7 +1,6 @@
 package com.mathew.sensorlogin.Manage;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionManager;
@@ -21,21 +20,31 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Activity to set up the buttons to access the admin features
+ * and start the appropriate activities
+ */
 public class ManageActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
     private String authToken;
     private String userID;
+    // buttons to start the activities
     private Button createNetwork, removeNetwork, addGateway, moveGateway, removeGateway, addSensor, moveSensor;
     private Button editSensor, removeSensor, addUser, removeUser, editUser, userButton;
+    // transition container
+    private ViewGroup transitionsContainer;
+    // flags to hide the buttons unless selected
     private boolean networkVisible = false;
     private boolean gatewayVisible = false;
-    private ViewGroup transitionsContainer;
     private boolean sensorVisible = false;
     private boolean userVisible = false;
 
 
     @Override
+    /**
+     * create the activity and find all the buttons
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
@@ -65,10 +74,12 @@ public class ManageActivity extends AppCompatActivity {
         editUser = findViewById(R.id.editUser);
         removeUser = findViewById(R.id.removeUser);
 
-
-
     }
 
+    /**
+     * Method to show all the network buttons and hide the rest
+     * @param view
+     */
     public void showNetworkButtons(View view) {
 
 
@@ -93,6 +104,11 @@ public class ManageActivity extends AppCompatActivity {
         removeNetwork.setVisibility(networkVisible ? View.VISIBLE : View.GONE);
 
     }
+
+    /**
+     * Start the CreateNetworkActivity
+     * @param view
+     */
     public void startCreateNetworkActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), CreateNetworkActivity.class);
         intent.putExtra("token", authToken);
@@ -100,16 +116,25 @@ public class ManageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Start the RemoveNetworkActivity
+     * @param view
+     */
     public void startRemoveNetworkActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), RemoveNetworkActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
+    /**
+     * Method to show the gateway buttons and hide the rest
+     * @param view
+     */
     public void showGatewayButtons(View view) {
 
 
-            TransitionManager.beginDelayedTransition(transitionsContainer);
+        TransitionManager.beginDelayedTransition(transitionsContainer);
 
         if(!gatewayVisible)
         {
@@ -131,18 +156,32 @@ public class ManageActivity extends AppCompatActivity {
         removeGateway.setVisibility(gatewayVisible ? View.VISIBLE : View.GONE);
     }
 
+    /**
+     * Start the AddGatewayActivity
+     * @param view
+     */
     public void startAddGatewayActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), AddGatewayActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
+    /**
+     * Start the MoveGatewayActivity
+     * @param view
+     */
     public void startMoveGatewayActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), MoveGatewayActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
+    /**
+     * Start the RemoveGatewayActivity
+     * @param view
+     */
     public void startRemoveGatewayActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), RemoveGatewayActivity.class);
         intent.putExtra("token", authToken);
@@ -150,6 +189,10 @@ public class ManageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Method to show all the sensor buttons and hide the rest
+     * @param view
+     */
     public void showSensorButtons(View view) {
 
             TransitionManager.beginDelayedTransition(transitionsContainer);
@@ -174,24 +217,44 @@ public class ManageActivity extends AppCompatActivity {
         moveSensor.setVisibility(sensorVisible ? View.VISIBLE : View.GONE);
         removeSensor.setVisibility(sensorVisible ? View.VISIBLE : View.GONE);
     }
+
+    /**
+     * Start the AddSensorActivity
+     * @param view
+     */
     public void startAddSensorActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), AddSensorActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
+    /**
+     * Start the MoveSensorActivity
+     * @param view
+     */
     public void startMoveSensorActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), MoveSensorActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
+    /**
+     * Start the RemoveSensorActivity
+     * @param view
+     */
     public void startRemoveSensorActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), RemoveSensorActivity.class);
         intent.putExtra("token", authToken);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
+    /**
+     * Start the EditSensorActivity
+     * @param view
+     */
     public void startEditSensorActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), EditAnySensorActivity.class);
         intent.putExtra("token", authToken);
@@ -199,9 +262,13 @@ public class ManageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Method to show the user buttons and hide the rest
+     * @param view
+     */
     public void showUserButtons(View view) {
 
-            TransitionManager.beginDelayedTransition(transitionsContainer);
+        TransitionManager.beginDelayedTransition(transitionsContainer);
 
         if(!userVisible)
         {
@@ -222,6 +289,11 @@ public class ManageActivity extends AppCompatActivity {
         editUser.setVisibility(userVisible ? View.VISIBLE : View.GONE);
         removeUser.setVisibility(userVisible ? View.VISIBLE : View.GONE);
     }
+
+    /**
+     * Start the AddUserActivity
+     * @param view
+     */
     public void startAddUserActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), AddUserActivity.class);
         //Intent intent = new Intent(getApplicationContext(), AddUserPermissionActivity.class);
@@ -229,18 +301,27 @@ public class ManageActivity extends AppCompatActivity {
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
+    /**
+     * Start the EditUserActivity
+     * @param view
+     */
     public void startEditUserActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), EditUserActivity.class);
         //Intent intent = new Intent(getApplicationContext(), AddUserPermissionActivity.class);
         intent.putExtra("token", authToken);
         startActivity(intent);
     }
+
+    /**
+     * Start the RemoveUserActivity
+     * @param view
+     */
     public void startRemoveUserActivity(View view) {
         Intent intent = new Intent(getApplicationContext(), RemoveUserActivity.class);
         //Intent intent = new Intent(getApplicationContext(), AddUserPermissionActivity.class);
         intent.putExtra("token", authToken);
         startActivity(intent);
-
     }
 
     /**

@@ -25,6 +25,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Activity to remove a gateway from a specified network
+ */
 public class RemoveGatewayActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -46,6 +49,9 @@ public class RemoveGatewayActivity extends AppCompatActivity {
     ArrayAdapter<String> dataAdapter; // adapter for the spinner
 
     @Override
+    /**
+     * OnCreate method to set up the layout and populate the spinners
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_gateway);
@@ -125,6 +131,10 @@ public class RemoveGatewayActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Populates the spinner with gateways that are associated with the selected network
+     * @param networkID - gateways that belong to this network ID will be displayed in the spinner
+     */
     private void displayGatewayData(String networkID) {
         prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -236,6 +246,11 @@ public class RemoveGatewayActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * A gateway may be active and reading data, so the user is prompted before the final removal
+     * to confirm if they want to remove the selected gateway
+     * @param view
+     */
     public void confirmRemove(View view) {
         if(networkID == null || networkID.equals("Select a Network"))
         {
@@ -252,7 +267,6 @@ public class RemoveGatewayActivity extends AppCompatActivity {
         alert.setMessage("Are you sure you want to delete " + gatewayName + "?");
 
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -272,6 +286,10 @@ public class RemoveGatewayActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /**
+     * Method to remove the specified gateway from the current network that owns it
+     * Calls RemoveGateway
+     */
     public void removeGateway()
     {
         if(networkID == null || networkID.equals("Select a Network"))
@@ -358,6 +376,10 @@ public class RemoveGatewayActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * OnClick method for when the cancel button is pressed, finish the activity
+     * @param view
+     */
     public void cancelRemove(View view) {
         prgDialog.dismiss();
         finish();

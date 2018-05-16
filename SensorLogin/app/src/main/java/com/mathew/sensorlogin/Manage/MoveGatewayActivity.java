@@ -28,6 +28,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Activity to move a gateway to a different network
+ */
 public class MoveGatewayActivity extends AppCompatActivity {
     // base url for json calls
     private static final String base_url = "https://www.imonnit.com/json/";
@@ -60,6 +63,9 @@ public class MoveGatewayActivity extends AppCompatActivity {
 
 
     @Override
+    /**
+     * Creates the activity and sets up the spinners to choose networks and the gateway to move
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_move_gateway);
@@ -201,6 +207,7 @@ public class MoveGatewayActivity extends AppCompatActivity {
         });
 
     }
+
     /**
      * display the network data of the associated account
      * user to select which network to display gateways from
@@ -255,6 +262,13 @@ public class MoveGatewayActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Display the associated gateway with provided network
+     * Calls GatewayList
+     *
+     * @param networkID The ID of the specific network to get the gateway list from
+     */
     private void displayGatewayData(String networkID) {
         prgDialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -383,6 +397,12 @@ public class MoveGatewayActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Provide an alert to the user before moving a gateway since moving it could cause problems
+     * if it is in use. If the user confirms it, moveGateway method is called.
+     * @param view
+     */
     public void confirmMove(View view) {
 
         if(gatewayID == null || networkID == null)
@@ -418,6 +438,13 @@ public class MoveGatewayActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Assigns the selected gateway to the selected network.
+     * This method recursively calls itself because of a problem on monnit's side where
+     * even though the data was correct, it would not add the gateway. Could not find a fix except
+     * calling it a second time, with the same data and it works.
+     * Calls AssignGateway
+     */
     private void moveGateway() {
 
         final String errorMsg = "GatewayID: " + gatewayID + " could not be transfered to new network.";
@@ -507,6 +534,10 @@ public class MoveGatewayActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * OnClick to finish the activity when the cancel button is pressed
+     * @param view
+     */
     public void cancelMove(View view) {
         prgDialog.dismiss();
         finish();
